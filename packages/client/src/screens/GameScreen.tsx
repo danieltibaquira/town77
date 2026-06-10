@@ -80,7 +80,7 @@ export function GameScreen() {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'center', padding: 'var(--space-sm)' }}>
-        <Grid grid={gameState.grid} validCells={validCells} onCellClick={isMyTurn ? handleCellClick : undefined} />
+        <Grid grid={gameState.grid} validCells={validCells} {...(isMyTurn ? { onCellClick: handleCellClick } : {})} />
       </div>
 
       <div style={{ padding: 'var(--space-sm) var(--space-md)' }}>

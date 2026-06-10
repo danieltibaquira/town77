@@ -1,5 +1,7 @@
 # Town 77 — Phase 4: Client Screens
 
+**Status: ✅ COMPLETE** — All tasks implemented and verified (318 tests passing, typecheck clean, build successful). Completed 2026-06-10.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Wire the existing component library to the Socket.IO server through fully-functional game screens — Config, Join, Lobby, Game, and Results — with session recovery, error handling, and navigation guards.
@@ -82,7 +84,7 @@ packages/client/src/
 - Modify: `packages/client/src/store/gameStore.ts`
 - Create: `packages/client/src/__tests__/store-emit.test.ts`
 
-- [ ] **Step 1.1: Write failing tests**
+- [x] **Step 1.1: Write failing tests**
 
 ```typescript
 // packages/client/src/__tests__/store-emit.test.ts
@@ -182,7 +184,7 @@ describe('gameStore emit actions', () => {
 })
 ```
 
-- [ ] **Step 1.2: Run — expect FAIL**
+- [x] **Step 1.2: Run — expect FAIL**
 
 ```bash
 cd packages/client && pnpm test -- src/__tests__/store-emit.test.ts
@@ -190,7 +192,7 @@ cd packages/client && pnpm test -- src/__tests__/store-emit.test.ts
 
 Expected: `createRoom is not a function` (or similar)
 
-- [ ] **Step 1.3: Implement emit actions in gameStore**
+- [x] **Step 1.3: Implement emit actions in gameStore**
 
 Add to the `GameStore` interface and implementation:
 
@@ -227,9 +229,9 @@ discardChip: (chip) => {
 },
 ```
 
-- [ ] **Step 1.4: Run — expect PASS** (store-emit + existing store tests)
+- [x] **Step 1.4: Run — expect PASS** (store-emit + existing store tests)
 
-- [ ] **Step 1.5: Commit**
+- [x] **Step 1.5: Commit**
 
 ```bash
 git add packages/client/src/store/gameStore.ts packages/client/src/__tests__/store-emit.test.ts
@@ -244,7 +246,7 @@ git commit -m "feat(client): acciones de emisión socket en gameStore"
 - Create: `packages/client/src/hooks/useGameConnection.ts`
 - Create: `packages/client/src/__tests__/hooks/useGameConnection.test.ts`
 
-- [ ] **Step 2.1: Write failing tests**
+- [x] **Step 2.1: Write failing tests**
 
 ```typescript
 // packages/client/src/__tests__/hooks/useGameConnection.test.ts
@@ -305,7 +307,7 @@ describe('useGameConnection', () => {
 })
 ```
 
-- [ ] **Step 2.2: Run — expect FAIL**
+- [x] **Step 2.2: Run — expect FAIL**
 
 ```bash
 cd packages/client && pnpm test -- src/__tests__/hooks/useGameConnection.test.ts
@@ -313,7 +315,7 @@ cd packages/client && pnpm test -- src/__tests__/hooks/useGameConnection.test.ts
 
 Expected: `Cannot find module '../hooks/useGameConnection'`
 
-- [ ] **Step 2.3: Implement useGameConnection**
+- [x] **Step 2.3: Implement useGameConnection**
 
 ```typescript
 // packages/client/src/hooks/useGameConnection.ts
@@ -336,9 +338,9 @@ export function useGameConnection() {
 }
 ```
 
-- [ ] **Step 2.4: Run — expect PASS**
+- [x] **Step 2.4: Run — expect PASS**
 
-- [ ] **Step 2.5: Commit**
+- [x] **Step 2.5: Commit**
 
 ```bash
 git add packages/client/src/hooks/
@@ -353,7 +355,7 @@ git commit -m "feat(client): hook useGameConnection — lifecycle de socket"
 - Create: `packages/client/src/hooks/useValidCells.ts`
 - Create: `packages/client/src/__tests__/hooks/useValidCells.test.ts`
 
-- [ ] **Step 3.1: Write failing tests**
+- [x] **Step 3.1: Write failing tests**
 
 ```typescript
 // packages/client/src/__tests__/hooks/useValidCells.test.ts
@@ -393,9 +395,9 @@ describe('useValidCells', () => {
 })
 ```
 
-- [ ] **Step 3.2: Run — expect FAIL**
+- [x] **Step 3.2: Run — expect FAIL**
 
-- [ ] **Step 3.3: Implement useValidCells**
+- [x] **Step 3.3: Implement useValidCells**
 
 ```typescript
 // packages/client/src/hooks/useValidCells.ts
@@ -411,9 +413,9 @@ export function useValidCells(grid: Grid, selectedChip: Chip | null): [number, n
 }
 ```
 
-- [ ] **Step 3.4: Run — expect PASS**
+- [x] **Step 3.4: Run — expect PASS**
 
-- [ ] **Step 3.5: Commit**
+- [x] **Step 3.5: Commit**
 
 ```bash
 git add packages/client/src/hooks/useValidCells.ts packages/client/src/__tests__/hooks/useValidCells.test.ts
@@ -430,7 +432,7 @@ git commit -m "feat(client): hook useValidCells — validación cliente con game
 - Create: `packages/client/src/components/Stepper.tsx`
 - Create: `packages/client/src/__tests__/Stepper.test.tsx`
 
-- [ ] **Step 4.1: Write failing tests**
+- [x] **Step 4.1: Write failing tests**
 
 ```tsx
 // packages/client/src/__tests__/Stepper.test.tsx
@@ -477,9 +479,9 @@ describe('Stepper', () => {
 })
 ```
 
-- [ ] **Step 4.2: Run — expect FAIL**
+- [x] **Step 4.2: Run — expect FAIL**
 
-- [ ] **Step 4.3: Implement Stepper**
+- [x] **Step 4.3: Implement Stepper**
 
 ```tsx
 // packages/client/src/components/Stepper.tsx
@@ -535,9 +537,9 @@ export function Stepper({ label, value, min, max, onChange }: StepperProps) {
 }
 ```
 
-- [ ] **Step 4.4: Run — expect PASS**
+- [x] **Step 4.4: Run — expect PASS**
 
-- [ ] **Step 4.5: Commit**
+- [x] **Step 4.5: Commit**
 
 ```bash
 git add packages/client/src/components/Stepper.tsx packages/client/src/__tests__/Stepper.test.tsx
@@ -552,7 +554,7 @@ git commit -m "feat(client): componente Stepper para configuración de juego"
 - Create: `packages/client/src/components/ThemeCard.tsx`
 - Create: `packages/client/src/__tests__/ThemeCard.test.tsx`
 
-- [ ] **Step 5.1: Write failing tests**
+- [x] **Step 5.1: Write failing tests**
 
 ```tsx
 // packages/client/src/__tests__/ThemeCard.test.tsx
@@ -589,9 +591,9 @@ describe('ThemeCard', () => {
 })
 ```
 
-- [ ] **Step 5.2: Run — expect FAIL**
+- [x] **Step 5.2: Run — expect FAIL**
 
-- [ ] **Step 5.3: Implement ThemeCard**
+- [x] **Step 5.3: Implement ThemeCard**
 
 ```tsx
 // packages/client/src/components/ThemeCard.tsx
@@ -646,9 +648,9 @@ export function ThemeCard({ theme, isSelected, onClick }: ThemeCardProps) {
 }
 ```
 
-- [ ] **Step 5.4: Run — expect PASS**
+- [x] **Step 5.4: Run — expect PASS**
 
-- [ ] **Step 5.5: Commit**
+- [x] **Step 5.5: Commit**
 
 ```bash
 git add packages/client/src/components/ThemeCard.tsx packages/client/src/__tests__/ThemeCard.test.tsx
@@ -663,7 +665,7 @@ git commit -m "feat(client): componente ThemeCard para selector de tema"
 - Create: `packages/client/src/components/Toast.tsx`
 - Create: `packages/client/src/__tests__/Toast.test.tsx`
 
-- [ ] **Step 6.1: Write failing tests**
+- [x] **Step 6.1: Write failing tests**
 
 ```tsx
 // packages/client/src/__tests__/Toast.test.tsx
@@ -693,9 +695,9 @@ describe('Toast', () => {
 })
 ```
 
-- [ ] **Step 6.2: Run — expect FAIL**
+- [x] **Step 6.2: Run — expect FAIL**
 
-- [ ] **Step 6.3: Implement Toast**
+- [x] **Step 6.3: Implement Toast**
 
 ```tsx
 // packages/client/src/components/Toast.tsx
@@ -747,9 +749,9 @@ export function Toast({ message, onDismiss }: ToastProps) {
 }
 ```
 
-- [ ] **Step 6.4: Run — expect PASS**
+- [x] **Step 6.4: Run — expect PASS**
 
-- [ ] **Step 6.5: Commit**
+- [x] **Step 6.5: Commit**
 
 ```bash
 git add packages/client/src/components/Toast.tsx packages/client/src/__tests__/Toast.test.tsx
@@ -764,7 +766,7 @@ git commit -m "feat(client): componente Toast para errores de servidor"
 - Create: `packages/client/src/components/ScoreTable.tsx`
 - Create: `packages/client/src/__tests__/ScoreTable.test.tsx`
 
-- [ ] **Step 7.1: Write failing tests**
+- [x] **Step 7.1: Write failing tests**
 
 ```tsx
 // packages/client/src/__tests__/ScoreTable.test.tsx
@@ -814,9 +816,9 @@ describe('ScoreTable', () => {
 })
 ```
 
-- [ ] **Step 7.2: Run — expect FAIL**
+- [x] **Step 7.2: Run — expect FAIL**
 
-- [ ] **Step 7.3: Implement ScoreTable**
+- [x] **Step 7.3: Implement ScoreTable**
 
 ```tsx
 // packages/client/src/components/ScoreTable.tsx
@@ -895,9 +897,9 @@ export function ScoreTable({ scores }: ScoreTableProps) {
 }
 ```
 
-- [ ] **Step 7.4: Run — expect PASS**
+- [x] **Step 7.4: Run — expect PASS**
 
-- [ ] **Step 7.5: Commit**
+- [x] **Step 7.5: Commit**
 
 ```bash
 git add packages/client/src/components/ScoreTable.tsx packages/client/src/__tests__/ScoreTable.test.tsx
@@ -914,7 +916,7 @@ git commit -m "feat(client): componente ScoreTable para pantalla de resultados"
 - Modify: `packages/client/src/screens/ConfigScreen.tsx`
 - Create: `packages/client/src/__tests__/screens/ConfigScreen.test.tsx`
 
-- [ ] **Step 8.1: Write failing tests**
+- [x] **Step 8.1: Write failing tests**
 
 ```tsx
 // packages/client/src/__tests__/screens/ConfigScreen.test.tsx
@@ -1010,13 +1012,13 @@ describe('ConfigScreen', () => {
 })
 ```
 
-- [ ] **Step 8.2: Run — expect FAIL**
+- [x] **Step 8.2: Run — expect FAIL**
 
 ```bash
 cd packages/client && pnpm test -- src/__tests__/screens/ConfigScreen.test.tsx
 ```
 
-- [ ] **Step 8.3: Implement ConfigScreen**
+- [x] **Step 8.3: Implement ConfigScreen**
 
 ```tsx
 // packages/client/src/screens/ConfigScreen.tsx
@@ -1179,9 +1181,9 @@ export function ConfigScreen() {
 }
 ```
 
-- [ ] **Step 8.4: Run — expect PASS** (ConfigScreen + all existing tests)
+- [x] **Step 8.4: Run — expect PASS** (ConfigScreen + all existing tests)
 
-- [ ] **Step 8.5: Commit**
+- [x] **Step 8.5: Commit**
 
 ```bash
 git add packages/client/src/screens/ConfigScreen.tsx packages/client/src/__tests__/screens/ConfigScreen.test.tsx
@@ -1197,7 +1199,7 @@ git commit -m "feat(client): ConfigScreen — formulario de configuración con T
 - Create: `packages/client/src/__tests__/screens/JoinScreen.test.tsx`
 - Modify: `packages/client/src/router.tsx`
 
-- [ ] **Step 9.1: Write failing tests**
+- [x] **Step 9.1: Write failing tests**
 
 ```tsx
 // packages/client/src/__tests__/screens/JoinScreen.test.tsx
@@ -1242,9 +1244,9 @@ describe('JoinScreen', () => {
 })
 ```
 
-- [ ] **Step 9.2: Run — expect FAIL**
+- [x] **Step 9.2: Run — expect FAIL**
 
-- [ ] **Step 9.3: Implement JoinScreen**
+- [x] **Step 9.3: Implement JoinScreen**
 
 ```tsx
 // packages/client/src/screens/JoinScreen.tsx
@@ -1355,7 +1357,7 @@ export function JoinScreen() {
 }
 ```
 
-- [ ] **Step 9.4: Update router to use JoinScreen for /join**
+- [x] **Step 9.4: Update router to use JoinScreen for /join**
 
 ```tsx
 // In packages/client/src/router.tsx, change:
@@ -1364,9 +1366,9 @@ export function JoinScreen() {
 // Change route: <Route path="/join" element={<JoinScreen />} />
 ```
 
-- [ ] **Step 9.5: Run — expect PASS**
+- [x] **Step 9.5: Run — expect PASS**
 
-- [ ] **Step 9.6: Commit**
+- [x] **Step 9.6: Commit**
 
 ```bash
 git add packages/client/src/screens/JoinScreen.tsx packages/client/src/__tests__/screens/JoinScreen.test.tsx packages/client/src/router.tsx
@@ -1383,7 +1385,7 @@ git commit -m "feat(client): JoinScreen — formulario para unirse a sala"
 - Modify: `packages/client/src/screens/LobbyScreen.tsx`
 - Create: `packages/client/src/__tests__/screens/LobbyScreen.test.tsx`
 
-- [ ] **Step 10.1: Write failing tests**
+- [x] **Step 10.1: Write failing tests**
 
 ```tsx
 // packages/client/src/__tests__/screens/LobbyScreen.test.tsx
@@ -1513,9 +1515,9 @@ describe('LobbyScreen', () => {
 })
 ```
 
-- [ ] **Step 10.2: Run — expect FAIL**
+- [x] **Step 10.2: Run — expect FAIL**
 
-- [ ] **Step 10.3: Implement LobbyScreen**
+- [x] **Step 10.3: Implement LobbyScreen**
 
 ```tsx
 // packages/client/src/screens/LobbyScreen.tsx
@@ -1655,9 +1657,9 @@ export function LobbyScreen() {
 }
 ```
 
-- [ ] **Step 10.4: Run — expect PASS**
+- [x] **Step 10.4: Run — expect PASS**
 
-- [ ] **Step 10.5: Commit**
+- [x] **Step 10.5: Commit**
 
 ```bash
 git add packages/client/src/screens/LobbyScreen.tsx packages/client/src/__tests__/screens/LobbyScreen.test.tsx
@@ -1674,7 +1676,7 @@ git commit -m "feat(client): LobbyScreen — sala de espera con lista de jugador
 - Modify: `packages/client/src/screens/GameScreen.tsx`
 - Create: `packages/client/src/__tests__/screens/GameScreen.test.tsx`
 
-- [ ] **Step 11.1: Write failing tests (Part 1 — layout)**
+- [x] **Step 11.1: Write failing tests (Part 1 — layout)**
 
 ```tsx
 // packages/client/src/__tests__/screens/GameScreen.test.tsx
@@ -1785,9 +1787,9 @@ describe('GameScreen', () => {
 })
 ```
 
-- [ ] **Step 11.2: Run — expect FAIL**
+- [x] **Step 11.2: Run — expect FAIL**
 
-- [ ] **Step 11.3: Implement GameScreen layout**
+- [x] **Step 11.3: Implement GameScreen layout**
 
 ```tsx
 // packages/client/src/screens/GameScreen.tsx
@@ -1931,9 +1933,9 @@ export function GameScreen() {
 }
 ```
 
-- [ ] **Step 11.4: Run — expect PASS**
+- [x] **Step 11.4: Run — expect PASS**
 
-- [ ] **Step 11.5: Commit**
+- [x] **Step 11.5: Commit**
 
 ```bash
 git add packages/client/src/screens/GameScreen.tsx packages/client/src/__tests__/screens/GameScreen.test.tsx
@@ -1948,7 +1950,7 @@ git commit -m "feat(client): GameScreen — tablero, mano, badges y acciones"
 - Modify: `packages/client/src/screens/GameScreen.tsx`
 - Extend: `packages/client/src/__tests__/screens/GameScreen.test.tsx`
 
-- [ ] **Step 12.1: Write failing test**
+- [x] **Step 12.1: Write failing test**
 
 ```tsx
 // Add to GameScreen.test.tsx
@@ -1983,7 +1985,7 @@ it('navigates to results when game phase becomes finished', () => {
 })
 ```
 
-- [ ] **Step 12.2: Implement useEffect navigation in GameScreen**
+- [x] **Step 12.2: Implement useEffect navigation in GameScreen**
 
 Add to GameScreen component:
 
@@ -1998,9 +2000,9 @@ useEffect(() => {
 }, [gameState.phase, navigate, roomCode])
 ```
 
-- [ ] **Step 12.3: Run — expect PASS**
+- [x] **Step 12.3: Run — expect PASS**
 
-- [ ] **Step 12.4: Commit**
+- [x] **Step 12.4: Commit**
 
 ```bash
 git commit -m "feat(client): GameScreen — navegación automática a resultados"
@@ -2016,7 +2018,7 @@ git commit -m "feat(client): GameScreen — navegación automática a resultados
 - Modify: `packages/client/src/screens/ResultsScreen.tsx`
 - Create: `packages/client/src/__tests__/screens/ResultsScreen.test.tsx`
 
-- [ ] **Step 13.1: Write failing tests**
+- [x] **Step 13.1: Write failing tests**
 
 ```tsx
 // packages/client/src/__tests__/screens/ResultsScreen.test.tsx
@@ -2080,9 +2082,9 @@ describe('ResultsScreen', () => {
 })
 ```
 
-- [ ] **Step 13.2: Run — expect FAIL**
+- [x] **Step 13.2: Run — expect FAIL**
 
-- [ ] **Step 13.3: Implement ResultsScreen**
+- [x] **Step 13.3: Implement ResultsScreen**
 
 ```tsx
 // packages/client/src/screens/ResultsScreen.tsx
@@ -2186,9 +2188,9 @@ export function ResultsScreen() {
 }
 ```
 
-- [ ] **Step 13.4: Run — expect PASS**
+- [x] **Step 13.4: Run — expect PASS**
 
-- [ ] **Step 13.5: Commit**
+- [x] **Step 13.5: Commit**
 
 ```bash
 git add packages/client/src/screens/ResultsScreen.tsx packages/client/src/__tests__/screens/ResultsScreen.test.tsx
@@ -2206,7 +2208,7 @@ git commit -m "feat(client): ResultsScreen — tabla de puntuaciones y ganador"
 - Modify: `packages/client/src/screens/GameScreen.tsx`
 - Create: `packages/client/src/__tests__/hooks/useRequireGame.test.ts`
 
-- [ ] **Step 14.1: Write failing tests**
+- [x] **Step 14.1: Write failing tests**
 
 ```typescript
 // packages/client/src/__tests__/hooks/useRequireGame.test.ts
@@ -2243,9 +2245,9 @@ describe('useRequireGame', () => {
 })
 ```
 
-- [ ] **Step 14.2: Run — expect FAIL**
+- [x] **Step 14.2: Run — expect FAIL**
 
-- [ ] **Step 14.3: Implement useRequireGame**
+- [x] **Step 14.3: Implement useRequireGame**
 
 ```typescript
 // packages/client/src/hooks/useRequireGame.ts
@@ -2265,11 +2267,11 @@ export function useRequireGame() {
 }
 ```
 
-- [ ] **Step 14.4: Run — expect PASS**
+- [x] **Step 14.4: Run — expect PASS**
 
-- [ ] **Step 14.5: Wire into GameScreen (add `useRequireGame()` call at top)**
+- [x] **Step 14.5: Wire into GameScreen (add `useRequireGame()` call at top)**
 
-- [ ] **Step 14.6: Commit**
+- [x] **Step 14.6: Commit**
 
 ```bash
 git add packages/client/src/hooks/useRequireGame.ts packages/client/src/__tests__/hooks/useRequireGame.test.ts
@@ -2284,7 +2286,7 @@ git commit -m "feat(client): guardia de navegación useRequireGame"
 - Modify: `packages/client/src/screens/LobbyScreen.tsx`
 - Create: `packages/client/src/__tests__/screens/session-recovery.test.tsx`
 
-- [ ] **Step 15.1: Write failing test**
+- [x] **Step 15.1: Write failing test**
 
 ```tsx
 // packages/client/src/__tests__/screens/session-recovery.test.tsx
@@ -2352,9 +2354,9 @@ describe('Session recovery', () => {
 })
 ```
 
-- [ ] **Step 15.2: Run — expect FAIL**
+- [x] **Step 15.2: Run — expect FAIL**
 
-- [ ] **Step 15.3: Implement session recovery in LobbyScreen**
+- [x] **Step 15.3: Implement session recovery in LobbyScreen**
 
 Add a `useEffect` to LobbyScreen that checks for stored session data when `gameState` is null:
 
@@ -2384,9 +2386,9 @@ Also add `playerName` to `persistSession` in gameStore (extend to save name):
 localStorage.setItem('playerName', playerName) // add to room_joined handler
 ```
 
-- [ ] **Step 15.4: Run — expect PASS**
+- [x] **Step 15.4: Run — expect PASS**
 
-- [ ] **Step 15.5: Commit**
+- [x] **Step 15.5: Commit**
 
 ```bash
 git commit -m "feat(client): recuperación de sesión desde localStorage"
@@ -2398,7 +2400,7 @@ git commit -m "feat(client): recuperación de sesión desde localStorage"
 
 ### Task 16: Full verification pass
 
-- [ ] **Step 16.1: Run full test suite**
+- [x] **Step 16.1: Run full test suite**
 
 ```bash
 cd /Users/danieltibaquira/Projects/town77 && pnpm test
@@ -2406,7 +2408,7 @@ cd /Users/danieltibaquira/Projects/town77 && pnpm test
 
 Expected: All tests pass (Phase 3 + 3.5 + Phase 4).
 
-- [ ] **Step 16.2: Run typecheck**
+- [x] **Step 16.2: Run typecheck**
 
 ```bash
 cd packages/client && pnpm typecheck
@@ -2414,7 +2416,7 @@ cd packages/client && pnpm typecheck
 
 Expected: No TypeScript errors.
 
-- [ ] **Step 16.3: Run build**
+- [x] **Step 16.3: Run build**
 
 ```bash
 cd packages/client && pnpm build
@@ -2422,11 +2424,11 @@ cd packages/client && pnpm build
 
 Expected: Build succeeds, `dist/` produced.
 
-- [ ] **Step 16.4: Verify no hardcoded colors in new code**
+- [x] **Step 16.4: Verify no hardcoded colors in new code**
 
 Scan new/modified files for `#[0-9a-fA-F]{3,6}` — should only appear in tokens.css and theme files.
 
-- [ ] **Step 16.5: Commit any fixes**
+- [x] **Step 16.5: Commit any fixes**
 
 ```bash
 git commit -m "fix(client): Phase 4 verification fixes"
@@ -2436,7 +2438,7 @@ git commit -m "fix(client): Phase 4 verification fixes"
 
 ### Task 17: Documentation closeout
 
-- [ ] **Step 17.1: Commit final state**
+- [x] **Step 17.1: Commit final state**
 
 ```bash
 git add -A

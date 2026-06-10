@@ -5,7 +5,6 @@ const mockConnect = vi.fn()
 const mockDisconnect = vi.fn()
 
 vi.mock('../../store/gameStore', () => {
-  const { useGameStore: original } = vi.importActual('../../store/gameStore')
   return {
     useGameStore: vi.fn((selector?: any) => {
       const state = {

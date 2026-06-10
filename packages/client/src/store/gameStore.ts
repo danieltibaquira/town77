@@ -1,4 +1,4 @@
-import type { Chip, ErrorPayload, GameConfig, GameOverPayload, GameState } from "@town77/shared-types";
+import type { Chip, ErrorPayload, GameConfig, GameOverPayload, GameState, JoinRoomPayload } from "@town77/shared-types";
 import { create } from "zustand";
 import { socket } from "../lib/socket";
 
@@ -100,10 +100,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   joinRoom: (code, playerName, playerId?, sessionToken?) => {
-    const payload: Record<string, unknown> = { code, playerName };
+    const payload: JoinRoomPayload = { code, playerName };
     if (playerId) payload.playerId = playerId;
     if (sessionToken) payload.sessionToken = sessionToken;
-    socket.emit("join_room", payload as Parameters<typeof socket.emit>[1] extends infer T ? T : never);
+    socket.emit("join_room", payload);
   },
 
   startGame: () => {
