@@ -1,0 +1,11 @@
+{
+  "invalid_placement": "Invalid placement",
+  "not_your_turn": "Not your turn",
+  "exchange_rule_violated": "Exchange rule violated",
+  "already_discarded": "Already discarded this game",
+  "room_not_found": "Room not found",
+  "game_in_progress": "Game already in progress",
+  "not_enough_players": "Need at least 2 players",
+  "not_host": "Only the host can start",
+  "room_full": "Room full"
+}

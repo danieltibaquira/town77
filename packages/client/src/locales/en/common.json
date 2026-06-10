@@ -1,0 +1,12 @@
+{
+  "create_room": "Create room",
+  "join": "Join",
+  "copy_code": "Copy code",
+  "room_full": "Room full",
+  "room_not_found": "Room not found",
+  "connecting": "Connecting...",
+  "connected": "Connected",
+  "disconnected": "Disconnected",
+  "back": "Back",
+  "share": "Share"
+}

@@ -1,11 +1,20 @@
 services:
+  nginx:
+    build:
+      context: .
+      dockerfile: packages/client/Dockerfile
+      target: production
+    ports:
+      - "80:80"
+    depends_on:
+      - server
+    restart: unless-stopped
+
   server:
     build:
       context: .
       dockerfile: packages/server/Dockerfile
       target: production
-    ports:
-      - "3001:3001"
     environment:
       NODE_ENV: production
       PORT: "3001"

@@ -1,0 +1,9 @@
+{
+  "winner": "Winner",
+  "placed": "Chips placed",
+  "remaining": "Chips remaining",
+  "total": "Total score",
+  "play_again": "Play again",
+  "new_room": "New room",
+  "tied": "Tied"
+}

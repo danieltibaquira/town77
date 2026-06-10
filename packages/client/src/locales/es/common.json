@@ -1,0 +1,12 @@
+{
+  "create_room": "Crear sala",
+  "join": "Unirse",
+  "copy_code": "Copiar código",
+  "room_full": "Sala llena",
+  "room_not_found": "Sala no encontrada",
+  "connecting": "Conectando…",
+  "connected": "Conectado",
+  "disconnected": "Desconectado",
+  "back": "Volver",
+  "share": "Compartir"
+}

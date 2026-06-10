@@ -1,0 +1,50 @@
+:root {
+  --duration-instant: 80ms;
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 600ms;
+  --duration-epic: 1200ms;
+
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+
+  --text-sm: 13px;
+  --text-base: 16px;
+  --text-lg: 22px;
+  --text-display: 48px;
+
+  --layout-cell: clamp(40px, 8vw, 72px);
+  --layout-gap: clamp(2px, 0.5vw, 6px);
+  --layout-hand-h: clamp(96px, 15vh, 140px);
+
+  --color-surface-bg: #0f0d17;
+  --color-surface-grid: #1c1828;
+  --color-surface-cell: #241f35;
+  --color-surface-cell-hover: #2e2847;
+  --color-surface-cell-valid: #2c4a2e;
+  --color-surface-cell-invalid: #4a2020;
+  --color-text-primary: #f0ead6;
+  --color-text-secondary: #9b92a8;
+  --color-text-accent: #c4a35a;
+
+  --chip-color-1: #b04a2f;
+  --chip-color-2: #3d7ab5;
+  --chip-color-3: #4a7c59;
+  --chip-color-4: #c4a35a;
+  --chip-color-5: #8b3a52;
+  --chip-color-6: #2b2f5e;
+  --chip-color-7: #e8d5b0;
+}

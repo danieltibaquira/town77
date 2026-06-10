@@ -1,0 +1,13 @@
+{
+  "your_turn": "Tu turno",
+  "waiting": "Esperando…",
+  "exchange": "Intercambiar",
+  "discard": "Descartar",
+  "place": "Colocar ficha",
+  "bag_empty": "Bolsa vacía",
+  "bag_count": "{{count}} fichas en bolsa",
+  "start_game": "Iniciar juego",
+  "waiting_for_host": "Esperando al anfitrión",
+  "player_joined": "{{name}} se unió",
+  "player_left": "{{name}} se fue"
+}

@@ -1,0 +1,13 @@
+{
+  "grid_size": "Board size",
+  "colors": "Colors",
+  "shapes": "Shapes",
+  "copies": "Copies",
+  "hand_size": "Hand size",
+  "total_chips": "Total chips: {{count}}",
+  "board_cells": "Board cells: {{count}}",
+  "warning_chips_lt_cells": "Warning: fewer chips than cells",
+  "preset_classic": "Classic 7x7",
+  "preset_fast": "Fast 5x5",
+  "preset_custom": "Custom"
+}

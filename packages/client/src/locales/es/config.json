@@ -1,0 +1,13 @@
+{
+  "grid_size": "Tamaño del tablero",
+  "colors": "Colores",
+  "shapes": "Formas",
+  "copies": "Copias",
+  "hand_size": "Tamaño de mano",
+  "total_chips": "Total fichas: {{count}}",
+  "board_cells": "Celdas del tablero: {{count}}",
+  "warning_chips_lt_cells": "Atención: hay menos fichas que celdas",
+  "preset_classic": "Clásico 7×7",
+  "preset_fast": "Rápido 5×5",
+  "preset_custom": "Personalizado"
+}

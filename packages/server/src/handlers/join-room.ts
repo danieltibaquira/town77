@@ -7,7 +7,7 @@ import type { Io, Sock, Db } from '../app'
 
 const MAX_PLAYERS = 5
 
-export function joinRoomHandler(io: Io, socket: Sock, db: Db) {
+export function joinRoomHandler(_io: Io, socket: Sock, db: Db) {
   return (payload: JoinRoomPayload) => {
     const { code, playerName, sessionToken } = payload
 
