@@ -30,6 +30,7 @@ export function doExchange(
   const newHand = [...hand]
   for (const chip of chipsToExchange) {
     const idx = newHand.findIndex(h => h.color === chip.color && h.shape === chip.shape)
+    if (idx === -1) throw new Error(`chip not in hand: ${chip.color}/${chip.shape}`)
     newHand.splice(idx, 1)
   }
 
@@ -51,6 +52,7 @@ export function doDiscard(
 ): { newHand: Chip[]; newBag: Chip[]; drew: boolean } {
   const newHand = [...hand]
   const idx = newHand.findIndex(h => h.color === chipToDiscard.color && h.shape === chipToDiscard.shape)
+  if (idx === -1) throw new Error(`chip not in hand: ${chipToDiscard.color}/${chipToDiscard.shape}`)
   newHand.splice(idx, 1)
 
   const newBag = [...bag]
