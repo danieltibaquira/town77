@@ -10,5 +10,6 @@
       "@town77/game-engine": ["../game-engine/src/index.ts"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/**/__tests__"]
 }

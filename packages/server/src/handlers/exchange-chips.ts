@@ -36,7 +36,7 @@ export function exchangeChipsHandler(io: Io, socket: Sock, db: Db) {
       return
     }
 
-    const rng = new SeededRNG(state.seed ^ Date.now())
+    const rng = new SeededRNG(state.seed + state.turnIndex)
     const { newHand, newBag } = doExchange(currentPlayer.hand, state.bag, payload.chips, rng)
 
     const nextTurnIndex = (state.turnIndex + 1) % state.players.length

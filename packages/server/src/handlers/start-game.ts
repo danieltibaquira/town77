@@ -35,7 +35,7 @@ export function startGameHandler(io: Io, socket: Sock, db: Db) {
     }
 
     const { hands, remainingBag } = dealHands(state.bag, state.players.length, state.config.handSize)
-    const firstPlayerIndex = randomInt(0, state.players.length)
+    const firstPlayerIndex = state.seed % state.players.length
 
     const updatedState: GameState = {
       ...state,

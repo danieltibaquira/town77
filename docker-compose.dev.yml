@@ -5,10 +5,10 @@ services:
       dockerfile: packages/server/Dockerfile
       target: builder
     ports:
-      - "3001:3001"
+      - "3077:3077"
     environment:
       NODE_ENV: development
-      PORT: "3001"
+      PORT: "3077"
       DB_PATH: /data/town77-dev.db
       LOG_LEVEL: debug
       CORS_ORIGIN: "*"

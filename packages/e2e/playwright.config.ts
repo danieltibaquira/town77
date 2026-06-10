@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:8077',
     trace: 'on-first-retry',
   },
   projects: [
@@ -21,18 +21,10 @@ export default defineConfig({
       use: { ...devices['Pixel 5'] },
     },
   ],
-  webServer: [
-    {
-      command: 'cd ../server && pnpm dev',
-      url: 'http://localhost:3001/health',
-      reuseExistingServer: !process.env.CI,
-      timeout: 30000,
-    },
-    {
-      command: 'cd ../client && pnpm dev',
-      url: 'http://localhost:5173',
-      reuseExistingServer: !process.env.CI,
-      timeout: 30000,
-    },
-  ],
+  webServer: {
+    command: 'cd ../.. && docker compose up --build',
+    url: 'http://localhost:8077/health',
+    timeout: 300000,
+    reuseExistingServer: !process.env.CI,
+  },
 })

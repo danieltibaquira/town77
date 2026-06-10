@@ -28,7 +28,7 @@ interface GameStore {
   connect: () => void;
   disconnect: () => void;
 
-  createRoom: (config: GameConfig, themeId: string, playerName: string) => void;
+  createRoom: (config: GameConfig, themeId: string, playerName: string, seed?: number) => void;
   joinRoom: (code: string, playerName: string, playerId?: string, sessionToken?: string) => void;
   startGame: () => void;
   placeChip: (chip: Chip, row: number, col: number) => void;
@@ -96,8 +96,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ connected: false });
   },
 
-  createRoom: (config, themeId, playerName) => {
-    socket.emit("create_room", { config, themeId, playerName });
+  createRoom: (config, themeId, playerName, seed) => {
+    const payload: CreateRoomPayload = { config, themeId, playerName };
+    if (seed !== undefined) payload.seed = seed;
+    socket.emit("create_room", payload);
   },
 
   joinRoom: (code, playerName, playerId?, sessionToken?) => {

@@ -5,7 +5,7 @@ import { createApp, wireHandlers } from './app'
 import { openDatabase } from './db/client'
 import { logger } from './logger'
 
-const PORT = parseInt(process.env.PORT ?? '3001', 10)
+const PORT = parseInt(process.env.PORT ?? '3077', 10)
 const DB_PATH = process.env.DB_PATH ?? './town77.db'
 
 const db = openDatabase(DB_PATH)

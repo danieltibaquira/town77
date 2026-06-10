@@ -6,6 +6,7 @@ export interface CreateRoomPayload {
   config: GameConfig
   themeId: string
   playerName: string
+  seed?: number
 }
 
 export interface JoinRoomPayload {

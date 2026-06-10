@@ -17,7 +17,7 @@ describe('generateRandomName', () => {
     for (let i = 0; i < 50; i++) {
       const name = generateRandomName()
       const parts = name.split(' ')
-      const num = parseInt(parts[parts.length - 1], 10)
+      const num = parseInt(parts[parts.length - 1]!, 10)
       expect(num).toBeGreaterThanOrEqual(10)
       expect(num).toBeLessThanOrEqual(99)
     }

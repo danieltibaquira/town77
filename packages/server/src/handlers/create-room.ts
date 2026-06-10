@@ -13,7 +13,7 @@ export function createRoomHandler(_io: Io, socket: Sock, db: Db) {
     const { config, themeId, playerName } = payload
 
     const code = generateRoomCode()
-    const seed = randomInt(0, 2 ** 31)
+    const seed = payload.seed ?? randomInt(0, 2 ** 31)
     const playerId = generatePlayerId()
     const sessionToken = generateSessionToken()
 
