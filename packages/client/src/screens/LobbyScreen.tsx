@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { PlayerBadge } from '../components/PlayerBadge'
@@ -14,6 +15,17 @@ export function LobbyScreen() {
   const playerId = useGameStore((s) => s.playerId)
   const roomCode = useGameStore((s) => s.roomCode) ?? routeCode
   const startGame = useGameStore((s) => s.startGame)
+  const joinRoom = useGameStore((s) => s.joinRoom)
+
+  useEffect(() => {
+    if (gameState) return
+    const token = localStorage.getItem('sessionToken')
+    const storedPlayerId = localStorage.getItem('playerId')
+    const storedName = localStorage.getItem('playerName')
+    if (token && storedPlayerId && storedName && routeCode) {
+      joinRoom(routeCode, storedName, storedPlayerId, token)
+    }
+  }, [gameState, joinRoom, routeCode])
 
   if (!gameState || !playerId) {
     return (
