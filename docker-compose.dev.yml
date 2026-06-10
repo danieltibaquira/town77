@@ -1,0 +1,26 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: packages/server/Dockerfile
+      target: builder
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+      PORT: "3001"
+      DB_PATH: /data/town77-dev.db
+      LOG_LEVEL: debug
+      CORS_ORIGIN: "*"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/packages/shared-types/node_modules
+      - /app/packages/game-engine/node_modules
+      - /app/packages/server/node_modules
+      - sqlite_data_dev:/data
+    command: ["pnpm", "--filter", "@town77/server", "run", "dev"]
+    restart: unless-stopped
+
+volumes:
+  sqlite_data_dev:
