@@ -13,12 +13,12 @@ export const town77Theme: Theme = {
     skyscraper: "M13 35 L13 2 L20 0 L27 2 L27 35 Z",
   },
   colorPalette: {
-    "color-1": "#B04A2F",
-    "color-2": "#3D7AB5",
-    "color-3": "#4A7C59",
+    "color-1": "#D4623A",
+    "color-2": "#4A8FD4",
+    "color-3": "#5A9B6A",
     "color-4": "#C4A35A",
-    "color-5": "#8B3A52",
-    "color-6": "#2B2F5E",
+    "color-5": "#B85A78",
+    "color-6": "#5A6AAD",
     "color-7": "#E8D5B0",
   },
   surfaces: {

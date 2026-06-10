@@ -7,10 +7,10 @@ import { injectTokens, ThemeContext } from "./lib/theme";
 import { AppRouter } from "./router";
 import "./styles/reset.css";
 import "./styles/tokens.css";
-import { town77Theme } from "./themes/town77";
+import { getThemeById } from "./themes";
 
 export function App() {
-  const [theme, setTheme] = useState<Theme>(town77Theme);
+  const [theme, setTheme] = useState<Theme>(() => getThemeById("town77"));
 
   useEffect(() => {
     injectTokens(theme);

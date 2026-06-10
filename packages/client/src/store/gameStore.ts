@@ -1,4 +1,4 @@
-import type { Chip, ErrorPayload, GameOverPayload, GameState } from "@town77/shared-types";
+import type { Chip, ErrorPayload, GameConfig, GameOverPayload, GameState } from "@town77/shared-types";
 import { create } from "zustand";
 import { socket } from "../lib/socket";
 
@@ -27,6 +27,13 @@ interface GameStore {
 
   connect: () => void;
   disconnect: () => void;
+
+  createRoom: (config: GameConfig, themeId: string, playerName: string) => void;
+  joinRoom: (code: string, playerName: string, playerId?: string, sessionToken?: string) => void;
+  startGame: () => void;
+  placeChip: (chip: Chip, row: number, col: number) => void;
+  exchangeChips: (chips: Chip[]) => void;
+  discardChip: (chip: Chip) => void;
 }
 
 function persistSession(payload: SessionPayload): void {
@@ -86,5 +93,32 @@ export const useGameStore = create<GameStore>((set, get) => ({
     socket.disconnect();
     socket.removeAllListeners();
     set({ connected: false });
+  },
+
+  createRoom: (config, themeId, playerName) => {
+    socket.emit("create_room", { config, themeId, playerName });
+  },
+
+  joinRoom: (code, playerName, playerId?, sessionToken?) => {
+    const payload: Record<string, unknown> = { code, playerName };
+    if (playerId) payload.playerId = playerId;
+    if (sessionToken) payload.sessionToken = sessionToken;
+    socket.emit("join_room", payload as Parameters<typeof socket.emit>[1] extends infer T ? T : never);
+  },
+
+  startGame: () => {
+    socket.emit("start_game");
+  },
+
+  placeChip: (chip, row, col) => {
+    socket.emit("place_chip", { chip, row, col });
+  },
+
+  exchangeChips: (chips) => {
+    socket.emit("exchange_chips", { chips });
+  },
+
+  discardChip: (chip) => {
+    socket.emit("discard_chip", { chip });
   },
 }));

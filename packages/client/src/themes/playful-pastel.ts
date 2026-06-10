@@ -30,22 +30,22 @@ export const playfulPastelTheme: Theme = {
 
   // Pastel palette: soft, desaturated, playful colors
   colorPalette: {
-    "color-1": "#FF6B9D", // Soft pink/magenta
-    "color-2": "#A8D8EA", // Powder blue
-    "color-3": "#AA96DA", // Lavender purple
-    "color-4": "#FCBAD3", // Blush
-    "color-5": "#A8E6CF", // Mint green
-    "color-6": "#FFD3B6", // Peach
-    "color-7": "#FFAAA5", // Coral
+    "color-1": "#FF6B9D",
+    "color-2": "#81D4FA",
+    "color-3": "#B39DDB",
+    "color-4": "#F48FB1",
+    "color-5": "#69F0AE",
+    "color-6": "#FFB74D",
+    "color-7": "#FF8A80",
   },
 
   surfaces: {
-    background: "#FFF8F3", // Soft cream background
-    grid: "#F5E6E1", // Warm white container
-    cell: "#EDD5CC", // Soft taupe
-    cellHover: "#E8C4B5", // Slightly darker on hover
-    cellValid: "#D4F1D4", // Soft green success
-    cellInvalid: "#FFD6D6", // Soft red error
+    background: "#FFF8F3",
+    grid: "#F0E0D8",
+    cell: "#2A2420",
+    cellHover: "#3A322C",
+    cellValid: "#2F4A35",
+    cellInvalid: "#5A3030",
   },
 
   fonts: {

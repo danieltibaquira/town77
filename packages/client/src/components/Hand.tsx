@@ -1,10 +1,12 @@
 import type { Chip } from "@town77/shared-types";
-import { useTheme } from "../lib/theme";
 import { Chip as ChipComponent } from "./Chip";
+
+type HandLayoutMode = "scrolling" | "stacked" | "compact";
 
 interface HandProps {
   chips: Chip[];
   selectedChip: Chip | null;
+  layoutMode?: HandLayoutMode;
   onSelect: (chip: Chip) => void;
 }
 
@@ -12,20 +14,22 @@ function sameChip(a: Chip | null, b: Chip): boolean {
   return a !== null && a.color === b.color && a.shape === b.shape;
 }
 
-export function Hand({ chips, selectedChip, onSelect }: HandProps) {
-  const { theme } = useTheme();
+export function Hand({ chips, selectedChip, layoutMode = "scrolling", onSelect }: HandProps) {
+  const isStacked = layoutMode === "stacked" || layoutMode === "compact";
 
   return (
     <div
       data-testid="hand"
+      data-layout={layoutMode}
       style={{
         alignItems: "center",
-        background: theme.surfaces.grid,
+        background: "var(--color-surface-grid)",
         borderRadius: "var(--radius-md)",
         display: "flex",
-        gap: "var(--space-sm)",
+        flexWrap: isStacked ? "wrap" : "nowrap",
+        gap: layoutMode === "compact" ? "var(--space-xs)" : "var(--space-sm)",
         minHeight: "var(--layout-hand-h)",
-        overflowX: "auto",
+        overflowX: isStacked ? "visible" : "auto",
         padding: "var(--space-sm)",
       }}
     >

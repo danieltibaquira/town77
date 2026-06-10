@@ -19,7 +19,7 @@ describe("injectTokens", () => {
 
   it("sets chip color CSS vars for palette entries", () => {
     injectTokens(town77Theme);
-    expect(document.documentElement.style.getPropertyValue("--chip-color-1")).toBe("#B04A2F");
+    expect(document.documentElement.style.getPropertyValue("--chip-color-1")).toBe("#D4623A");
     expect(document.documentElement.style.getPropertyValue("--chip-color-7")).toBe("#E8D5B0");
   });
 

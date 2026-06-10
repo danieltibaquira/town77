@@ -1,44 +1,45 @@
 import type { Grid as GridType } from "@town77/shared-types";
-import { useMemo } from "react";
-import { useTheme } from "../lib/theme";
 import { Cell } from "./Cell";
+
+type GridDensity = "compact" | "comfortable";
 
 interface GridProps {
   grid: GridType;
   validCells: [number, number][];
+  density?: GridDensity;
   onCellClick?: (row: number, col: number) => void;
 }
 
-export function Grid({ grid, validCells, onCellClick }: GridProps) {
-  const { theme } = useTheme();
-  const validSet = useMemo(() => new Set(validCells.map(([row, col]) => `${row},${col}`)), [validCells]);
-  const cols = grid[0]?.length ?? 0;
+export function Grid({ grid, validCells, density = "comfortable", onCellClick }: GridProps) {
+  const validSet = new Set(validCells.map(([r, c]) => `${r},${c}`));
+  const cols = grid[0]?.length ?? 7;
+  const gap = density === "compact" ? "calc(var(--layout-gap) * 0.5)" : "var(--layout-gap)";
 
   return (
     <div
       data-testid="grid"
+      data-density={density}
       style={{
-        background: theme.surfaces.grid,
+        background: "var(--color-surface-grid)",
         borderRadius: "var(--radius-md)",
         display: "grid",
-        gap: "var(--layout-gap)",
+        gap,
         gridTemplateColumns: `repeat(${cols}, var(--layout-cell))`,
         padding: "var(--space-sm)",
-        width: "fit-content",
       }}
     >
-      {grid.map((row, rowIndex) =>
-        row.map((chip, colIndex) => {
-          const cellProps = {
-            row: rowIndex,
-            col: colIndex,
-            chip,
-            isValid: validSet.has(`${rowIndex},${colIndex}`),
-            ...(onCellClick ? { onClick: onCellClick } : {}),
-          };
-
-          return <Cell key={`${rowIndex}-${colIndex}`} {...cellProps} />;
-        }),
+      {grid.map((row, r) =>
+        row.map((chip, c) => (
+          <Cell
+            key={`${r}-${c}`}
+            row={r}
+            col={c}
+            chip={chip}
+            isValid={validSet.has(`${r},${c}`)}
+            density={density}
+            {...(onCellClick ? { onClick: onCellClick } : {})}
+          />
+        )),
       )}
     </div>
   );

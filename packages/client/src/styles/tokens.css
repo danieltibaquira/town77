@@ -40,11 +40,22 @@
   --color-text-secondary: #9b92a8;
   --color-text-accent: #c4a35a;
 
-  --chip-color-1: #b04a2f;
-  --chip-color-2: #3d7ab5;
-  --chip-color-3: #4a7c59;
+  --chip-color-1: #d4623a;
+  --chip-color-2: #4a8fd4;
+  --chip-color-3: #5a9b6a;
   --chip-color-4: #c4a35a;
-  --chip-color-5: #8b3a52;
-  --chip-color-6: #2b2f5e;
+  --chip-color-5: #b85a78;
+  --chip-color-6: #5a6aad;
   --chip-color-7: #e8d5b0;
+
+  --chip-size: var(--layout-cell);
+  --chip-stroke: 2px;
+
+  --cell-bg-empty: var(--color-surface-cell);
+  --cell-bg-valid: var(--color-surface-cell-valid);
+  --cell-bg-invalid: var(--color-surface-cell-invalid);
+  --cell-bg-hover: var(--color-surface-cell-hover);
+  --cell-radius: var(--radius-sm);
+
+  --button-radius: var(--radius-md);
 }

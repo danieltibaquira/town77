@@ -96,6 +96,18 @@ describe('Design System Tokens', () => {
     })
   })
 
+  describe('Component Tokens', () => {
+    it('defines component-level chip tokens', () => {
+      expect(tokensContent).toContain('--chip-size')
+      expect(tokensContent).toContain('var(--layout-cell)')
+    })
+
+    it('defines component-level cell tokens', () => {
+      expect(tokensContent).toContain('--cell-bg-empty')
+      expect(tokensContent).toContain('--cell-bg-valid')
+    })
+  })
+
   describe('Token Naming Conventions', () => {
     it('all tokens use kebab-case (lowercase with hyphens)', () => {
       const tokenMatches = tokensContent.match(/--[\w-]+/g) || []

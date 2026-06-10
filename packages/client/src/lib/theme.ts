@@ -1,6 +1,6 @@
 import type { Theme } from "@town77/shared-types";
 import { createContext, useContext } from "react";
-import { town77Theme } from "../themes/town77";
+import { getThemeById } from "../themes";
 
 export interface ThemeContextValue {
   theme: Theme;
@@ -8,9 +8,15 @@ export interface ThemeContextValue {
 }
 
 export const ThemeContext = createContext<ThemeContextValue>({
-  theme: town77Theme,
+  theme: getThemeById("town77"),
   setTheme: () => {},
 });
+
+const DEFAULT_TEXT = {
+  primary: "#F0EAD6",
+  secondary: "#9B92A8",
+  accent: "#C4A35A",
+} as const;
 
 export function useTheme(): ThemeContextValue {
   return useContext(ThemeContext);
@@ -30,4 +36,15 @@ export function injectTokens(theme: Theme): void {
   for (const [colorId, hex] of Object.entries(theme.colorPalette)) {
     style.setProperty(`--chip-${colorId}`, hex);
   }
+
+  style.setProperty("--color-text-primary", DEFAULT_TEXT.primary);
+  style.setProperty("--color-text-secondary", DEFAULT_TEXT.secondary);
+  style.setProperty("--color-text-accent", DEFAULT_TEXT.accent);
+
+  const { animationPreset } = theme;
+  style.setProperty("--motion-chip-place-stiffness", String(animationPreset.chipPlace.stiffness));
+  style.setProperty("--motion-chip-place-damping", String(animationPreset.chipPlace.damping));
+  style.setProperty("--motion-chip-invalid-duration", String(animationPreset.chipInvalid.duration));
+  style.setProperty("--motion-draw-duration", String(animationPreset.chipDraw.duration));
+  style.setProperty("--motion-celebrate-duration", String(animationPreset.celebrate.duration));
 }

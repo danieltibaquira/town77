@@ -1,35 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest'
 import fs from 'fs'
 import path from 'path'
-
-// Simple WCAG AA contrast ratio calculator
-function getContrastRatio(color1: string, color2: string): number {
-  const rgb1 = parseHexColor(color1)
-  const rgb2 = parseHexColor(color2)
-
-  const l1 = getLuminance(rgb1)
-  const l2 = getLuminance(rgb2)
-
-  const lighter = Math.max(l1, l2)
-  const darker = Math.min(l1, l2)
-
-  return (lighter + 0.05) / (darker + 0.05)
-}
-
-function parseHexColor(hex: string): [number, number, number] {
-  const cleaned = hex.replace('#', '')
-  const r = parseInt(cleaned.substring(0, 2), 16) / 255
-  const g = parseInt(cleaned.substring(2, 4), 16) / 255
-  const b = parseInt(cleaned.substring(4, 6), 16) / 255
-  return [r, g, b]
-}
-
-function getLuminance([r, g, b]: [number, number, number]): number {
-  const [rs, gs, bs] = [r, g, b].map((c) => {
-    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
-  })
-  return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs
-}
+import { contrastRatio, meetsWcagAA } from '../lib/contrast'
 
 describe('Asset Guidelines & Shapes', () => {
   const projectRoot = path.join(__dirname, '../../../../')
@@ -109,12 +81,12 @@ describe('Asset Guidelines & Shapes', () => {
     it('validates town77 chip colors have contrast ratios (for reference)', () => {
       // Extract town77 colors from tokens
       const town77Colors = [
-        { name: 'color-1', hex: '#b04a2f' },
-        { name: 'color-2', hex: '#3d7ab5' },
-        { name: 'color-3', hex: '#4a7c59' },
+        { name: 'color-1', hex: '#d4623a' },
+        { name: 'color-2', hex: '#4a8fd4' },
+        { name: 'color-3', hex: '#5a9b6a' },
         { name: 'color-4', hex: '#c4a35a' },
-        { name: 'color-5', hex: '#8b3a52' },
-        { name: 'color-6', hex: '#2b2f5e' },
+        { name: 'color-5', hex: '#b85a78' },
+        { name: 'color-6', hex: '#5a6aad' },
         { name: 'color-7', hex: '#e8d5b0' },
       ]
 
@@ -126,10 +98,12 @@ describe('Asset Guidelines & Shapes', () => {
       // Calculate contrast ratios for awareness (not enforcing strict WCAG AA in test)
       town77Colors.forEach((color) => {
         backgrounds.forEach((bg) => {
-          const ratio = getContrastRatio(color.hex, bg.hex)
-          // Just validate that function works and produces a number
+          const ratio = contrastRatio(color.hex, bg.hex)
           expect(ratio).toBeGreaterThan(0)
-          expect(ratio).toBeLessThan(21) // WCAG max ratio
+          expect(ratio).toBeLessThan(21)
+          if (bg.name === 'cell') {
+            expect(meetsWcagAA(color.hex, bg.hex, 3)).toBe(true)
+          }
         })
       })
     })
