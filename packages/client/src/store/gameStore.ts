@@ -41,6 +41,7 @@ function persistSession(payload: SessionPayload): void {
   localStorage.setItem("sessionToken", payload.sessionToken);
   localStorage.setItem("playerId", payload.playerId);
   localStorage.setItem("roomCode", payload.roomCode);
+  // playerName is already set by ConfigScreen/JoinScreen before socket connects
 }
 
 export const useGameStore = create<GameStore>((set, get) => ({

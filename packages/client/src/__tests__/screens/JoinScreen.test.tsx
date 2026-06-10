@@ -32,7 +32,7 @@ describe('JoinScreen', () => {
     expect(screen.getByTestId('input-room-code')).toBeDefined()
   })
 
-  it('join button disabled when fields empty', () => {
+  it('join button disabled when room code is empty (name pre-filled)', () => {
     renderWithTheme(<JoinScreen />)
     expect(screen.getByTestId('btn-join-room')).toBeDisabled()
   })

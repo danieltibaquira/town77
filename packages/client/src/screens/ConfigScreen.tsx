@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
@@ -7,14 +7,23 @@ import { Stepper } from '../components/Stepper'
 import { ThemeCard } from '../components/ThemeCard'
 import { useGameStore } from '../store/gameStore'
 import { THEMES, type ThemeId } from '../themes'
+import { generateRandomName } from '../lib/randomName'
 
 export function ConfigScreen() {
   const { t } = useTranslation('config')
   const { t: tc } = useTranslation('common')
   const navigate = useNavigate()
   const createRoom = useGameStore((s) => s.createRoom)
+  const gameState = useGameStore((s) => s.gameState)
+  const roomCode = useGameStore((s) => s.roomCode)
 
-  const [playerName, setPlayerName] = useState('')
+  useEffect(() => {
+    if (gameState && roomCode) {
+      navigate(`/room/${roomCode}`)
+    }
+  }, [gameState, roomCode, navigate])
+
+  const [playerName, setPlayerName] = useState(() => generateRandomName())
   const [selectedThemeId, setSelectedThemeId] = useState<ThemeId>('town77')
   const [gridSize, setGridSize] = useState(DEFAULT_GAME_CONFIG.grid.rows)
   const [colors, setColors] = useState(DEFAULT_GAME_CONFIG.chips.colors.length)
@@ -48,6 +57,7 @@ export function ConfigScreen() {
       scoring: DEFAULT_GAME_CONFIG.scoring,
       exchange: DEFAULT_GAME_CONFIG.exchange,
     }
+    localStorage.setItem('playerName', playerName.trim())
     createRoom(config, selectedThemeId, playerName.trim())
   }
 
@@ -70,10 +80,10 @@ export function ConfigScreen() {
   }
 
   return (
-    <main data-testid="config-screen" style={{ background: 'var(--color-surface-bg)', color: 'var(--color-text-primary)', display: 'flex', flexDirection: 'column', gap: 'var(--space-lg)', margin: '0 auto', maxWidth: 560, minHeight: '100vh', padding: 'var(--space-xl)' }}>
+    <main data-testid="config-screen" style={{ background: 'var(--color-surface-bg)', color: 'var(--color-text-primary)', display: 'flex', flexDirection: 'column', gap: 'var(--space-lg)', margin: '0 auto', width: '100%', maxWidth: 560, minHeight: '100vh', padding: 'var(--space-md)', boxSizing: 'border-box' }}>
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-lg)', margin: 0 }}>{tc('create_room')}</h1>
 
-      <input data-testid="input-player-name" placeholder={tc('join')} value={playerName} onChange={(e) => setPlayerName(e.target.value)} style={inputStyle} />
+      <input data-testid="input-player-name" placeholder={tc('your_name')} value={playerName} onChange={(e) => setPlayerName(e.target.value)} style={inputStyle} />
 
       <div style={{ display: 'flex', gap: 'var(--space-sm)' }}>
         <button type="button" data-testid="preset-classic" onClick={() => applyPreset('classic')} style={presetBtnStyle}>{t('preset_classic')}</button>

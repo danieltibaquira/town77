@@ -74,12 +74,12 @@ describe('ConfigScreen', () => {
     expect(screen.getByTestId('theme-card-playful-pastel')).toBeDefined()
   })
 
-  it('has a "Create room" button disabled when no player name', () => {
+  it('has a "Create room" button enabled by default (random name pre-filled)', () => {
     renderWithTheme(<ConfigScreen />)
-    expect(screen.getByTestId('btn-create-room')).toBeDisabled()
+    expect(screen.getByTestId('btn-create-room')).not.toBeDisabled()
   })
 
-  it('enables "Create room" when player name is entered', async () => {
+  it('"Create room" stays enabled after typing a name', async () => {
     renderWithTheme(<ConfigScreen />)
     await userEvent.type(screen.getByTestId('input-player-name'), 'Alice')
     expect(screen.getByTestId('btn-create-room')).not.toBeDisabled()

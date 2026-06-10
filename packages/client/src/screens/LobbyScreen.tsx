@@ -1,21 +1,28 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { PlayerBadge } from '../components/PlayerBadge'
-import { useGameConnection } from '../hooks/useGameConnection'
 import { useGameStore } from '../store/gameStore'
 
 export function LobbyScreen() {
   const { t } = useTranslation('game')
   const { t: tc } = useTranslation('common')
   const { code: routeCode } = useParams<{ code: string }>()
+  const navigate = useNavigate()
 
-  const { connected } = useGameConnection()
+  const connected = useGameStore((s) => s.connected)
   const gameState = useGameStore((s) => s.gameState)
   const playerId = useGameStore((s) => s.playerId)
   const roomCode = useGameStore((s) => s.roomCode) ?? routeCode
   const startGame = useGameStore((s) => s.startGame)
   const joinRoom = useGameStore((s) => s.joinRoom)
+
+  // Navigate to game when phase changes to playing
+  useEffect(() => {
+    if (gameState?.phase === 'playing') {
+      navigate(`/game/${roomCode}`)
+    }
+  }, [gameState?.phase, navigate, roomCode])
 
   useEffect(() => {
     if (gameState) return

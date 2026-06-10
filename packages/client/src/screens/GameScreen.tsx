@@ -6,7 +6,6 @@ import { Grid } from '../components/Grid'
 import { Hand } from '../components/Hand'
 import { PlayerBadge } from '../components/PlayerBadge'
 import { Toast } from '../components/Toast'
-import { useGameConnection } from '../hooks/useGameConnection'
 import { useRequireGame } from '../hooks/useRequireGame'
 import { useValidCells } from '../hooks/useValidCells'
 import { useGameStore } from '../store/gameStore'
@@ -16,7 +15,7 @@ export function GameScreen() {
   const { t } = useTranslation('game')
   const navigate = useNavigate()
 
-  const { connected } = useGameConnection()
+  const connected = useGameStore((s) => s.connected)
   const gameState = useGameStore((s) => s.gameState)
   const playerId = useGameStore((s) => s.playerId)
   const roomCode = useGameStore((s) => s.roomCode)

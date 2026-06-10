@@ -2,13 +2,14 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useGameStore } from '../store/gameStore'
+import { generateRandomName } from '../lib/randomName'
 
 export function JoinScreen() {
   const { t } = useTranslation('common')
   const navigate = useNavigate()
   const joinRoom = useGameStore((s) => s.joinRoom)
 
-  const [playerName, setPlayerName] = useState('')
+  const [playerName, setPlayerName] = useState(() => generateRandomName())
   const [roomCode, setRoomCode] = useState('')
 
   const canJoin = playerName.trim().length > 0 && roomCode.trim().length > 0
@@ -16,6 +17,7 @@ export function JoinScreen() {
   function handleJoin() {
     if (!canJoin) return
     const code = roomCode.trim().toUpperCase()
+    localStorage.setItem('playerName', playerName.trim())
     joinRoom(code, playerName.trim())
     navigate(`/room/${code}`)
   }
@@ -38,7 +40,7 @@ export function JoinScreen() {
 
       <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-lg)', margin: 0 }}>{t('join')}</h1>
 
-      <input data-testid="input-join-name" placeholder={t('join')} value={playerName} onChange={(e) => setPlayerName(e.target.value)} style={inputStyle} />
+      <input data-testid="input-join-name" placeholder={t('your_name')} value={playerName} onChange={(e) => setPlayerName(e.target.value)} style={inputStyle} />
 
       <input data-testid="input-room-code" placeholder="ABC123" value={roomCode} onChange={(e) => setRoomCode(e.target.value.toUpperCase())} maxLength={6} style={{ ...inputStyle, textAlign: 'center', letterSpacing: '0.2em', fontSize: 'var(--text-lg)', fontWeight: 700 }} />
 
