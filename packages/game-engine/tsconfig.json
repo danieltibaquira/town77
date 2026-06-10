@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
     "paths": {
       "@town77/shared-types": ["../shared-types/src/index.ts"]
     }
