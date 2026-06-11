@@ -1,3 +1,5 @@
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import type { Server, Socket } from 'socket.io'
 import type Database from 'better-sqlite3'
 import express from 'express'
@@ -5,8 +7,10 @@ import cors from 'cors'
 import type { ClientToServerEvents, ServerToClientEvents } from '@town77/shared-types'
 import { logger } from './logger'
 import { createRoomHandler } from './handlers/create-room'
+import { createSoloRoomHandler } from './handlers/create-solo-room'
 import { joinRoomHandler } from './handlers/join-room'
 import { startGameHandler } from './handlers/start-game'
+import { startSoloGameHandler } from './handlers/solo-game'
 import { placeChipHandler } from './handlers/place-chip'
 import { exchangeChipsHandler } from './handlers/exchange-chips'
 import { discardChipHandler } from './handlers/discard-chip'
@@ -27,8 +31,10 @@ export function wireHandlers(io: Io, db: Db): void {
     logger.debug({ socketId: socket.id }, 'socket.connect')
 
     socket.on('create_room', createRoomHandler(io, socket, db))
+    socket.on('create_solo_room', createSoloRoomHandler(io, socket, db))
     socket.on('join_room', joinRoomHandler(io, socket, db))
     socket.on('start_game', startGameHandler(io, socket, db))
+    socket.on('start_solo_game', startSoloGameHandler(io, socket, db))
     socket.on('place_chip', placeChipHandler(io, socket, db))
     socket.on('exchange_chips', exchangeChipsHandler(io, socket, db))
     socket.on('discard_chip', discardChipHandler(io, socket, db))
@@ -46,5 +52,15 @@ export function createApp(): express.Express {
   app.get('/health', (_req, res) => {
     res.json({ ok: true })
   })
+
+  if (process.env.NODE_ENV === 'production') {
+    const __dirname = path.dirname(fileURLToPath(import.meta.url))
+    const clientDist = path.resolve(__dirname, '../../client/dist')
+    app.use(express.static(clientDist))
+    app.get('*', (_req, res) => {
+      res.sendFile(path.join(clientDist, 'index.html'))
+    })
+  }
+
   return app
 }
