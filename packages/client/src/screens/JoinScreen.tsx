@@ -2,12 +2,16 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { generateRandomName } from '../lib/randomName'
+import { useTheme } from '../lib/theme'
 import { useGameStore } from '../store/gameStore'
 
 export function JoinScreen() {
   const { t } = useTranslation('common')
   const navigate = useNavigate()
   const joinRoom = useGameStore((s) => s.joinRoom)
+  const { theme } = useTheme()
+  const isNeo = theme.style === 'neobrutalism'
+  const neoRadius = theme.styleProps.borderRadius
 
   const [playerName, setPlayerName] = useState(() => generateRandomName())
   const [roomCode, setRoomCode] = useState('')
@@ -23,9 +27,14 @@ export function JoinScreen() {
   }
 
   const inputStyle = {
-    background: 'var(--color-surface-cell)',
-    border: '1px solid var(--color-surface-cell-hover)',
-    borderRadius: 'var(--radius-md)',
+    background: isNeo ? '#ffffff' : 'var(--color-surface-cell)',
+    border: isNeo
+      ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
+      : '1px solid var(--color-surface-cell-hover)',
+    borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-md)',
+    boxShadow: isNeo
+      ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
+      : 'none',
     color: 'var(--color-text-primary)',
     fontSize: 'var(--text-base)',
     padding: 'var(--space-sm) var(--space-md)',
@@ -37,7 +46,7 @@ export function JoinScreen() {
       data-testid="join-screen"
       style={{
         alignItems: 'center',
-        background: 'var(--color-surface-bg)',
+        background: isNeo ? theme.surfaces.background : 'var(--color-surface-bg)',
         color: 'var(--color-text-primary)',
         display: 'flex',
         flexDirection: 'column',
@@ -96,10 +105,24 @@ export function JoinScreen() {
         disabled={!canJoin}
         onClick={handleJoin}
         style={{
-          background: canJoin ? 'var(--color-text-accent)' : 'var(--color-surface-cell)',
-          border: 'none',
-          borderRadius: 'var(--radius-lg)',
-          color: 'var(--color-surface-bg)',
+          background: canJoin
+            ? isNeo
+              ? '#ffe66d'
+              : 'var(--color-text-accent)'
+            : 'var(--color-surface-cell)',
+          border: isNeo
+            ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
+            : 'none',
+          borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-lg)',
+          boxShadow:
+            canJoin && isNeo
+              ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
+              : 'none',
+          color: canJoin
+            ? isNeo
+              ? '#000000'
+              : 'var(--color-surface-bg)'
+            : 'var(--color-text-secondary)',
           cursor: canJoin ? 'pointer' : 'not-allowed',
           fontSize: 'var(--text-lg)',
           fontWeight: 700,

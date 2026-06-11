@@ -16,12 +16,27 @@ function GameConnectionProvider({ children }: { children: React.ReactNode }) {
   return <>{children}</>
 }
 
+function getStoredTheme(): Theme {
+  try {
+    const stored = localStorage.getItem('themeId')
+    if (stored) return getThemeById(stored as any)
+  } catch {}
+  return getThemeById('town77')
+}
+
 export function App() {
-  const [theme, setTheme] = useState(() => getThemeById('town77'))
+  const [theme, setThemeState] = useState(() => getStoredTheme())
 
   useEffect(() => {
     injectTokens(theme)
+    try {
+      localStorage.setItem('themeId', theme.id)
+    } catch {}
   }, [theme])
+
+  const setTheme = (t: Theme) => {
+    setThemeState(t)
+  }
 
   return (
     <I18nextProvider i18n={i18n}>

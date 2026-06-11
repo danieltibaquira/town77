@@ -10,6 +10,8 @@ export function Toast({ message, onDismiss }: ToastProps) {
   if (!message) return null
   const { theme } = useTheme()
   const shake = errorShakeTransition(theme.animationPreset)
+  const isNeo = theme.style === 'neobrutalism'
+  const neoRadius = theme.styleProps.borderRadius
 
   return (
     <div
@@ -19,9 +21,15 @@ export function Toast({ message, onDismiss }: ToastProps) {
         alignItems: 'center',
         animation: shake.animation,
         background: 'var(--cell-bg-invalid)',
-        borderRadius: 'var(--radius-md)',
+        borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-md)',
+        border: isNeo
+          ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
+          : 'none',
+        boxShadow: isNeo
+          ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
+          : 'none',
         bottom: 'var(--space-lg)',
-        color: 'var(--color-text-primary)',
+        color: isNeo ? '#000000' : 'var(--color-text-primary)',
         display: 'flex',
         gap: 'var(--space-sm)',
         left: '50%',
@@ -40,7 +48,7 @@ export function Toast({ message, onDismiss }: ToastProps) {
         style={{
           background: 'transparent',
           border: 'none',
-          color: 'var(--color-text-secondary)',
+          color: isNeo ? '#000000' : 'var(--color-text-secondary)',
           cursor: 'pointer',
           fontSize: 'var(--text-lg)',
         }}
