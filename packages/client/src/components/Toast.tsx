@@ -9,6 +9,8 @@ interface ToastProps {
 export function Toast({ message, onDismiss }: ToastProps) {
   if (!message) return null
   const { theme } = useTheme()
+  const isNeo = theme.style === "neobrutalism";
+  const neoRadius = theme.styleProps.borderRadius;
   const shake = errorShakeTransition(theme.animationPreset)
 
   return (
@@ -18,10 +20,10 @@ export function Toast({ message, onDismiss }: ToastProps) {
       style={{
         alignItems: 'center',
         animation: shake.animation,
-        background: 'var(--cell-bg-invalid)',
-        borderRadius: 'var(--radius-md)',
+        background: isNeo ? '#ffe66d' : 'var(--cell-bg-invalid)',
+        borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-md)',
         bottom: 'var(--space-lg)',
-        color: 'var(--color-text-primary)',
+        color: isNeo ? '#000000' : 'var(--color-text-primary)',
         display: 'flex',
         gap: 'var(--space-sm)',
         left: '50%',
@@ -30,6 +32,8 @@ export function Toast({ message, onDismiss }: ToastProps) {
         position: 'fixed',
         transform: 'translateX(-50%)',
         zIndex: 100,
+        border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : undefined,
+        boxShadow: isNeo ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : undefined,
       }}
     >
       <span style={{ flex: 1, fontSize: 'var(--text-sm)' }}>{message}</span>
@@ -37,7 +41,7 @@ export function Toast({ message, onDismiss }: ToastProps) {
         type="button"
         data-testid="toast-dismiss"
         onClick={onDismiss}
-        style={{ background: 'transparent', border: 'none', color: 'var(--color-text-secondary)', cursor: 'pointer', fontSize: 'var(--text-lg)' }}
+        style={{ background: 'transparent', border: 'none', color: isNeo ? '#000000' : 'var(--color-text-secondary)', cursor: 'pointer', fontSize: 'var(--text-lg)' }}
       >
         ×
       </button>

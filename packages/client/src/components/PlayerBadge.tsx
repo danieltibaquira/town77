@@ -23,6 +23,8 @@ export function PlayerBadge({
   const isCompact = variant === "compact";
   const minHeight = size === "sm" ? 24 : isCompact ? 28 : 32;
   const { theme } = useTheme();
+  const isNeo = theme.style === "neobrutalism";
+  const neoRadius = theme.styleProps.borderRadius;
   const glowPulse = isCurrentTurn ? badgeGlowPulseTransition(theme.animationPreset) : {};
 
   return (
@@ -33,11 +35,29 @@ export function PlayerBadge({
       data-variant={variant}
       style={{
         alignItems: "center",
-        background: isCurrentTurn ? "linear-gradient(135deg, #d4b76a 0%, #c4a35a 100%)" : "var(--color-surface-cell)",
-        borderRadius: "var(--radius-pill)",
-        border: isCurrentTurn ? "2px solid rgba(196, 163, 90, 0.5)" : "2px solid rgba(255,255,255,0.08)",
-        boxShadow: isCurrentTurn ? "var(--shadow-glow-accent), 0 0 12px rgba(196, 163, 90, 0.2)" : "var(--shadow-xs)",
-        color: isCurrentTurn ? "var(--color-surface-bg)" : "var(--color-text-primary)",
+        background: isCurrentTurn
+          ? isNeo
+            ? "#ffe66d"
+            : "linear-gradient(135deg, #d4b76a 0%, #c4a35a 100%)"
+          : "var(--color-surface-cell)",
+        borderRadius: isNeo ? `${neoRadius}px` : "var(--radius-pill)",
+        border: isCurrentTurn
+          ? isNeo
+            ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
+            : "2px solid rgba(196, 163, 90, 0.5)"
+          : isNeo
+            ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
+            : "2px solid rgba(255,255,255,0.08)",
+        boxShadow: isCurrentTurn
+          ? isNeo
+            ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
+            : "var(--shadow-glow-accent), 0 0 12px rgba(196, 163, 90, 0.2)"
+          : "var(--shadow-xs)",
+        color: isCurrentTurn
+          ? isNeo
+            ? "#000000"
+            : "var(--color-surface-bg)"
+          : "var(--color-text-primary)",
         display: "flex",
         fontSize: size === "sm" ? "var(--text-sm)" : "var(--text-base)",
         fontWeight: isMyPlayer ? 700 : 500,
@@ -51,7 +71,7 @@ export function PlayerBadge({
         aria-hidden="true"
         style={{
           background: player.connected ? "var(--color-surface-cell-valid)" : "var(--color-text-secondary)",
-          borderRadius: "50%",
+          borderRadius: isNeo ? `${neoRadius}px` : "50%",
           flex: "0 0 8px",
           height: 8,
           width: 8,

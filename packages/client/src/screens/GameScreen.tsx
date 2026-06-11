@@ -17,6 +17,8 @@ export function GameScreen() {
   const { t } = useTranslation('game')
   const navigate = useNavigate()
   const { theme } = useTheme()
+  const isNeo = theme.style === "neobrutalism";
+  const neoRadius = theme.styleProps.borderRadius;
 
   const connected = useGameStore((s) => s.connected)
   const gameState = useGameStore((s) => s.gameState)
@@ -87,8 +89,25 @@ export function GameScreen() {
   const exchangeFlash = exchangeFlashTransition(theme.animationPreset)
 
   return (
-    <main data-testid="game-screen" style={{ background: 'var(--color-surface-bg)', backgroundImage: 'radial-gradient(ellipse at 50% 0%, rgba(196, 163, 90, 0.08) 0%, transparent 60%)', color: 'var(--color-text-primary)', containerType: 'inline-size', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <header style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-md)', padding: 'var(--space-md) var(--space-lg)', flexWrap: 'wrap', borderBottom: '1px solid rgba(196, 163, 90, 0.1)' }}>
+    <main data-testid="game-screen" style={{
+      background: 'var(--color-surface-bg)',
+      backgroundImage: isNeo ? 'none' : 'radial-gradient(ellipse at 50% 0%, rgba(196, 163, 90, 0.08) 0%, transparent 60%)',
+      color: 'var(--color-text-primary)',
+      containerType: 'inline-size',
+      display: 'flex',
+      flexDirection: 'column',
+      minHeight: '100vh',
+    }}>
+      <header style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 'var(--space-md)',
+        padding: 'var(--space-md) var(--space-lg)',
+        flexWrap: 'wrap',
+        borderBottom: isNeo
+          ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
+          : '1px solid rgba(196, 163, 90, 0.1)',
+      }}>
         {gameState.players.map((player, index) => (
           <PlayerBadge key={player.id} player={player} isCurrentTurn={index === gameState.turnIndex} isMyPlayer={player.id === playerId} size="sm" variant="compact" />
         ))}

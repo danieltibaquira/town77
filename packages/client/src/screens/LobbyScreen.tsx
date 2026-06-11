@@ -3,12 +3,16 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate, useParams } from 'react-router-dom'
 import { PlayerBadge } from '../components/PlayerBadge'
 import { useGameStore } from '../store/gameStore'
+import { useTheme } from '../lib/theme'
 
 export function LobbyScreen() {
   const { t } = useTranslation('game')
   const { t: tc } = useTranslation('common')
   const { code: routeCode } = useParams<{ code: string }>()
   const navigate = useNavigate()
+  const { theme } = useTheme()
+  const isNeo = theme.style === "neobrutalism";
+  const neoRadius = theme.styleProps.borderRadius;
 
   const connected = useGameStore((s) => s.connected)
   const gameState = useGameStore((s) => s.gameState)
@@ -57,7 +61,16 @@ export function LobbyScreen() {
     <main data-testid="lobby-screen" style={{ alignItems: 'center', background: 'var(--color-surface-bg)', color: 'var(--color-text-primary)', display: 'flex', flexDirection: 'column', gap: 'var(--space-lg)', minHeight: '100vh', padding: 'var(--space-xl)' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
         <span data-testid="room-code" style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', fontWeight: 700, letterSpacing: '0.15em' }}>{roomCode}</span>
-        <button type="button" data-testid="btn-copy-code" onClick={handleCopyCode} style={{ background: 'var(--color-surface-cell)', border: 'none', borderRadius: 'var(--radius-sm)', color: 'var(--color-text-secondary)', cursor: 'pointer', fontSize: 'var(--text-sm)', padding: 'var(--space-xs) var(--space-sm)' }}>{tc('copy_code')}</button>
+        <button type="button" data-testid="btn-copy-code" onClick={handleCopyCode} style={{
+          background: 'var(--color-surface-cell)',
+          border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : 'none',
+          borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-sm)',
+          color: isNeo ? '#000000' : 'var(--color-text-secondary)',
+          cursor: 'pointer',
+          fontSize: 'var(--text-sm)',
+          padding: 'var(--space-xs) var(--space-sm)',
+          boxShadow: isNeo ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : undefined,
+        }}>{tc('copy_code')}</button>
       </div>
 
       <span style={{ color: connected ? 'var(--color-surface-cell-valid)' : 'var(--color-text-secondary)', fontSize: 'var(--text-sm)' }}>
@@ -70,12 +83,37 @@ export function LobbyScreen() {
         ))}
       </div>
 
-      <div data-testid="lobby-config-summary" style={{ background: 'var(--color-surface-grid)', borderRadius: 'var(--radius-md)', color: 'var(--color-text-secondary)', fontSize: 'var(--text-sm)', padding: 'var(--space-sm) var(--space-md)' }}>
+      <div data-testid="lobby-config-summary" style={{
+        background: 'var(--color-surface-grid)',
+        borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-md)',
+        color: 'var(--color-text-secondary)',
+        fontSize: 'var(--text-sm)',
+        padding: 'var(--space-sm) var(--space-md)',
+        border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : undefined,
+      }}>
         {gameState.config.grid.rows}×{gameState.config.grid.cols} · {gameState.config.chips.colors.length} colors · {gameState.config.chips.shapes.length} shapes
       </div>
 
       {isHost && (
-        <button type="button" data-testid="btn-start-game" disabled={!canStart} onClick={hasBot ? startSoloGame : startGame} style={{ background: canStart ? 'var(--color-text-accent)' : 'var(--color-surface-cell)', border: 'none', borderRadius: 'var(--radius-lg)', color: 'var(--color-surface-bg)', cursor: canStart ? 'pointer' : 'not-allowed', fontSize: 'var(--text-lg)', fontWeight: 700, padding: 'var(--space-md) var(--space-xl)' }}>
+        <button type="button" data-testid="btn-start-game" disabled={!canStart} onClick={hasBot ? startSoloGame : startGame} style={{
+          background: canStart
+            ? isNeo
+              ? '#ffe66d'
+              : 'var(--color-text-accent)'
+            : 'var(--color-surface-cell)',
+          border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : 'none',
+          borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-lg)',
+          color: canStart
+            ? isNeo
+              ? '#000000'
+              : 'var(--color-surface-bg)'
+            : 'var(--color-text-secondary)',
+          cursor: canStart ? 'pointer' : 'not-allowed',
+          fontSize: 'var(--text-lg)',
+          fontWeight: 700,
+          padding: 'var(--space-md) var(--space-xl)',
+          boxShadow: isNeo && canStart ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : undefined,
+        }}>
           {t('start_game')}
         </button>
       )}

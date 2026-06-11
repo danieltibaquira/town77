@@ -8,6 +8,8 @@ interface ThemeCardProps {
 
 export function ThemeCard({ theme, isSelected, onClick }: ThemeCardProps) {
   const colors = Object.values(theme.colorPalette)
+  const isNeo = theme.style === "neobrutalism";
+  const neoRadius = theme.styleProps.borderRadius;
 
   return (
     <button
@@ -17,14 +19,21 @@ export function ThemeCard({ theme, isSelected, onClick }: ThemeCardProps) {
       onClick={onClick}
       style={{
         background: theme.surfaces.background,
-        border: isSelected ? '2px solid var(--color-text-accent)' : '2px solid transparent',
-        borderRadius: 'var(--radius-md)',
+        border: isSelected
+          ? '2px solid var(--color-text-accent)'
+          : isNeo
+            ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
+            : '2px solid transparent',
+        borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-md)',
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
         gap: 'var(--space-xs)',
         padding: 'var(--space-sm)',
         textAlign: 'left' as const,
+        boxShadow: isNeo && isSelected
+          ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
+          : undefined,
       }}
     >
       <span style={{ color: 'var(--color-text-primary)', fontSize: 'var(--text-sm)', fontWeight: 600 }}>

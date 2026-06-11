@@ -11,6 +11,8 @@ interface ScoreTableProps {
 export function ScoreTable({ scores }: ScoreTableProps) {
   const { t } = useTranslation('results')
   const { theme } = useTheme()
+  const isNeo = theme.style === "neobrutalism";
+  const neoRadius = theme.styleProps.borderRadius;
   const maxCombined = Math.max(...scores.map((s) => s.combined))
   const scorePop = scorePopTransition(theme.animationPreset)
 
@@ -26,7 +28,13 @@ export function ScoreTable({ scores }: ScoreTableProps) {
     padding: 'var(--space-xs) var(--space-sm)',
     fontSize: 'var(--text-base)',
     fontVariantNumeric: 'tabular-nums' as const,
+    borderBottom: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : undefined,
   }
+
+  const neoHeaderStyle = isNeo ? {
+    ...headerStyle,
+    borderBottom: `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`,
+  } : headerStyle;
 
   return (
     <table
@@ -35,14 +43,16 @@ export function ScoreTable({ scores }: ScoreTableProps) {
         borderCollapse: 'collapse',
         color: 'var(--color-text-primary)',
         width: '100%',
+        border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : undefined,
+        borderRadius: isNeo ? `${neoRadius}px` : undefined,
       }}
     >
       <thead>
         <tr>
-          <th style={headerStyle} />
-          <th style={headerStyle}>{t('placed')}</th>
-          <th style={headerStyle}>{t('remaining')}</th>
-          <th style={headerStyle}>{t('total')}</th>
+          <th style={neoHeaderStyle} />
+          <th style={neoHeaderStyle}>{t('placed')}</th>
+          <th style={neoHeaderStyle}>{t('remaining')}</th>
+          <th style={neoHeaderStyle}>{t('total')}</th>
         </tr>
       </thead>
       <tbody>

@@ -29,6 +29,8 @@ export function Cell({
   onClick,
 }: CellProps) {
   const { theme } = useTheme();
+  const isNeo = theme.style === "neobrutalism";
+  const neoRadius = theme.styleProps.borderRadius;
   const isCompact = density === "compact";
   const cellSize = isCompact ? "calc(var(--layout-cell) * 0.85)" : "var(--layout-cell)";
 
@@ -46,9 +48,13 @@ export function Cell({
 
   const boxShadow =
     isValid && chip === null && highlightStyle === "glow"
-      ? "var(--shadow-glow-valid)"
+      ? isNeo
+        ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
+        : "var(--shadow-glow-valid)"
       : chip === null
-        ? "var(--shadow-inner-sm)"
+        ? isNeo
+          ? "none"
+          : "var(--shadow-inner-sm)"
         : undefined;
 
   const pulseActive = isValid && chip === null && highlightStyle === "pulse";
@@ -84,11 +90,17 @@ export function Cell({
         animationDelay: delay,
         aspectRatio: "1",
         background,
-        border: `1px solid ${isValid ? "rgba(5, 150, 105, 0.3)" : "rgba(255,255,255,0.04)"}`,
-        borderRadius: "var(--radius-md)",
-        boxShadow: isValid 
-          ? "0 0 12px rgba(5, 150, 105, 0.15), inset 0 1px 2px rgba(255,255,255,0.05)" 
-          : "inset 0 1px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.02)",
+        border: isNeo
+          ? isValid
+            ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
+            : `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
+          : `1px solid ${isValid ? "rgba(5, 150, 105, 0.3)" : "rgba(255,255,255,0.04)"}`,
+        borderRadius: isNeo ? `${neoRadius}px` : "var(--radius-md)",
+        boxShadow: isNeo && isValid
+          ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
+          : isValid
+            ? "0 0 12px rgba(5, 150, 105, 0.15), inset 0 1px 2px rgba(255,255,255,0.05)"
+            : "inset 0 1px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.02)",
         cursor: isValid && chip === null && onClick ? "pointer" : "default",
         display: "flex",
         height: cellSize,

@@ -1,5 +1,6 @@
 import type { Chip } from "@town77/shared-types";
 import { Chip as ChipComponent } from "./Chip";
+import { useTheme } from "../lib/theme";
 
 type HandLayoutMode = "scrolling" | "stacked" | "compact";
 
@@ -15,6 +16,9 @@ function sameChip(a: Chip | null, b: Chip): boolean {
 }
 
 export function Hand({ chips, selectedChip, layoutMode = "scrolling", onSelect }: HandProps) {
+  const { theme } = useTheme();
+  const isNeo = theme.style === "neobrutalism";
+  const neoRadius = theme.styleProps.borderRadius;
   const isStacked = layoutMode === "stacked" || layoutMode === "compact";
 
   return (
@@ -23,12 +27,16 @@ export function Hand({ chips, selectedChip, layoutMode = "scrolling", onSelect }
       data-layout={layoutMode}
       style={{
         alignItems: "center",
-        background: "var(--color-surface-grid)",
-        backgroundImage: "var(--surface-felt-grad)",
-        backgroundBlendMode: "overlay",
-        borderRadius: "var(--radius-lg)",
-        border: "2px solid rgba(196, 163, 90, 0.12)",
-        boxShadow: "var(--shadow-md), inset 0 2px 8px rgba(0,0,0,0.3)",
+        background: isNeo ? theme.surfaces.grid : "var(--color-surface-grid)",
+        backgroundImage: isNeo ? "none" : "var(--surface-felt-grad)",
+        backgroundBlendMode: isNeo ? "normal" : "overlay",
+        borderRadius: isNeo ? `${neoRadius}px` : "var(--radius-lg)",
+        border: isNeo
+          ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
+          : "2px solid rgba(196, 163, 90, 0.12)",
+        boxShadow: isNeo
+          ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
+          : "var(--shadow-md), inset 0 2px 8px rgba(0,0,0,0.3)",
         display: "flex",
         flexWrap: isStacked ? "wrap" : "nowrap",
         gap: layoutMode === "compact" ? "var(--space-xs)" : "var(--space-md)",

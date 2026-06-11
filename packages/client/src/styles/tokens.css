@@ -116,6 +116,18 @@
 
   --button-radius: var(--radius-md);
 
+  /* Neobrutalism Theme Variables (set by injectTokens) */
+  --neo-border-width: 0px;
+  --neo-border-color: transparent;
+  --neo-shadow-offset: 0px;
+  --neo-shadow-color: transparent;
+  --neo-radius: 8px;
+  --neo-border: 0px solid transparent;
+  --neo-shadow: none;
+  --neo-shadow-hover: none;
+  --neo-shadow-active: none;
+  --neo-transition: all 0.1s linear;
+
   /* Surface Textures */
   --texture-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   --surface-grid-grad: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, transparent 50%, rgba(0,0,0,0.15) 100%);

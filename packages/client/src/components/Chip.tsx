@@ -32,9 +32,12 @@ export function Chip({
   staggerIndex = 0,
 }: ChipProps) {
   const { theme } = useTheme();
+  const isNeo = theme.style === "neobrutalism";
+  const neoRadius = theme.styleProps.borderRadius;
   const svgPath = theme.shapes[chip.shape] ?? "M5 35 L20 5 L35 35 Z";
   const colorIndex = Object.keys(theme.colorPalette).indexOf(chip.color) + 1
   const gradientId = `url(#chip-grad-${colorIndex})`
+  const chipColor = theme.colorPalette[chip.color];
   const scale = SIZE_SCALE[size];
   const drawIn = chipDrawInTransition(theme.animationPreset, staggerIndex);
   const targetScale = isSelected ? 1.08 : 1;
@@ -58,48 +61,61 @@ export function Chip({
       style={{
         alignItems: "center",
         background: "transparent",
-        borderRadius: "var(--radius-md)",
+        borderRadius: isNeo ? `${neoRadius}px` : "var(--radius-md)",
         cursor: onClick ? "pointer" : "default",
         display: "flex",
         height: `calc(var(--chip-size) * ${scale})`,
         justifyContent: "center",
-        outline: isSelected ? "2px solid var(--color-text-accent)" : "0",
+        outline: isSelected
+          ? isNeo
+            ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
+            : "2px solid var(--color-text-accent)"
+          : "0",
         outlineOffset: "2px",
         padding: 4,
+        border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : "none",
         boxShadow: isSelected
-          ? "0 0 0 2px var(--color-text-accent), 0 4px 12px rgba(0,0,0,0.3), 0 0 16px rgba(245, 158, 11, 0.25)"
-          : "0 2px 4px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.1)",
-        transition: "box-shadow 150ms ease-out, transform 150ms ease-out",
+          ? isNeo
+            ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
+            : "0 0 0 2px var(--color-text-accent), 0 4px 12px rgba(0,0,0,0.3), 0 0 16px rgba(245, 158, 11, 0.25)"
+          : isNeo
+            ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
+            : "0 2px 4px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.1)",
+        transition: isNeo ? "var(--neo-transition)" : "box-shadow 150ms ease-out, transform 150ms ease-out",
         width: `calc(var(--chip-size) * ${scale})`,
       }}
     >
       <svg aria-hidden="true" height="100%" viewBox="0 0 40 40" width="100%">
+        {!isNeo && (
         <defs>
           <linearGradient id={`chip-grad-${colorIndex}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={theme.colorPalette[chip.color]} stopOpacity="0.9" />
-            <stop offset="100%" stopColor={theme.colorPalette[chip.color]} stopOpacity="0.7" />
+            <stop offset="0%" stopColor={chipColor} stopOpacity="0.9" />
+            <stop offset="100%" stopColor={chipColor} stopOpacity="0.7" />
           </linearGradient>
           <filter id="chip-shadow">
             <feDropShadow dx="0" dy="2" stdDeviation="2" floodOpacity="0.3" />
           </filter>
         </defs>
-        
+        )}
+
         {/* Layer 1: Drop shadow */}
         <rect x="2" y="2" width="36" height="36" rx="8" fill="rgba(0,0,0,0.3)" />
 
         {/* Layer 2: Colored background */}
-        <rect x="0" y="0" width="40" height="40" rx="8" fill={`url(#chip-grad-${colorIndex})`} filter="url(#chip-shadow)" />
+        <rect x="0" y="0" width="40" height="40" rx="8" fill={isNeo ? chipColor : `url(#chip-grad-${colorIndex})`} filter={isNeo ? undefined : "url(#chip-shadow)"} />
 
-        {/* Layer 3: White shape silhouette */}
+        {/* Layer 3: Shape silhouette */}
         <path
           d={svgPath}
-          fill="rgba(255,255,255,0.85)"
-          stroke="rgba(255,255,255,0.3)"
+          fill={isNeo ? "rgba(0,0,0,0.3)" : "rgba(255,255,255,0.85)"}
+          stroke={isNeo ? "rgba(0,0,0,0.2)" : "rgba(255,255,255,0.3)"}
           strokeWidth="0.5"
         />
 
-        {/* Layer 4: Top highlight for 3D effect */}
+        {/* Layer 4: Top highlight for 3D effect (refined only) */}
+        {!isNeo && (
         <rect x="2" y="2" width="36" height="18" rx="8" fill="rgba(255,255,255,0.15)" />
+        )}
 
         {/* Layer 5: Red vignette overlay for invalid state */}
         {!isValid && (

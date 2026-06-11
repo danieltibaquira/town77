@@ -9,6 +9,8 @@ export function ResultsScreen() {
   const { t } = useTranslation('results')
   const navigate = useNavigate()
   const { theme } = useTheme()
+  const isNeo = theme.style === "neobrutalism";
+  const neoRadius = theme.styleProps.borderRadius;
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   const scores = useGameStore((s) => s.scores)
@@ -90,10 +92,29 @@ export function ResultsScreen() {
       </div>
 
       <div style={{ display: 'flex', gap: 'var(--space-md)' }}>
-        <button type="button" data-testid="btn-play-again" onClick={() => navigate('/')} style={{ background: 'var(--color-text-accent)', border: 'none', borderRadius: 'var(--radius-lg)', color: 'var(--color-surface-bg)', cursor: 'pointer', fontSize: 'var(--text-base)', fontWeight: 700, padding: 'var(--space-md) var(--space-xl)' }}>
+        <button type="button" data-testid="btn-play-again" onClick={() => navigate('/')} style={{
+          background: isNeo ? '#ffe66d' : 'var(--color-text-accent)',
+          border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : 'none',
+          borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-lg)',
+          color: isNeo ? '#000000' : 'var(--color-surface-bg)',
+          cursor: 'pointer',
+          fontSize: 'var(--text-base)',
+          fontWeight: 700,
+          padding: 'var(--space-md) var(--space-xl)',
+          boxShadow: isNeo ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : undefined,
+        }}>
           {t('play_again')}
         </button>
-        <button type="button" data-testid="btn-new-room" onClick={() => { disconnect(); navigate('/') }} style={{ background: 'var(--color-surface-cell)', border: 'none', borderRadius: 'var(--radius-lg)', color: 'var(--color-text-primary)', cursor: 'pointer', fontSize: 'var(--text-base)', padding: 'var(--space-md) var(--space-xl)' }}>
+        <button type="button" data-testid="btn-new-room" onClick={() => { disconnect(); navigate('/') }} style={{
+          background: 'var(--color-surface-cell)',
+          border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : 'none',
+          borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-lg)',
+          color: isNeo ? '#000000' : 'var(--color-text-primary)',
+          cursor: 'pointer',
+          fontSize: 'var(--text-base)',
+          padding: 'var(--space-md) var(--space-xl)',
+          boxShadow: isNeo ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : undefined,
+        }}>
           {t('new_room')}
         </button>
       </div>

@@ -12,18 +12,33 @@ export const ThemeContext = createContext<ThemeContextValue>({
   setTheme: () => {},
 });
 
-const DEFAULT_TEXT = {
+const REFINED_TEXT = {
   primary: "#F0EAD6",
   secondary: "#9B92A8",
   accent: "#C4A35A",
+} as const;
+
+const NEO_TEXT = {
+  primary: "#000000",
+  secondary: "#333333",
+  accent: "#ff6b6b",
 } as const;
 
 export function useTheme(): ThemeContextValue {
   return useContext(ThemeContext);
 }
 
+export function useThemeStyle() {
+  const { theme } = useTheme();
+  return theme.style === "neobrutalism" ? "neo" : "refined";
+}
+
 export function injectTokens(theme: Theme): void {
-  const style = document.documentElement.style;
+  const root = document.documentElement;
+  const style = root.style;
+
+  root.setAttribute("data-theme", theme.id);
+
   style.setProperty("--color-surface-bg", theme.surfaces.background);
   style.setProperty("--color-surface-grid", theme.surfaces.grid);
   style.setProperty("--color-surface-cell", theme.surfaces.cell);
@@ -37,9 +52,22 @@ export function injectTokens(theme: Theme): void {
     style.setProperty(`--chip-${colorId}`, hex);
   }
 
-  style.setProperty("--color-text-primary", DEFAULT_TEXT.primary);
-  style.setProperty("--color-text-secondary", DEFAULT_TEXT.secondary);
-  style.setProperty("--color-text-accent", DEFAULT_TEXT.accent);
+  const isNeo = theme.style === "neobrutalism";
+  const text = isNeo ? NEO_TEXT : REFINED_TEXT;
+  style.setProperty("--color-text-primary", text.primary);
+  style.setProperty("--color-text-secondary", text.secondary);
+  style.setProperty("--color-text-accent", text.accent);
+
+  const sp = theme.styleProps;
+  style.setProperty("--neo-border-width", `${sp.borderWidth}px`);
+  style.setProperty("--neo-border-color", sp.borderColor);
+  style.setProperty("--neo-shadow-offset", `${sp.shadowOffset}px`);
+  style.setProperty("--neo-shadow-color", sp.shadowColor);
+  style.setProperty("--neo-radius", `${sp.borderRadius}px`);
+  style.setProperty("--neo-border", `${sp.borderWidth}px solid ${sp.borderColor}`);
+  style.setProperty("--neo-shadow", `${sp.shadowOffset}px ${sp.shadowOffset}px 0px ${sp.shadowColor}`);
+  style.setProperty("--neo-shadow-hover", `${sp.shadowOffset + 2}px ${sp.shadowOffset + 2}px 0px ${sp.shadowColor}`);
+  style.setProperty("--neo-shadow-active", `${sp.shadowOffset - 2}px ${sp.shadowOffset - 2}px 0px ${sp.shadowColor}`);
 
   const { animationPreset } = theme;
   style.setProperty("--motion-chip-place-stiffness", String(animationPreset.chipPlace.stiffness));
