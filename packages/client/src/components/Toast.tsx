@@ -1,3 +1,6 @@
+import { errorShakeTransition } from '../lib/motion'
+import { useTheme } from '../lib/theme'
+
 interface ToastProps {
   message: string | null
   onDismiss: () => void
@@ -5,6 +8,8 @@ interface ToastProps {
 
 export function Toast({ message, onDismiss }: ToastProps) {
   if (!message) return null
+  const { theme } = useTheme()
+  const shake = errorShakeTransition(theme.animationPreset)
 
   return (
     <div
@@ -12,6 +17,7 @@ export function Toast({ message, onDismiss }: ToastProps) {
       data-testid="toast"
       style={{
         alignItems: 'center',
+        animation: shake.animation,
         background: 'var(--cell-bg-invalid)',
         borderRadius: 'var(--radius-md)',
         bottom: 'var(--space-lg)',

@@ -16,6 +16,7 @@ import type { Theme } from "@town77/shared-types"
 export const playfulPastelTheme: Theme = {
   id: "playful-pastel",
   name: "Playful Pastel",
+  style: "refined",
 
   // Geometric shapes: simplified, no curves
   shapes: {
@@ -55,11 +56,30 @@ export const playfulPastelTheme: Theme = {
 
   // Playful motion: more bounce, faster feedback
   animationPreset: {
-    chipPlace: { type: "spring", stiffness: 300, damping: 15, mass: 0.9 }, // Bouncier
-    chipInvalid: { x: [-8, 8, -6, 6, -4, 4, 0], duration: 0.2 }, // Faster shake
-    chipDraw: { duration: 0.2, ease: "easeOut" }, // Snappier
-    cellPulse: { duration: 0.4, repeat: 2 }, // Faster, more repeats
-    turnIn: { duration: 0.25, ease: "easeOut" }, // Quick transition
-    celebrate: { duration: 1.0, particleCount: 100, spread: 150 }, // More celebration!
+    chipPlace: { type: "spring", stiffness: 300, damping: 15, mass: 0.9 },
+    chipInvalid: { x: [-8, 8, -6, 6, -4, 4, 0], duration: 0.2 },
+    chipDraw: { duration: 0.2, ease: "easeOut" },
+    cellPulse: { duration: 0.4, repeat: 2 },
+    turnIn: { duration: 0.25, ease: "easeOut" },
+    celebrate: { duration: 1.0, particleCount: 100, spread: 150 },
+    chipDrawIn: { duration: 0.28, stagger: 0.05, ease: "easeOut" },
+    placementRipple: { duration: 0.5, maxScale: 3, ease: "easeOut" },
+    turnSweep: { duration: 0.35, ease: "easeOut" },
+    scorePop: { type: "spring", stiffness: 350, damping: 10, mass: 0.7 },
+    bagShake: { x: [-4, 4, -3, 3, -2, 2, 0], duration: 0.35 },
+    hoverLift: { duration: 0.15, scale: 1.08, ease: "easeOut" },
+    handReorder: { duration: 0.25, ease: "easeOut" },
+    badgeGlowPulse: { duration: 1.2, minOpacity: 0.4, maxOpacity: 0.9 },
+    exchangeFlash: { duration: 0.12, opacity: 0.6 },
+    discardFade: { duration: 0.2, endScale: 0.75, ease: "easeOut" },
+    cellEntrance: { duration: 0.25, stagger: 0.025, ease: "easeOut" },
+    errorShake: { x: [-10, 10, -8, 8, -6, 6, -4, 4, -2, 2, 0], duration: 0.3, borderFlash: true },
+  },
+  styleProps: {
+    borderWidth: 0,
+    shadowOffset: 0,
+    shadowColor: "transparent",
+    borderRadius: 8,
+    borderColor: "transparent",
   },
 }

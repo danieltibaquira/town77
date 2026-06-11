@@ -8,6 +8,7 @@ import { injectTokens, ThemeContext } from "./lib/theme";
 import { AppRouter } from "./router";
 import "./styles/reset.css";
 import "./styles/tokens.css";
+import "./styles/animations.css";
 import { getThemeById } from "./themes";
 
 function GameConnectionProvider({ children }: { children: React.ReactNode }) {

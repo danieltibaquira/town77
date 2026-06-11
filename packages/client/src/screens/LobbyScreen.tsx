@@ -15,6 +15,7 @@ export function LobbyScreen() {
   const playerId = useGameStore((s) => s.playerId)
   const roomCode = useGameStore((s) => s.roomCode) ?? routeCode
   const startGame = useGameStore((s) => s.startGame)
+  const startSoloGame = useGameStore((s) => s.startSoloGame)
   const joinRoom = useGameStore((s) => s.joinRoom)
 
   // Navigate to game when phase changes to playing
@@ -43,7 +44,8 @@ export function LobbyScreen() {
   }
 
   const isHost = gameState.players[0]?.id === playerId
-  const canStart = isHost && gameState.players.length >= 2
+  const hasBot = gameState.players.some(p => p.id.startsWith('bot-'))
+  const canStart = isHost && (gameState.players.length >= 2 || hasBot)
 
   async function handleCopyCode() {
     if (roomCode && navigator.clipboard) {
@@ -73,7 +75,7 @@ export function LobbyScreen() {
       </div>
 
       {isHost && (
-        <button type="button" data-testid="btn-start-game" disabled={!canStart} onClick={startGame} style={{ background: canStart ? 'var(--color-text-accent)' : 'var(--color-surface-cell)', border: 'none', borderRadius: 'var(--radius-lg)', color: 'var(--color-surface-bg)', cursor: canStart ? 'pointer' : 'not-allowed', fontSize: 'var(--text-lg)', fontWeight: 700, padding: 'var(--space-md) var(--space-xl)' }}>
+        <button type="button" data-testid="btn-start-game" disabled={!canStart} onClick={hasBot ? startSoloGame : startGame} style={{ background: canStart ? 'var(--color-text-accent)' : 'var(--color-surface-cell)', border: 'none', borderRadius: 'var(--radius-lg)', color: 'var(--color-surface-bg)', cursor: canStart ? 'pointer' : 'not-allowed', fontSize: 'var(--text-lg)', fontWeight: 700, padding: 'var(--space-md) var(--space-xl)' }}>
           {t('start_game')}
         </button>
       )}

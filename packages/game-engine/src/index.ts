@@ -11,3 +11,5 @@ export {
 } from './grid'
 export { canDiscard, canExchange, doDiscard, doExchange } from './turn'
 export { calculateScores, isGameOver } from './scoring'
+export { findBotAction } from './bot'
+export type { BotAction, BotMove, BotDiscard } from './bot'

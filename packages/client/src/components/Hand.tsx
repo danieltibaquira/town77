@@ -24,13 +24,17 @@ export function Hand({ chips, selectedChip, layoutMode = "scrolling", onSelect }
       style={{
         alignItems: "center",
         background: "var(--color-surface-grid)",
-        borderRadius: "var(--radius-md)",
+        backgroundImage: "var(--surface-felt-grad)",
+        backgroundBlendMode: "overlay",
+        borderRadius: "var(--radius-lg)",
+        border: "2px solid rgba(196, 163, 90, 0.12)",
+        boxShadow: "var(--shadow-md), inset 0 2px 8px rgba(0,0,0,0.3)",
         display: "flex",
         flexWrap: isStacked ? "wrap" : "nowrap",
-        gap: layoutMode === "compact" ? "var(--space-xs)" : "var(--space-sm)",
+        gap: layoutMode === "compact" ? "var(--space-xs)" : "var(--space-md)",
         minHeight: "var(--layout-hand-h)",
         overflowX: isStacked ? "visible" : "auto",
-        padding: "var(--space-sm)",
+        padding: "var(--space-md)",
       }}
     >
       {chips.map((chip, index) => (
@@ -45,6 +49,7 @@ export function Hand({ chips, selectedChip, layoutMode = "scrolling", onSelect }
             chip={chip}
             isSelected={sameChip(selectedChip, chip)}
             isValid={true}
+            staggerIndex={index}
             onClick={() => onSelect(chip)}
           />
         </div>

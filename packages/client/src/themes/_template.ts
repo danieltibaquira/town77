@@ -23,6 +23,9 @@ export const templateTheme: Theme = {
   // Display name shown in theme selector
   name: "Template Theme",
 
+  // Theme style: "refined" or "neobrutalism"
+  style: "refined",
+
   // ============= STEP 3: SVG Shapes =============
   // Define 7 house silhouettes, each as an SVG path string.
   // Requirements:
@@ -133,5 +136,19 @@ export const templateTheme: Theme = {
 
     // Celebration particles (row complete, game end)
     celebrate: { duration: 1.2, particleCount: 60, spread: 100 },
+
+    // Wave 4: Extended Animation Preset
+    chipDrawIn: { duration: 0.3, ease: "easeOut", stagger: 0.05 },
+    placementRipple: { duration: 0.4, maxScale: 1.15, ease: "easeOut" },
+    turnSweep: { duration: 0.5, ease: "easeOut" },
+    scorePop: { type: "spring", stiffness: 260, damping: 20, mass: 1 },
+    bagShake: { x: [0, -4, 4, -2, 2, 0], duration: 0.3 },
+    hoverLift: { duration: 0.2, scale: 1.05, ease: "easeOut" },
+    handReorder: { duration: 0.3, ease: "easeOut" },
+    badgeGlowPulse: { duration: 0.8, minOpacity: 0.6, maxOpacity: 1 },
+    exchangeFlash: { duration: 0.3, opacity: 0.8 },
+    discardFade: { duration: 0.4, endScale: 0.8, ease: "easeOut" },
+    cellEntrance: { duration: 0.3, stagger: 0.03, ease: "easeOut" },
+    errorShake: { x: [0, -8, 8, -4, 4, 0], duration: 0.4, borderFlash: true },
   },
 }

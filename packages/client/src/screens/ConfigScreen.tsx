@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
 import type { GameConfig } from '@town77/shared-types'
 import { Stepper } from '../components/Stepper'
@@ -13,9 +13,12 @@ export function ConfigScreen() {
   const { t } = useTranslation('config')
   const { t: tc } = useTranslation('common')
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const createRoom = useGameStore((s) => s.createRoom)
+  const createSoloRoom = useGameStore((s) => s.createSoloRoom)
   const gameState = useGameStore((s) => s.gameState)
   const roomCode = useGameStore((s) => s.roomCode)
+  const simulationSeed = searchParams.get('seed')
 
   useEffect(() => {
     if (gameState && roomCode) {
@@ -44,9 +47,8 @@ export function ConfigScreen() {
     }
   }
 
-  function handleCreate() {
-    if (!canCreate) return
-    const config: GameConfig = {
+  function buildConfig(): GameConfig {
+    return {
       grid: { rows: gridSize, cols: gridSize },
       chips: {
         colors: Array.from({ length: colors }, (_, i) => `color-${i + 1}`),
@@ -57,8 +59,20 @@ export function ConfigScreen() {
       scoring: DEFAULT_GAME_CONFIG.scoring,
       exchange: DEFAULT_GAME_CONFIG.exchange,
     }
+  }
+
+  function handleCreate() {
+    if (!canCreate) return
     localStorage.setItem('playerName', playerName.trim())
-    createRoom(config, selectedThemeId, playerName.trim())
+    const seed = simulationSeed ? Number.parseInt(simulationSeed, 10) : undefined
+    createRoom(buildConfig(), selectedThemeId, playerName.trim(), seed)
+  }
+
+  function handleSoloCreate() {
+    if (!canCreate) return
+    localStorage.setItem('playerName', playerName.trim())
+    const seed = simulationSeed ? Number.parseInt(simulationSeed, 10) : undefined
+    createSoloRoom(buildConfig(), selectedThemeId, playerName.trim(), seed)
   }
 
   const inputStyle = {
@@ -109,7 +123,9 @@ export function ConfigScreen() {
 
       {showWarning && <div data-testid="config-warning" style={{ color: 'var(--color-text-accent)', fontSize: 'var(--text-sm)' }}>{t('warning_chips_lt_cells')}</div>}
 
-      <button type="button" data-testid="btn-create-room" disabled={!canCreate} onClick={handleCreate} style={{ background: canCreate ? 'var(--color-text-accent)' : 'var(--color-surface-cell)', border: 'none', borderRadius: 'var(--radius-lg)', color: 'var(--color-surface-bg)', cursor: canCreate ? 'pointer' : 'not-allowed', fontSize: 'var(--text-lg)', fontWeight: 700, padding: 'var(--space-md) var(--space-xl)' }}>{tc('create_room')}</button>
+      <button type="button" data-testid="btn-create-room" disabled={!canCreate} onClick={handleCreate} style={{ background: canCreate ? 'linear-gradient(180deg, #d4b76a 0%, #c4a35a 100%)' : 'var(--color-surface-cell)', border: 'none', borderRadius: 'var(--radius-lg)', color: 'var(--color-surface-bg)', cursor: canCreate ? 'pointer' : 'not-allowed', fontSize: 'var(--text-lg)', fontWeight: 700, padding: 'var(--space-md) var(--space-xl)', letterSpacing: '0.05em', boxShadow: canCreate ? 'var(--shadow-md), 0 0 12px rgba(196, 163, 90, 0.2)' : 'none' }}>{tc('create_room')}</button>
+
+      <button type="button" data-testid="btn-play-solo" disabled={!canCreate} onClick={handleSoloCreate} style={{ background: canCreate ? 'linear-gradient(135deg, rgba(196, 163, 90, 0.15) 0%, rgba(196, 163, 90, 0.05) 100%)' : 'var(--color-surface-cell)', border: '2px solid var(--color-text-accent)', borderRadius: 'var(--radius-lg)', color: 'var(--color-text-accent)', cursor: canCreate ? 'pointer' : 'not-allowed', fontSize: 'var(--text-lg)', fontWeight: 700, padding: 'var(--space-md) var(--space-xl)', letterSpacing: '0.05em', boxShadow: canCreate ? '0 0 16px rgba(196, 163, 90, 0.15)' : 'none' }}>{tc('play_solo')}</button>
     </main>
   )
 }

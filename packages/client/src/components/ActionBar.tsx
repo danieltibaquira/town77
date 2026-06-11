@@ -26,43 +26,56 @@ export function ActionBar({
   const minHeight = size === "sm" ? 32 : 48;
   const isGhost = variant === "ghost";
 
+  const baseButtonStyle = {
+    borderRadius: "var(--radius-md)",
+    fontWeight: 700,
+    minHeight: 48,
+    padding: "var(--space-sm) var(--space-xl)",
+    fontSize: "var(--text-base)",
+    letterSpacing: "0.05em",
+    textTransform: "uppercase" as const,
+    transition: "all 0.2s ease-out",
+    boxShadow: "var(--shadow-sm)",
+  };
+
   const exchangeStyle = {
-    background: isGhost
-      ? "transparent"
-      : canExchange
-        ? "var(--color-text-accent)"
-        : "var(--color-surface-cell)",
-    border: isGhost ? "1px solid var(--color-text-accent)" : "none",
-    borderRadius: "var(--button-radius)",
+    ...baseButtonStyle,
+    background: canExchange
+      ? "linear-gradient(180deg, #d4b76a 0%, #c4a35a 100%)"
+      : "var(--color-surface-cell)",
+    border: "none",
     color: canExchange ? "var(--color-surface-bg)" : "var(--color-text-secondary)",
     cursor: canExchange ? "pointer" : "not-allowed",
-    fontWeight: 700,
-    minHeight,
-    padding: "var(--space-xs) var(--space-md)",
-  } as const;
+    boxShadow: canExchange ? "var(--shadow-md), 0 0 8px rgba(196, 163, 90, 0.3)" : "var(--shadow-sm)",
+  };
 
   const discardStyle = {
-    background: isGhost
-      ? "transparent"
-      : canDiscard
-        ? "var(--color-surface-cell-hover)"
-        : "var(--color-surface-cell)",
-    border: isGhost ? "1px solid var(--color-text-secondary)" : "none",
-    borderRadius: "var(--button-radius)",
+    ...baseButtonStyle,
+    background: canDiscard
+      ? "linear-gradient(180deg, #3a3447 0%, #2e2847 100%)"
+      : "var(--color-surface-cell)",
+    border: "1px solid rgba(255,255,255,0.15)",
     color: canDiscard ? "var(--color-text-primary)" : "var(--color-text-secondary)",
     cursor: canDiscard ? "pointer" : "not-allowed",
-    fontWeight: 700,
-    minHeight,
-    padding: "var(--space-xs) var(--space-md)",
-  } as const;
+  };
 
   return (
     <div
       data-testid="action-bar"
       style={{
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        background: "rgba(15, 13, 23, 0.65)",
+        borderTop: "1px solid rgba(196, 163, 90, 0.2)",
+        borderRadius: "var(--radius-lg) var(--radius-lg) 0 0",
+        boxShadow: "0 -4px 24px rgba(0,0,0,0.4)",
         display: "flex",
-        gap: "var(--space-sm)",
-        padding: "var(--space-sm)",
+        gap: "var(--space-md)",
+        justifyContent: "center",
+        padding: "var(--space-md) var(--space-lg)",
+        position: "sticky",
+        bottom: 0,
+        zIndex: 10,
       }}
     >
       <button

@@ -34,4 +34,22 @@ describe("Hand", () => {
   it("renders empty hand without crashing", () => {
     expect(() => renderWithTheme(<Hand chips={[]} selectedChip={null} onSelect={() => {}} />)).not.toThrow();
   });
+
+  describe("Surface Depth", () => {
+    it("applies felt texture background", () => {
+      const { container } = renderWithTheme(<Hand chips={chips} selectedChip={null} onSelect={() => {}} />);
+      const hand = container.querySelector('[data-testid="hand"]') as HTMLElement;
+      expect(hand).not.toBeNull();
+      const style = hand.getAttribute("style") || "";
+      expect(style).toContain("var(--surface-felt-grad)");
+    });
+
+    it("applies inner shadow for depth", () => {
+      const { container } = renderWithTheme(<Hand chips={chips} selectedChip={null} onSelect={() => {}} />);
+      const hand = container.querySelector('[data-testid="hand"]') as HTMLElement;
+      expect(hand).not.toBeNull();
+      const style = hand.getAttribute("style") || "";
+      expect(style).toContain("var(--shadow-inner-xs)");
+    });
+  });
 });

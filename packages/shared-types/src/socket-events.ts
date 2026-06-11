@@ -59,8 +59,10 @@ export type ServerToClientEvents = {
 
 export type ClientToServerEvents = {
   create_room: (payload: CreateRoomPayload) => void
+  create_solo_room: (payload: CreateRoomPayload) => void
   join_room: (payload: JoinRoomPayload) => void
   start_game: () => void
+  start_solo_game: () => void
   place_chip: (payload: PlaceChipPayload) => void
   exchange_chips: (payload: ExchangeChipsPayload) => void
   discard_chip: (payload: DiscardChipPayload) => void

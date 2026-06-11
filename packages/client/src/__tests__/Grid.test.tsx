@@ -48,4 +48,30 @@ describe("Grid", () => {
     fireEvent.click(screen.getByTestId("cell-2-3"));
     expect(onCellClick).toHaveBeenCalledWith(2, 3);
   });
+
+  describe("Surface Depth", () => {
+    it("applies wood grain texture background", () => {
+      const { container } = renderWithTheme(<Grid grid={emptyGrid} validCells={[]} onCellClick={() => {}} />);
+      const grid = container.querySelector('[data-testid="grid"]') as HTMLElement;
+      expect(grid).not.toBeNull();
+      const style = grid.getAttribute("style") || "";
+      expect(style).toContain("var(--texture-wood)");
+    });
+
+    it("applies gradient overlay for ambient lighting", () => {
+      const { container } = renderWithTheme(<Grid grid={emptyGrid} validCells={[]} onCellClick={() => {}} />);
+      const grid = container.querySelector('[data-testid="grid"]') as HTMLElement;
+      expect(grid).not.toBeNull();
+      const style = grid.getAttribute("style") || "";
+      expect(style).toContain("var(--surface-grid-grad)");
+    });
+
+    it("applies shadow-md elevation", () => {
+      const { container } = renderWithTheme(<Grid grid={emptyGrid} validCells={[]} onCellClick={() => {}} />);
+      const grid = container.querySelector('[data-testid="grid"]') as HTMLElement;
+      expect(grid).not.toBeNull();
+      const style = grid.getAttribute("style") || "";
+      expect(style).toContain("var(--shadow-md)");
+    });
+  });
 });

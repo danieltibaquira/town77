@@ -1,5 +1,8 @@
+import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import type { Score } from '@town77/shared-types'
+import { scorePopTransition } from '../lib/motion'
+import { useTheme } from '../lib/theme'
 
 interface ScoreTableProps {
   scores: Score[]
@@ -7,7 +10,9 @@ interface ScoreTableProps {
 
 export function ScoreTable({ scores }: ScoreTableProps) {
   const { t } = useTranslation('results')
+  const { theme } = useTheme()
   const maxCombined = Math.max(...scores.map((s) => s.combined))
+  const scorePop = scorePopTransition(theme.animationPreset)
 
   const headerStyle = {
     color: 'var(--color-text-secondary)',
@@ -20,6 +25,7 @@ export function ScoreTable({ scores }: ScoreTableProps) {
   const cellStyle = {
     padding: 'var(--space-xs) var(--space-sm)',
     fontSize: 'var(--text-base)',
+    fontVariantNumeric: 'tabular-nums' as const,
   }
 
   return (
@@ -40,7 +46,7 @@ export function ScoreTable({ scores }: ScoreTableProps) {
         </tr>
       </thead>
       <tbody>
-        {scores.map((score) => {
+        {scores.map((score, index) => {
           const isWinner = score.combined === maxCombined
           return (
             <tr
@@ -56,13 +62,31 @@ export function ScoreTable({ scores }: ScoreTableProps) {
                 {isWinner ? ' 👑' : ''}
               </td>
               <td data-testid={`score-placed-${score.playerId}`} style={cellStyle}>
-                {score.placed}
+                <motion.span
+                  initial={{ scale: 0.5 }}
+                  animate={{ scale: 1 }}
+                  transition={{ ...scorePop, delay: index * 0.05 }}
+                >
+                  {score.placed}
+                </motion.span>
               </td>
               <td data-testid={`score-remaining-${score.playerId}`} style={cellStyle}>
-                {score.remaining}
+                <motion.span
+                  initial={{ scale: 0.5 }}
+                  animate={{ scale: 1 }}
+                  transition={{ ...scorePop, delay: index * 0.05 }}
+                >
+                  {score.remaining}
+                </motion.span>
               </td>
               <td data-testid={`score-combined-${score.playerId}`} style={{ ...cellStyle, fontWeight: 700 }}>
-                {score.combined}
+                <motion.span
+                  initial={{ scale: 0.5 }}
+                  animate={{ scale: 1 }}
+                  transition={{ ...scorePop, delay: index * 0.05 }}
+                >
+                  {score.combined}
+                </motion.span>
               </td>
             </tr>
           )

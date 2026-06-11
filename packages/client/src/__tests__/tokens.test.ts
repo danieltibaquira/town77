@@ -48,9 +48,26 @@ describe('Design System Tokens', () => {
     })
 
     it('defines all spacing primitives', () => {
-      const spaces = ['--space-xs', '--space-sm', '--space-md', '--space-lg', '--space-xl', '--space-2xl']
+      const spaces = ['--space-2xs', '--space-xs', '--space-sm', '--space-md', '--space-lg', '--space-xl', '--space-2xl', '--space-3xl']
       spaces.forEach((token) => {
         expect(tokensContent).toContain(token)
+      })
+    })
+
+    it('spacing scale has smooth progression (2-4-8-16-24-32-48-64)', () => {
+      const expectedValues: Record<string, string> = {
+        '--space-2xs': '2px',
+        '--space-xs': '4px',
+        '--space-sm': '8px',
+        '--space-md': '16px',
+        '--space-lg': '24px',
+        '--space-xl': '32px',
+        '--space-2xl': '48px',
+        '--space-3xl': '64px',
+      }
+      Object.entries(expectedValues).forEach(([token, value]) => {
+        const match = tokensContent.match(new RegExp(`${token.replace(/--/, '--')}:\\s*(${value});`))
+        expect(match).not.toBeNull()
       })
     })
 
@@ -64,6 +81,13 @@ describe('Design System Tokens', () => {
       radii.forEach((token) => {
         expect(tokensContent).toContain(token)
       })
+    })
+
+    it('defines all typography primitives with clamp() for fluid sizing', () => {
+      expect(tokensContent).toMatch(/--text-sm:\s*clamp\(\s*11px\s*,\s*2vw\s*,\s*13px\s*\)/)
+      expect(tokensContent).toMatch(/--text-base:\s*clamp\(\s*14px\s*,\s*3vw\s*,\s*16px\s*\)/)
+      expect(tokensContent).toMatch(/--text-lg:\s*clamp\(\s*18px\s*,\s*4vw\s*,\s*24px\s*\)/)
+      expect(tokensContent).toMatch(/--text-display:\s*clamp\(\s*28px\s*,\s*6vw\s*,\s*56px\s*\)/)
     })
   })
 
@@ -105,6 +129,80 @@ describe('Design System Tokens', () => {
     it('defines component-level cell tokens', () => {
       expect(tokensContent).toContain('--cell-bg-empty')
       expect(tokensContent).toContain('--cell-bg-valid')
+    })
+  })
+
+  describe('Elevation & Shadow Tokens', () => {
+    it('defines all elevation shadow levels (xs through xl)', () => {
+      const shadows = [
+        '--shadow-xs',
+        '--shadow-sm',
+        '--shadow-md',
+        '--shadow-lg',
+        '--shadow-xl',
+      ]
+      shadows.forEach((token) => {
+        expect(tokensContent).toContain(token)
+      })
+    })
+
+    it('defines inner shadow tokens for inset surfaces', () => {
+      const innerShadows = [
+        '--shadow-inner-xs',
+        '--shadow-inner-sm',
+      ]
+      innerShadows.forEach((token) => {
+        expect(tokensContent).toContain(token)
+      })
+    })
+
+    it('defines glow shadow tokens for active states', () => {
+      const glowShadows = [
+        '--shadow-glow-accent',
+        '--shadow-glow-valid',
+      ]
+      glowShadows.forEach((token) => {
+        expect(tokensContent).toContain(token)
+      })
+    })
+
+    it('shadow tokens use multi-layer syntax (comma-separated)', () => {
+      const multiLayerShadows = ['--shadow-sm', '--shadow-md', '--shadow-lg', '--shadow-xl']
+      multiLayerShadows.forEach((token) => {
+        const match = tokensContent.match(new RegExp(`${token.replace(/--/, '--')}:\\s*([^;]+);`))
+        expect(match).not.toBeNull()
+        if (match) {
+          expect(match[1].includes(',')).toBe(true)
+        }
+      })
+    })
+
+    it('shadow tokens use rgba for dark theme compatibility', () => {
+      const shadowTokens = ['--shadow-xs', '--shadow-sm', '--shadow-md', '--shadow-lg', '--shadow-xl']
+      shadowTokens.forEach((token) => {
+        const match = tokensContent.match(new RegExp(`${token.replace(/--/, '--')}:\\s*([^;]+);`))
+        expect(match).not.toBeNull()
+        if (match) {
+          expect(match[1]).toMatch(/rgba\(\s*0\s*,\s*0\s*,\s*0\s*,/)
+        }
+      })
+    })
+  })
+
+  describe('Responsive Breakpoints', () => {
+    it('defines mobile breakpoint for layout-cell (max-width: 480px)', () => {
+      expect(tokensContent).toContain('@media (max-width: 480px)')
+      expect(tokensContent).toMatch(/@media\s*\(max-width:\s*480px\)\s*\{[\s\S]*--layout-cell:\s*clamp\(\s*36px/)
+    })
+
+    it('defines tablet breakpoint for layout-cell (481px-768px)', () => {
+      expect(tokensContent).toContain('@media (min-width: 481px) and (max-width: 768px)')
+      expect(tokensContent).toMatch(/@media\s*\(min-width:\s*481px\)\s*and\s*\(max-width:\s*768px\)\s*\{[\s\S]*--layout-cell:\s*clamp\(\s*40px/)
+    })
+
+    it('defines desktop breakpoint for layout-cell (min-width: 769px)', () => {
+      expect(tokensContent).toContain('@media (min-width: 769px)')
+      expect(tokensContent).toMatch(/@media\s*\(min-width:\s*769px\)\s*\{[\s\S]*--layout-cell:\s*clamp\(\s*48px/)
     })
   })
 

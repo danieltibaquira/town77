@@ -8,6 +8,7 @@ import {
   isGameOver,
 } from '@town77/game-engine'
 import { getRoom, updateRoomState } from '../db/rooms'
+import { runBotTurn } from './solo-game'
 import { logger } from '../logger'
 import type { Io, Sock, Db } from '../app'
 
@@ -89,5 +90,11 @@ export function placeChipHandler(io: Io, socket: Sock, db: Db) {
     updateRoomState(db, roomCode, updatedState)
     logger.info({ roomCode, playerId, row, col }, 'chip.placed')
     io.to(roomCode).emit('state_update', { state: updatedState })
+
+    // Trigger bot turn if next player is a bot
+    const nextPlayer = updatedState.players[nextTurnIndex]
+    if (nextPlayer && nextPlayer.id.startsWith('bot-')) {
+      setTimeout(() => runBotTurn(io, db, roomCode, updatedState), 1000)
+    }
   }
 }

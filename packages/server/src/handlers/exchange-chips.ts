@@ -1,6 +1,7 @@
 import type { ExchangeChipsPayload, GameState } from '@town77/shared-types'
 import { canExchange, doExchange, SeededRNG } from '@town77/game-engine'
 import { getRoom, updateRoomState } from '../db/rooms'
+import { runBotTurn } from './solo-game'
 import { logger } from '../logger'
 import type { Io, Sock, Db } from '../app'
 
@@ -52,5 +53,11 @@ export function exchangeChipsHandler(io: Io, socket: Sock, db: Db) {
     updateRoomState(db, roomCode, updatedState)
     logger.info({ roomCode, playerId, count: payload.chips.length }, 'chips.exchanged')
     io.to(roomCode).emit('state_update', { state: updatedState })
+
+    // Trigger bot turn if next player is a bot
+    const nextPlayer = updatedState.players[nextTurnIndex]
+    if (nextPlayer && nextPlayer.id.startsWith('bot-')) {
+      setTimeout(() => runBotTurn(io, db, roomCode, updatedState), 1000)
+    }
   }
 }

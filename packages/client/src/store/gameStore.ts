@@ -1,4 +1,4 @@
-import type { Chip, ErrorPayload, GameConfig, GameOverPayload, GameState, JoinRoomPayload } from "@town77/shared-types";
+import type { Chip, CreateRoomPayload, ErrorPayload, GameConfig, GameOverPayload, GameState, JoinRoomPayload } from "@town77/shared-types";
 import { create } from "zustand";
 import { socket } from "../lib/socket";
 
@@ -29,8 +29,10 @@ interface GameStore {
   disconnect: () => void;
 
   createRoom: (config: GameConfig, themeId: string, playerName: string, seed?: number) => void;
+  createSoloRoom: (config: GameConfig, themeId: string, playerName: string, seed?: number) => void;
   joinRoom: (code: string, playerName: string, playerId?: string, sessionToken?: string) => void;
   startGame: () => void;
+  startSoloGame: () => void;
   placeChip: (chip: Chip, row: number, col: number) => void;
   exchangeChips: (chips: Chip[]) => void;
   discardChip: (chip: Chip) => void;
@@ -102,6 +104,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     socket.emit("create_room", payload);
   },
 
+  createSoloRoom: (config, themeId, playerName, seed) => {
+    const payload: CreateRoomPayload = { config, themeId, playerName };
+    if (seed !== undefined) payload.seed = seed;
+    socket.emit("create_solo_room", payload);
+  },
+
   joinRoom: (code, playerName, playerId?, sessionToken?) => {
     const payload: JoinRoomPayload = { code, playerName };
     if (playerId) payload.playerId = playerId;
@@ -111,6 +119,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   startGame: () => {
     socket.emit("start_game");
+  },
+
+  startSoloGame: () => {
+    socket.emit("start_solo_game");
   },
 
   placeChip: (chip, row, col) => {

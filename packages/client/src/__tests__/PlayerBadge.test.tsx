@@ -26,4 +26,20 @@ describe("PlayerBadge", () => {
     expect(screen.getByTestId("player-badge-p1")).toHaveAttribute("data-variant", "compact");
     expect(screen.queryByLabelText("placed chips")).toBeNull();
   });
+
+  describe("Surface Depth", () => {
+    it("applies accent glow shadow when active turn", () => {
+      renderWithTheme(<PlayerBadge player={player} isCurrentTurn isMyPlayer />);
+      const badge = screen.getByTestId("player-badge-p1");
+      const style = badge.getAttribute("style") || "";
+      expect(style).toContain("var(--shadow-glow-accent)");
+    });
+
+    it("does not apply glow shadow when inactive", () => {
+      renderWithTheme(<PlayerBadge player={player} isCurrentTurn={false} isMyPlayer />);
+      const badge = screen.getByTestId("player-badge-p1");
+      const style = badge.getAttribute("style") || "";
+      expect(style).not.toContain("var(--shadow-glow-accent)");
+    });
+  });
 });

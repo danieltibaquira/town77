@@ -1,4 +1,6 @@
 import type { PlayerState } from "@town77/shared-types";
+import { badgeGlowPulseTransition } from "../lib/motion";
+import { useTheme } from "../lib/theme";
 
 type PlayerBadgeSize = "sm" | "md";
 type PlayerBadgeVariant = "default" | "compact";
@@ -20,6 +22,8 @@ export function PlayerBadge({
 }: PlayerBadgeProps) {
   const isCompact = variant === "compact";
   const minHeight = size === "sm" ? 24 : isCompact ? 28 : 32;
+  const { theme } = useTheme();
+  const glowPulse = isCurrentTurn ? badgeGlowPulseTransition(theme.animationPreset) : {};
 
   return (
     <div
@@ -29,8 +33,10 @@ export function PlayerBadge({
       data-variant={variant}
       style={{
         alignItems: "center",
-        background: isCurrentTurn ? "var(--color-text-accent)" : "var(--color-surface-cell)",
+        background: isCurrentTurn ? "linear-gradient(135deg, #d4b76a 0%, #c4a35a 100%)" : "var(--color-surface-cell)",
         borderRadius: "var(--radius-pill)",
+        border: isCurrentTurn ? "2px solid rgba(196, 163, 90, 0.5)" : "2px solid rgba(255,255,255,0.08)",
+        boxShadow: isCurrentTurn ? "var(--shadow-glow-accent), 0 0 12px rgba(196, 163, 90, 0.2)" : "var(--shadow-xs)",
         color: isCurrentTurn ? "var(--color-surface-bg)" : "var(--color-text-primary)",
         display: "flex",
         fontSize: size === "sm" ? "var(--text-sm)" : "var(--text-base)",
@@ -38,6 +44,7 @@ export function PlayerBadge({
         gap: isCompact ? "2px" : "var(--space-xs)",
         minHeight,
         padding: isCompact ? "2px var(--space-xs)" : "var(--space-xs) var(--space-sm)",
+        ...glowPulse,
       }}
     >
       <span

@@ -14,39 +14,92 @@
   --radius-lg: 16px;
   --radius-pill: 9999px;
 
+  /* Elevation & Shadow System */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.35), 0 4px 8px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.4), 0 8px 16px rgba(0, 0, 0, 0.25);
+
+  /* Inner Shadows for Inset Surfaces */
+  --shadow-inner-xs: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-inner-sm: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+
+  /* Glow Shadows for Active States */
+  --shadow-glow-accent: 0 0 8px var(--color-text-accent), 0 0 24px rgba(245, 158, 11, 0.2);
+  --shadow-glow-valid: 0 0 6px var(--color-surface-cell-valid), 0 0 16px rgba(5, 150, 105, 0.15);
+
+  /* T1: Accent Glow Palette */
+  --accent-glow-soft: rgba(245, 158, 11, 0.15);
+  --accent-glow-medium: rgba(245, 158, 11, 0.35);
+  --accent-glow-base: rgba(245, 158, 11, 0.55);
+  --accent-glow-bright: rgba(245, 158, 11, 0.8);
+
+  /* T5: Typography Tokens */
+  --font-weight-secondary: 300;
+  --font-weight-primary: 500;
+  --font-weight-display: 700;
+  --letter-spacing-display: 0.02em;
+  --font-variant-numeric: tabular-nums;
+
+  /* T1: Container Queries */
+  --container-narrow: 400px;
+  --container-wide: 800px;
+  --container-breakpoint: 600px;
+
+  /* T4: Font Loading */
+  --font-display: swap;
+  --font-family-fallback: 'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  /* T5: Layout Stability */
+  --layout-contain: layout style paint;
+  --content-visibility: auto;
+
+  /* T2: Motion Safety */
+  --motion-safe-duration: var(--duration-normal);
+
+  /* T4: Focus Accessibility */
+  --focus-ring: 2px solid var(--color-text-accent);
+  --focus-ring-offset: 2px;
+
+  /* T5: Color Contrast */
+  --contrast-ratio-min: 4.5;
+
+  --space-2xs: 2px;
   --space-xs: 4px;
   --space-sm: 8px;
   --space-md: 16px;
   --space-lg: 24px;
-  --space-xl: 40px;
-  --space-2xl: 64px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
 
-  --text-sm: 13px;
-  --text-base: 16px;
-  --text-lg: 22px;
-  --text-display: 48px;
+  --text-sm: clamp(11px, 2vw, 13px);
+  --text-base: clamp(14px, 3vw, 16px);
+  --text-lg: clamp(18px, 4vw, 24px);
+  --text-display: clamp(28px, 6vw, 56px);
 
   --layout-cell: clamp(40px, 8vw, 72px);
   --layout-gap: clamp(2px, 0.5vw, 6px);
   --layout-hand-h: clamp(96px, 15vh, 140px);
 
-  --color-surface-bg: #0f0d17;
-  --color-surface-grid: #1c1828;
-  --color-surface-cell: #241f35;
-  --color-surface-cell-hover: #2e2847;
-  --color-surface-cell-valid: #2c4a2e;
-  --color-surface-cell-invalid: #4a2020;
-  --color-text-primary: #f0ead6;
-  --color-text-secondary: #9b92a8;
-  --color-text-accent: #c4a35a;
+  --color-surface-bg: #020617;
+  --color-surface-grid: #0f172a;
+  --color-surface-cell: #1e293b;
+  --color-surface-cell-hover: #334155;
+  --color-surface-cell-valid: #065f46;
+  --color-surface-cell-invalid: #7f1d1d;
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #64748b;
+  --color-text-accent: #f59e0b;
 
-  --chip-color-1: #d4623a;
-  --chip-color-2: #4a8fd4;
-  --chip-color-3: #5a9b6a;
-  --chip-color-4: #c4a35a;
-  --chip-color-5: #b85a78;
-  --chip-color-6: #5a6aad;
-  --chip-color-7: #e8d5b0;
+  --chip-color-1: #ef4444;
+  --chip-color-2: #3b82f6;
+  --chip-color-3: #10b981;
+  --chip-color-4: #f59e0b;
+  --chip-color-5: #ec4899;
+  --chip-color-6: #6366f1;
+  --chip-color-7: #f97316;
 
   --chip-size: var(--layout-cell);
   --chip-stroke: 2px;
@@ -55,7 +108,52 @@
   --cell-bg-valid: var(--color-surface-cell-valid);
   --cell-bg-invalid: var(--color-surface-cell-invalid);
   --cell-bg-hover: var(--color-surface-cell-hover);
+  --cell-bg-valid-radial: radial-gradient(circle at center, rgba(90, 155, 106, 0.25) 0%, var(--color-surface-cell-valid) 70%);
   --cell-radius: var(--radius-sm);
 
+  /* T2: Board Surface Gradient */
+  --surface-board-grad: radial-gradient(circle at 50% 50%, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
+
   --button-radius: var(--radius-md);
+
+  /* Surface Textures */
+  --texture-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  --surface-grid-grad: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, transparent 50%, rgba(0,0,0,0.15) 100%);
+  --surface-felt-grad: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.02) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(255,255,255,0.01) 0%, transparent 50%);
+}
+
+/* Responsive Breakpoints for Grid Cell Sizing */
+@media (max-width: 480px) {
+  :root {
+    --layout-cell: clamp(36px, 14vw, 48px);
+    --layout-gap: clamp(2px, 0.5vw, 4px);
+    --layout-hand-h: clamp(80px, 14vh, 120px);
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  :root {
+    --layout-cell: clamp(40px, 8vw, 56px);
+    --layout-gap: clamp(2px, 0.5vw, 5px);
+    --layout-hand-h: clamp(88px, 14vh, 130px);
+  }
+}
+
+@media (min-width: 769px) {
+  :root {
+    --layout-cell: clamp(48px, 6vw, 72px);
+    --layout-gap: clamp(2px, 0.5vw, 6px);
+    --layout-hand-h: clamp(96px, 15vh, 140px);
+  }
+}
+
+/* T2: Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-safe-duration: 0ms;
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+    --duration-epic: 0ms;
+  }
 }

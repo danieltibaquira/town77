@@ -5,6 +5,7 @@
     "jsx": "react-jsx",
     "outDir": "./dist",
     "resolveJsonModule": true,
+    "exactOptionalPropertyTypes": false,
     "paths": {
       "@town77/shared-types": ["../shared-types/src/index.ts"],
       "@town77/game-engine": ["../game-engine/src/index.ts"]
