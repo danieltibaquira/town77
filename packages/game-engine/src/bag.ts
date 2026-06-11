@@ -37,10 +37,7 @@ export function dealHands(
   return { hands, remainingBag: remaining }
 }
 
-export function drawChips(
-  bag: Chip[],
-  count: number,
-): { drawn: Chip[]; remainingBag: Chip[] } {
+export function drawChips(bag: Chip[], count: number): { drawn: Chip[]; remainingBag: Chip[] } {
   const remaining = [...bag]
   const drawn = remaining.splice(0, count)
   return { drawn, remainingBag: remaining }

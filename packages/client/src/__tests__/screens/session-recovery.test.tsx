@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { renderWithTheme } from '../helpers'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useGameStore } from '../../store/gameStore'
+import { renderWithTheme } from '../helpers'
 
 vi.mock('../../store/gameStore')
 vi.mock('../../hooks/useGameConnection', () => ({

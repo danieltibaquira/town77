@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeAll } from 'vitest'
 import fs from 'fs'
 import path from 'path'
+import { beforeAll, describe, expect, it } from 'vitest'
 
 describe('ChipDefs Component', () => {
   const projectRoot = path.join(__dirname, '../../../../')

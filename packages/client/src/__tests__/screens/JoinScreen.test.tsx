@@ -1,8 +1,8 @@
-import { describe, it, expect, vi } from 'vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { renderWithTheme } from '../helpers'
+import { describe, expect, it, vi } from 'vitest'
 import { JoinScreen } from '../../screens/JoinScreen'
+import { renderWithTheme } from '../helpers'
 
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom')

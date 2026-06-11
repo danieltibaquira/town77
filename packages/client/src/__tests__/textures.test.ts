@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeAll } from 'vitest'
 import fs from 'fs'
 import path from 'path'
+import { beforeAll, describe, expect, it } from 'vitest'
 
 describe('Surface Textures', () => {
   const projectRoot = path.join(__dirname, '../../../../')
@@ -36,7 +36,7 @@ describe('Surface Textures', () => {
       const match = texturesContent.match(/\.texture-wood[\s\S]*?opacity:\s*([\d.]+);/)
       expect(match).not.toBeNull()
       if (match) {
-        const opacity = parseFloat(match[1])
+        const opacity = Number.parseFloat(match[1])
         expect(opacity).toBeLessThanOrEqual(0.08)
         expect(opacity).toBeGreaterThan(0)
       }

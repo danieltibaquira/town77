@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { renderWithTheme } from '../helpers'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useGameStore } from '../../store/gameStore'
+import { renderWithTheme } from '../helpers'
 
 vi.mock('../../store/gameStore')
 vi.mock('../../hooks/useGameConnection', () => ({
@@ -24,7 +24,13 @@ const mockGameState = {
   ],
   turnIndex: 0,
   phase: 'lobby' as const,
-  config: { grid: { rows: 7, cols: 7 }, chips: { colors: ['color-1'], shapes: ['cottage'], copies: 1 }, handSize: 4, scoring: { placedWeight: 1, remainingWeight: 1 }, exchange: { min: 3, max: 4 } },
+  config: {
+    grid: { rows: 7, cols: 7 },
+    chips: { colors: ['color-1'], shapes: ['cottage'], copies: 1 },
+    handSize: 4,
+    scoring: { placedWeight: 1, remainingWeight: 1 },
+    exchange: { min: 3, max: 4 },
+  },
   themeId: 'town77',
   seed: 42,
 }

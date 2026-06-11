@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest'
-import type { PlayerState, Grid } from '@town77/shared-types'
+import type { Grid, PlayerState } from '@town77/shared-types'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
+import { describe, expect, it } from 'vitest'
 import { applyPlacement, createGrid } from '../grid'
 import { calculateScores, isGameOver } from '../scoring'
 
@@ -8,9 +8,7 @@ const RED_COTTAGE = { color: 'color-1', shape: 'cottage' }
 const BLUE_TOWER = { color: 'color-2', shape: 'tower' }
 const GREEN_BARN = { color: 'color-3', shape: 'barn' }
 
-function makePlayer(
-  overrides: Partial<PlayerState> = {},
-): PlayerState {
+function makePlayer(overrides: Partial<PlayerState> = {}): PlayerState {
   return {
     id: 'p1',
     name: 'Alice',
@@ -31,7 +29,7 @@ describe('calculateScores', () => {
     const scores = calculateScores(players, DEFAULT_GAME_CONFIG.scoring)
     // combined = placed × 1 - remaining × 1
     expect(scores[0]!.combined).toBe(10 - 2) // 8
-    expect(scores[1]!.combined).toBe(8 - 1)  // 7
+    expect(scores[1]!.combined).toBe(8 - 1) // 7
   })
 
   it('scores are always deterministic given same input', () => {
@@ -63,8 +61,8 @@ describe('isGameOver', () => {
   it('returns true when bag empty and no valid placements', () => {
     // Fill entire grid (force no valid placements)
     let grid: Grid = createGrid(7, 7)
-    const colors = ['color-1','color-2','color-3','color-4','color-5','color-6','color-7']
-    const shapes = ['cottage','rowhouse','tower','victorian','barn','bungalow','skyscraper']
+    const colors = ['color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6', 'color-7']
+    const shapes = ['cottage', 'rowhouse', 'tower', 'victorian', 'barn', 'bungalow', 'skyscraper']
     for (let r = 0; r < 7; r++) {
       for (let c = 0; c < 7; c++) {
         grid = applyPlacement(grid, r, c, { color: colors[r]!, shape: shapes[c]! })

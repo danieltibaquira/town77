@@ -20,7 +20,7 @@ export type BotAction = BotMove | BotDiscard
  * Simple strategy for testing: place the first valid chip found, otherwise discard the first chip.
  */
 export function findBotAction(state: GameState, botPlayerId: string): BotAction | null {
-  const botPlayer = state.players.find(p => p.id === botPlayerId)
+  const botPlayer = state.players.find((p) => p.id === botPlayerId)
   if (!botPlayer) return null
 
   const isFirst = isFirstChipOnGrid(state.grid)

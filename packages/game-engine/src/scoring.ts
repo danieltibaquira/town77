@@ -2,7 +2,7 @@ import type { Chip, Grid, PlayerState, Score, ScoringConfig } from '@town77/shar
 import { getValidCells, isFirstChipOnGrid } from './grid'
 
 export function calculateScores(players: PlayerState[], config: ScoringConfig): Score[] {
-  return players.map(p => ({
+  return players.map((p) => ({
     playerId: p.id,
     name: p.name,
     placed: p.placed,

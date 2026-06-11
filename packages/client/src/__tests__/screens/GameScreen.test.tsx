@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { screen } from '@testing-library/react'
-import { renderWithTheme } from '../helpers'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useGameStore } from '../../store/gameStore'
+import { renderWithTheme } from '../helpers'
 
 vi.mock('../../store/gameStore')
 vi.mock('../../hooks/useGameConnection', () => ({
@@ -17,14 +17,46 @@ import { GameScreen } from '../../screens/GameScreen'
 const mockChip = { color: 'color-1', shape: 'cottage' }
 const mockGameState = {
   grid: Array.from({ length: 7 }, () => Array(7).fill(null)),
-  bag: [{ color: 'color-2', shape: 'tower' }, { color: 'color-3', shape: 'barn' }],
+  bag: [
+    { color: 'color-2', shape: 'tower' },
+    { color: 'color-3', shape: 'barn' },
+  ],
   players: [
-    { id: 'p1', name: 'Alice', hand: [mockChip, { color: 'color-2', shape: 'tower' }, { color: 'color-3', shape: 'barn' }, { color: 'color-4', shape: 'victorian' }], placed: 0, hasDiscarded: false, connected: true },
-    { id: 'p2', name: 'Bob', hand: [{ color: 'color-5', shape: 'rowhouse' }], placed: 0, hasDiscarded: false, connected: true },
+    {
+      id: 'p1',
+      name: 'Alice',
+      hand: [
+        mockChip,
+        { color: 'color-2', shape: 'tower' },
+        { color: 'color-3', shape: 'barn' },
+        { color: 'color-4', shape: 'victorian' },
+      ],
+      placed: 0,
+      hasDiscarded: false,
+      connected: true,
+    },
+    {
+      id: 'p2',
+      name: 'Bob',
+      hand: [{ color: 'color-5', shape: 'rowhouse' }],
+      placed: 0,
+      hasDiscarded: false,
+      connected: true,
+    },
   ],
   turnIndex: 0,
   phase: 'playing' as const,
-  config: { grid: { rows: 7, cols: 7 }, chips: { colors: ['color-1','color-2','color-3','color-4','color-5'], shapes: ['cottage','tower','barn','victorian','rowhouse'], copies: 1 }, handSize: 4, scoring: { placedWeight: 1, remainingWeight: 1 }, exchange: { min: 3, max: 4 } },
+  config: {
+    grid: { rows: 7, cols: 7 },
+    chips: {
+      colors: ['color-1', 'color-2', 'color-3', 'color-4', 'color-5'],
+      shapes: ['cottage', 'tower', 'barn', 'victorian', 'rowhouse'],
+      copies: 1,
+    },
+    handSize: 4,
+    scoring: { placedWeight: 1, remainingWeight: 1 },
+    exchange: { min: 3, max: 4 },
+  },
   themeId: 'town77',
   seed: 42,
 }

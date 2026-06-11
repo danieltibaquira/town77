@@ -1,7 +1,7 @@
 import { test } from '@fast-check/vitest'
+import type { Chip } from '@town77/shared-types'
 import * as fc from 'fast-check'
 import { expect } from 'vitest'
-import type { Chip } from '@town77/shared-types'
 import {
   applyPlacement,
   createGrid,

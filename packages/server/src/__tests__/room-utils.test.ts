@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { generateRoomCode } from '../room/code'
-import { generateSessionToken, generatePlayerId } from '../room/session'
+import { generatePlayerId, generateSessionToken } from '../room/session'
 
 describe('generateRoomCode', () => {
   it('returns a 6-character string', () => {

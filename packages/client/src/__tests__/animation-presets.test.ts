@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeAll } from 'vitest'
 import fs from 'fs'
 import path from 'path'
+import { beforeAll, describe, expect, it } from 'vitest'
 
 describe('Animation Presets & Motion Personalities', () => {
   const projectRoot = path.join(__dirname, '../../../../')
@@ -39,7 +39,14 @@ describe('Animation Presets & Motion Personalities', () => {
     })
 
     it('spec documents all preset keys (chipPlace, chipInvalid, chipDraw, cellPulse, turnIn, celebrate)', () => {
-      const presetKeys = ['chipPlace', 'chipInvalid', 'chipDraw', 'cellPulse', 'turnIn', 'celebrate']
+      const presetKeys = [
+        'chipPlace',
+        'chipInvalid',
+        'chipDraw',
+        'cellPulse',
+        'turnIn',
+        'celebrate',
+      ]
       presetKeys.forEach((key) => {
         expect(specContent).toContain(key)
       })

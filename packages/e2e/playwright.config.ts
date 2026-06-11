@@ -15,10 +15,22 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      testIgnore: '**/five-player-simulation.spec.ts',
     },
     {
       name: 'Mobile Chrome',
       use: { ...devices['Pixel 5'] },
+      testIgnore: '**/five-player-simulation.spec.ts',
+    },
+    {
+      name: 'simulation',
+      use: {
+        ...devices['Desktop Chrome'],
+        trace: 'on',
+        screenshot: 'on',
+      },
+      testMatch: '**/five-player-simulation.spec.ts',
+      timeout: 600000,
     },
   ],
   webServer: {

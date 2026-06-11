@@ -1,9 +1,9 @@
-import type { JoinRoomPayload, GameState } from '@town77/shared-types'
+import type { GameState, JoinRoomPayload } from '@town77/shared-types'
+import type { Db, Io, Sock } from '../app'
 import { createPlayer, getPlayerByToken } from '../db/players'
 import { getRoom, updateRoomState } from '../db/rooms'
-import { generateSessionToken, generatePlayerId } from '../room/session'
 import { logger } from '../logger'
-import type { Io, Sock, Db } from '../app'
+import { generatePlayerId, generateSessionToken } from '../room/session'
 
 const MAX_PLAYERS = 5
 
@@ -61,7 +61,14 @@ export function joinRoomHandler(_io: Io, socket: Sock, db: Db) {
       ...state,
       players: [
         ...state.players,
-        { id: playerId, name: playerName, hand: [], placed: 0, hasDiscarded: false, connected: true },
+        {
+          id: playerId,
+          name: playerName,
+          hand: [],
+          placed: 0,
+          hasDiscarded: false,
+          connected: true,
+        },
       ],
     }
 

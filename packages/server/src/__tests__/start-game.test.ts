@@ -1,7 +1,12 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import type { RoomJoinedPayload, StateUpdatePayload } from '@town77/shared-types'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
-import { createTestServer, connectClient, type TestServer, type TestClient } from './helpers/test-server'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import {
+  type TestClient,
+  type TestServer,
+  connectClient,
+  createTestServer,
+} from './helpers/test-server'
 
 async function setupLobby(server: TestServer) {
   const host = await connectClient(server)
@@ -9,7 +14,11 @@ async function setupLobby(server: TestServer) {
 
   const { code } = await new Promise<RoomJoinedPayload>((resolve) => {
     host.on('room_joined', resolve)
-    host.emit('create_room', { config: DEFAULT_GAME_CONFIG, themeId: 'town77', playerName: 'Alice' })
+    host.emit('create_room', {
+      config: DEFAULT_GAME_CONFIG,
+      themeId: 'town77',
+      playerName: 'Alice',
+    })
   })
 
   // Register host state_update listener BEFORE guest joins so the lobby broadcast is consumed here
@@ -40,8 +49,12 @@ describe('start_game', () => {
   it('transitions state to playing and deals hands', async () => {
     const { host, guest, code } = await setupLobby(server)
 
-    const hostUpdate = new Promise<StateUpdatePayload>((resolve) => host.on('state_update', resolve))
-    const guestUpdate = new Promise<StateUpdatePayload>((resolve) => guest.on('state_update', resolve))
+    const hostUpdate = new Promise<StateUpdatePayload>((resolve) =>
+      host.on('state_update', resolve),
+    )
+    const guestUpdate = new Promise<StateUpdatePayload>((resolve) =>
+      guest.on('state_update', resolve),
+    )
 
     host.emit('start_game')
 
@@ -72,7 +85,11 @@ describe('start_game', () => {
     const solo = await connectClient(server)
     await new Promise<RoomJoinedPayload>((resolve) => {
       solo.on('room_joined', resolve)
-      solo.emit('create_room', { config: DEFAULT_GAME_CONFIG, themeId: 'town77', playerName: 'Solo' })
+      solo.emit('create_room', {
+        config: DEFAULT_GAME_CONFIG,
+        themeId: 'town77',
+        playerName: 'Solo',
+      })
     })
 
     const err = await new Promise<{ code: string }>((resolve) => {

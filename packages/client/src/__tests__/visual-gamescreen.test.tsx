@@ -1,9 +1,9 @@
-import { describe, it, expect } from 'vitest'
 import { createGrid } from '@town77/game-engine'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
-import { renderWithTheme } from './helpers'
+import { describe, expect, it } from 'vitest'
 import { GameScreen } from '../screens/GameScreen'
 import { useGameStore } from '../store/gameStore'
+import { renderWithTheme } from './helpers'
 
 describe('Visual Design: GameScreen Layout', () => {
   beforeEach(() => {

@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeAll } from 'vitest'
 import fs from 'fs'
 import path from 'path'
+import { beforeAll, describe, expect, it } from 'vitest'
 
 describe('Implementation Guide - Creating a New Theme', () => {
   const projectRoot = path.join(__dirname, '../../../../')
@@ -117,7 +117,15 @@ describe('Implementation Guide - Creating a New Theme', () => {
 
     it('template shapes include all 7 types', () => {
       const templateContent = fs.readFileSync(templatePath, 'utf-8')
-      const shapeNames = ['cottage', 'rowhouse', 'tower', 'victorian', 'barn', 'bungalow', 'skyscraper']
+      const shapeNames = [
+        'cottage',
+        'rowhouse',
+        'tower',
+        'victorian',
+        'barn',
+        'bungalow',
+        'skyscraper',
+      ]
       shapeNames.forEach((shape) => {
         expect(templateContent).toContain(shape)
       })

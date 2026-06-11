@@ -16,6 +16,8 @@ services:
       context: .
       dockerfile: packages/server/Dockerfile
       target: production
+    ports:
+      - "3077:3077"
     environment:
       NODE_ENV: production
       PORT: "3077"

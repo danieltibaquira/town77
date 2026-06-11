@@ -1,10 +1,10 @@
 import http from 'http'
 import type { AddressInfo } from 'net'
+import Database from 'better-sqlite3'
 import { Server } from 'socket.io'
 import { io as ioClient } from 'socket.io-client'
-import Database from 'better-sqlite3'
-import { applyMigrations } from '../../db/client'
 import { wireHandlers } from '../../app'
+import { applyMigrations } from '../../db/client'
 
 export type TestClient = ReturnType<typeof ioClient>
 

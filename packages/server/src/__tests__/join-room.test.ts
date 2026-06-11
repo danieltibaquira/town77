@@ -1,12 +1,21 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import type { RoomJoinedPayload, StateUpdatePayload } from '@town77/shared-types'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
-import { createTestServer, connectClient, type TestServer, type TestClient } from './helpers/test-server'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import {
+  type TestClient,
+  type TestServer,
+  connectClient,
+  createTestServer,
+} from './helpers/test-server'
 
 async function createRoomAs(client: TestClient, name: string): Promise<RoomJoinedPayload> {
   return new Promise((resolve) => {
     client.on('room_joined', resolve)
-    client.emit('create_room', { config: DEFAULT_GAME_CONFIG, themeId: 'town77', playerName: name })
+    client.emit('create_room', {
+      config: DEFAULT_GAME_CONFIG,
+      themeId: 'town77',
+      playerName: name,
+    })
   })
 }
 

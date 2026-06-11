@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
-import Database from 'better-sqlite3'
+import { createGrid } from '@town77/game-engine'
 import type { GameState } from '@town77/shared-types'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
-import { createGrid } from '@town77/game-engine'
+import Database from 'better-sqlite3'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { applyMigrations } from '../db/client'
-import { createRoom, getRoom, updateRoomState } from '../db/rooms'
 import { createPlayer, getPlayerByToken, getPlayersByRoom } from '../db/players'
+import { createRoom, getRoom, updateRoomState } from '../db/rooms'
 
 function makeState(): GameState {
   return {
@@ -47,7 +47,13 @@ describe('rooms', () => {
 
   it('createRoom + getRoom round-trips correctly', () => {
     const state = makeState()
-    createRoom(db, { code: 'ABC123', themeId: 'town77', config: DEFAULT_GAME_CONFIG, state, seed: 42 })
+    createRoom(db, {
+      code: 'ABC123',
+      themeId: 'town77',
+      config: DEFAULT_GAME_CONFIG,
+      state,
+      seed: 42,
+    })
     const row = getRoom(db, 'ABC123')
     expect(row).toBeDefined()
     expect(row!.code).toBe('ABC123')
@@ -63,7 +69,13 @@ describe('rooms', () => {
 
   it('updateRoomState persists new state', () => {
     const state = makeState()
-    createRoom(db, { code: 'ABC123', themeId: 'town77', config: DEFAULT_GAME_CONFIG, state, seed: 42 })
+    createRoom(db, {
+      code: 'ABC123',
+      themeId: 'town77',
+      config: DEFAULT_GAME_CONFIG,
+      state,
+      seed: 42,
+    })
     const updated: GameState = { ...state, phase: 'playing' }
     updateRoomState(db, 'ABC123', updated)
     const row = getRoom(db, 'ABC123')

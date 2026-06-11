@@ -1,12 +1,12 @@
 import { randomInt } from 'crypto'
+import { SeededRNG, createGrid, initBag } from '@town77/game-engine'
 import type { CreateRoomPayload, GameState } from '@town77/shared-types'
-import { initBag, createGrid, SeededRNG } from '@town77/game-engine'
-import { createRoom } from '../db/rooms'
+import type { Db, Io, Sock } from '../app'
 import { createPlayer } from '../db/players'
-import { generateRoomCode } from '../room/code'
-import { generateSessionToken, generatePlayerId } from '../room/session'
+import { createRoom } from '../db/rooms'
 import { logger } from '../logger'
-import type { Io, Sock, Db } from '../app'
+import { generateRoomCode } from '../room/code'
+import { generatePlayerId, generateSessionToken } from '../room/session'
 
 export function createSoloRoomHandler(_io: Io, socket: Sock, db: Db) {
   return (payload: CreateRoomPayload) => {

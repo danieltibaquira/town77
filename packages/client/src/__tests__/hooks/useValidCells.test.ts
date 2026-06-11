@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest'
 import { renderHook } from '@testing-library/react'
-import type { Grid, Chip } from '@town77/shared-types'
+import type { Chip, Grid } from '@town77/shared-types'
+import { describe, expect, it } from 'vitest'
 import { useValidCells } from '../../hooks/useValidCells'
 
 describe('useValidCells', () => {

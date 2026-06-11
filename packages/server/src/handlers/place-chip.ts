@@ -1,16 +1,16 @@
-import type { PlaceChipPayload, GameState } from '@town77/shared-types'
 import {
-  isValidPlacement,
   applyPlacement,
-  isFirstChipOnGrid,
-  drawChips,
   calculateScores,
+  drawChips,
+  isFirstChipOnGrid,
   isGameOver,
+  isValidPlacement,
 } from '@town77/game-engine'
+import type { GameState, PlaceChipPayload } from '@town77/shared-types'
+import type { Db, Io, Sock } from '../app'
 import { getRoom, updateRoomState } from '../db/rooms'
-import { runBotTurn } from './solo-game'
 import { logger } from '../logger'
-import type { Io, Sock, Db } from '../app'
+import { runBotTurn } from './solo-game'
 
 export function placeChipHandler(io: Io, socket: Sock, db: Db) {
   return (payload: PlaceChipPayload) => {
@@ -93,7 +93,7 @@ export function placeChipHandler(io: Io, socket: Sock, db: Db) {
 
     // Trigger bot turn if next player is a bot
     const nextPlayer = updatedState.players[nextTurnIndex]
-    if (nextPlayer && nextPlayer.id.startsWith('bot-')) {
+    if (nextPlayer?.id.startsWith('bot-')) {
       setTimeout(() => runBotTurn(io, db, roomCode, updatedState), 1000)
     }
   }

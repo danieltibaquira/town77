@@ -1,7 +1,12 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import type { RoomJoinedPayload } from '@town77/shared-types'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
-import { createTestServer, connectClient, type TestServer, type TestClient } from './helpers/test-server'
+import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import {
+  type TestClient,
+  type TestServer,
+  connectClient,
+  createTestServer,
+} from './helpers/test-server'
 
 describe('create_room', () => {
   let server: TestServer
@@ -45,8 +50,11 @@ describe('create_room', () => {
         playerName: 'Alice',
       })
     })
-    const roomCount = (server.db.prepare('SELECT COUNT(*) as n FROM rooms').get() as { n: number }).n
-    const playerCount = (server.db.prepare('SELECT COUNT(*) as n FROM players').get() as { n: number }).n
+    const roomCount = (server.db.prepare('SELECT COUNT(*) as n FROM rooms').get() as { n: number })
+      .n
+    const playerCount = (
+      server.db.prepare('SELECT COUNT(*) as n FROM players').get() as { n: number }
+    ).n
     expect(roomCount).toBe(1)
     expect(playerCount).toBe(1)
   })

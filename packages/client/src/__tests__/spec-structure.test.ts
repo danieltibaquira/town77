@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest'
 import fs from 'fs'
 import path from 'path'
+import { describe, expect, it } from 'vitest'
 
 describe('Design System Spec Structure', () => {
   const specPath = path.join(__dirname, '../../../..', 'docs/design-system/spec-theme-and-voice.md')

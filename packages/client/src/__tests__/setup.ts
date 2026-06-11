@@ -1,8 +1,8 @@
-import "@testing-library/jest-dom";
+import '@testing-library/jest-dom'
 
-const storage = new Map<string, string>();
+const storage = new Map<string, string>()
 
-Object.defineProperty(globalThis, "localStorage", {
+Object.defineProperty(globalThis, 'localStorage', {
   configurable: true,
   value: {
     clear: () => storage.clear(),
@@ -11,7 +11,7 @@ Object.defineProperty(globalThis, "localStorage", {
     removeItem: (key: string) => storage.delete(key),
     setItem: (key: string, value: string) => storage.set(key, value),
     get length() {
-      return storage.size;
+      return storage.size
     },
   },
-});
+})

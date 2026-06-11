@@ -1,9 +1,9 @@
+import { SeededRNG, canExchange, doExchange } from '@town77/game-engine'
 import type { ExchangeChipsPayload, GameState } from '@town77/shared-types'
-import { canExchange, doExchange, SeededRNG } from '@town77/game-engine'
+import type { Db, Io, Sock } from '../app'
 import { getRoom, updateRoomState } from '../db/rooms'
-import { runBotTurn } from './solo-game'
 import { logger } from '../logger'
-import type { Io, Sock, Db } from '../app'
+import { runBotTurn } from './solo-game'
 
 export function exchangeChipsHandler(io: Io, socket: Sock, db: Db) {
   return (payload: ExchangeChipsPayload) => {
@@ -44,9 +44,7 @@ export function exchangeChipsHandler(io: Io, socket: Sock, db: Db) {
     const updatedState: GameState = {
       ...state,
       bag: newBag,
-      players: state.players.map((p, i) =>
-        i === state.turnIndex ? { ...p, hand: newHand } : p,
-      ),
+      players: state.players.map((p, i) => (i === state.turnIndex ? { ...p, hand: newHand } : p)),
       turnIndex: nextTurnIndex,
     }
 
@@ -56,7 +54,7 @@ export function exchangeChipsHandler(io: Io, socket: Sock, db: Db) {
 
     // Trigger bot turn if next player is a bot
     const nextPlayer = updatedState.players[nextTurnIndex]
-    if (nextPlayer && nextPlayer.id.startsWith('bot-')) {
+    if (nextPlayer?.id.startsWith('bot-')) {
       setTimeout(() => runBotTurn(io, db, roomCode, updatedState), 1000)
     }
   }

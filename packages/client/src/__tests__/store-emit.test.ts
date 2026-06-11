@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useGameStore } from '../store/gameStore'
 
 // Mock socket
@@ -32,7 +32,13 @@ describe('gameStore emit actions', () => {
 
   it('createRoom emits create_room with config, themeId, playerName', () => {
     const { createRoom } = useGameStore.getState()
-    const config = { grid: { rows: 7, cols: 7 }, chips: { colors: ['color-1'], shapes: ['cottage'], copies: 1 }, handSize: 4, scoring: { placedWeight: 1, remainingWeight: 1 }, exchange: { min: 3, max: 4 } }
+    const config = {
+      grid: { rows: 7, cols: 7 },
+      chips: { colors: ['color-1'], shapes: ['cottage'], copies: 1 },
+      handSize: 4,
+      scoring: { placedWeight: 1, remainingWeight: 1 },
+      exchange: { min: 3, max: 4 },
+    }
     createRoom(config, 'town77', 'Alice')
     expect(socket.emit).toHaveBeenCalledWith('create_room', {
       config,

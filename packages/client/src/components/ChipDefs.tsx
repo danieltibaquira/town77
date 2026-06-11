@@ -12,7 +12,14 @@ export function ChipDefs() {
           const lighter = adjustColor(color, 20)
           const darker = adjustColor(color, -20)
           return (
-            <linearGradient key={id} id={`chip-grad-${index + 1}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient
+              key={id}
+              id={`chip-grad-${index + 1}`}
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
               <stop offset="0%" stopColor={lighter} />
               <stop offset="50%" stopColor={color} />
               <stop offset="100%" stopColor={darker} />
@@ -22,7 +29,13 @@ export function ChipDefs() {
 
         {/* Drop shadow filter for chip depth */}
         <filter id="chip-shadow" x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="rgba(0, 0, 0, 1)" floodOpacity="0.35" />
+          <feDropShadow
+            dx="0"
+            dy="2"
+            stdDeviation="2"
+            floodColor="rgba(0, 0, 0, 1)"
+            floodOpacity="0.35"
+          />
         </filter>
 
         {/* Specular highlight gradient for sheen effect */}
