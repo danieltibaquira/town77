@@ -54,7 +54,7 @@ describe('bot AI', () => {
     // Place chips in every cell
     for (let r = 0; r < 7; r++) {
       for (let c = 0; c < 7; c++) {
-        grid[r]![c] = { id: `f-${r}-${c}`, color: 'color-1', shape: 'cottage', value: 1 }
+        grid[r]![c] = { color: 'color-1', shape: 'cottage' }
       }
     }
     const noMovesState = { ...state, grid }
