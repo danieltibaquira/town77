@@ -151,4 +151,11 @@ export const templateTheme: Theme = {
     cellEntrance: { duration: 0.3, stagger: 0.03, ease: "easeOut" },
     errorShake: { x: [0, -8, 8, -4, 4, 0], duration: 0.4, borderFlash: true },
   },
+  styleProps: {
+    borderWidth: 0,
+    shadowOffset: 0,
+    shadowColor: "transparent",
+    borderRadius: 8,
+    borderColor: "transparent",
+  },
 }
