@@ -137,13 +137,9 @@ export function ResultsScreen() {
           onClick={() => navigate('/')}
           style={{
             background: isNeo ? '#ffe66d' : 'var(--color-text-accent)',
-            border: isNeo
-              ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
-              : 'none',
+            border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : 'none',
             borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-lg)',
-            boxShadow: isNeo
-              ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
-              : 'none',
+            boxShadow: isNeo ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : 'none',
             color: isNeo ? '#000000' : 'var(--color-surface-bg)',
             cursor: 'pointer',
             fontSize: 'var(--text-base)',
@@ -162,13 +158,9 @@ export function ResultsScreen() {
           }}
           style={{
             background: isNeo ? '#ffffff' : 'var(--color-surface-cell)',
-            border: isNeo
-              ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
-              : 'none',
+            border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : 'none',
             borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-lg)',
-            boxShadow: isNeo
-              ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
-              : 'none',
+            boxShadow: isNeo ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : 'none',
             color: isNeo ? '#000000' : 'var(--color-text-primary)',
             cursor: 'pointer',
             fontSize: 'var(--text-base)',

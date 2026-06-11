@@ -8,8 +8,6 @@ interface ThemeCardProps {
 
 export function ThemeCard({ theme, isSelected, onClick }: ThemeCardProps) {
   const colors = Object.values(theme.colorPalette)
-  const isNeo = theme.style === 'neobrutalism'
-  const neoRadius = theme.styleProps.borderRadius
 
   return (
     <button
@@ -19,19 +17,8 @@ export function ThemeCard({ theme, isSelected, onClick }: ThemeCardProps) {
       onClick={onClick}
       style={{
         background: theme.surfaces.background,
-        border: isSelected
-          ? isNeo
-            ? `3px solid ${theme.styleProps.borderColor}`
-            : '2px solid var(--color-text-accent)'
-          : isNeo
-            ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
-            : '2px solid transparent',
-        borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-md)',
-        boxShadow: isNeo
-          ? isSelected
-            ? `${theme.styleProps.shadowOffset + 2}px ${theme.styleProps.shadowOffset + 2}px 0px ${theme.styleProps.shadowColor}`
-            : `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
-          : 'none',
+        border: isSelected ? '2px solid var(--color-text-accent)' : '2px solid transparent',
+        borderRadius: 'var(--radius-md)',
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
@@ -41,11 +28,7 @@ export function ThemeCard({ theme, isSelected, onClick }: ThemeCardProps) {
       }}
     >
       <span
-        style={{
-          color: isNeo ? '#000000' : 'var(--color-text-primary)',
-          fontSize: 'var(--text-sm)',
-          fontWeight: 600,
-        }}
+        style={{ color: 'var(--color-text-primary)', fontSize: 'var(--text-sm)', fontWeight: 600 }}
       >
         {theme.name}
       </span>
@@ -54,12 +37,7 @@ export function ThemeCard({ theme, isSelected, onClick }: ThemeCardProps) {
           <div
             key={i}
             data-testid={`theme-swatch-${i}`}
-            style={{
-              background: color,
-              borderRadius: isNeo ? '0' : 'var(--radius-sm)',
-              flex: 1,
-              height: 20,
-            }}
+            style={{ background: color, borderRadius: 'var(--radius-sm)', flex: 1, height: 20 }}
           />
         ))}
       </div>

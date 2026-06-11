@@ -1,5 +1,3 @@
-import { useTheme } from '../lib/theme'
-
 interface StepperProps {
   label: string
   value: number
@@ -8,28 +6,19 @@ interface StepperProps {
   onChange: (value: number) => void
 }
 
+const buttonStyle = {
+  background: 'var(--color-surface-cell)',
+  border: 'none',
+  borderRadius: 'var(--radius-sm)',
+  color: 'var(--color-text-primary)',
+  cursor: 'pointer',
+  fontSize: 'var(--text-lg)',
+  fontWeight: 700,
+  height: 36,
+  width: 36,
+}
+
 export function Stepper({ label, value, min, max, onChange }: StepperProps) {
-  const { theme } = useTheme()
-  const isNeo = theme.style === 'neobrutalism'
-  const neoRadius = theme.styleProps.borderRadius
-
-  const buttonStyle = {
-    background: isNeo ? '#ffffff' : 'var(--color-surface-cell)',
-    border: isNeo
-      ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
-      : 'none',
-    borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-sm)',
-    boxShadow: isNeo
-      ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
-      : 'none',
-    color: 'var(--color-text-primary)',
-    cursor: 'pointer',
-    fontSize: 'var(--text-lg)',
-    fontWeight: 700,
-    height: 36,
-    width: 36,
-  }
-
   return (
     <div
       data-testid="stepper"

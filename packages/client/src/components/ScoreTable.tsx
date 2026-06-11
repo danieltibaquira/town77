@@ -13,8 +13,6 @@ export function ScoreTable({ scores }: ScoreTableProps) {
   const { theme } = useTheme()
   const maxCombined = Math.max(...scores.map((s) => s.combined))
   const scorePop = scorePopTransition(theme.animationPreset)
-  const isNeo = theme.style === 'neobrutalism'
-  const neoRadius = theme.styleProps.borderRadius
 
   const headerStyle = {
     color: 'var(--color-text-secondary)',
@@ -37,10 +35,6 @@ export function ScoreTable({ scores }: ScoreTableProps) {
         borderCollapse: 'collapse',
         color: 'var(--color-text-primary)',
         width: '100%',
-        border: isNeo
-          ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
-          : 'none',
-        borderRadius: isNeo ? `${neoRadius}px` : '0',
       }}
     >
       <thead>
@@ -61,9 +55,6 @@ export function ScoreTable({ scores }: ScoreTableProps) {
               data-winner={isWinner}
               style={{
                 background: isWinner ? 'var(--color-surface-cell-valid)' : 'transparent',
-                borderBottom: isNeo
-                  ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
-                  : 'none',
               }}
             >
               <td style={{ ...cellStyle, fontWeight: isWinner ? 700 : 400 }}>
