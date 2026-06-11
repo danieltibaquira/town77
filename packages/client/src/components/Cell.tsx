@@ -1,21 +1,21 @@
-import type { Chip as ChipType } from '@town77/shared-types'
-import { motion } from 'framer-motion'
-import { cellPulseTransition } from '../lib/motion'
-import { useTheme } from '../lib/theme'
-import { Chip } from './Chip'
+import type { Chip as ChipType } from "@town77/shared-types";
+import { motion } from "framer-motion";
+import { cellPulseTransition } from "../lib/motion";
+import { useTheme } from "../lib/theme";
+import { Chip } from "./Chip";
 
-type CellDensity = 'compact' | 'comfortable'
-type CellHighlight = 'glow' | 'pulse'
+type CellDensity = "compact" | "comfortable";
+type CellHighlight = "glow" | "pulse";
 
 interface CellProps {
-  row: number
-  col: number
-  chip: ChipType | null
-  isValid: boolean
-  density?: CellDensity
-  highlightStyle?: CellHighlight
-  staggerDelay?: number
-  onClick?: (row: number, col: number) => void
+  row: number;
+  col: number;
+  chip: ChipType | null;
+  isValid: boolean;
+  density?: CellDensity;
+  highlightStyle?: CellHighlight;
+  staggerDelay?: number;
+  onClick?: (row: number, col: number) => void;
 }
 
 export function Cell({
@@ -23,48 +23,40 @@ export function Cell({
   col,
   chip,
   isValid,
-  density = 'comfortable',
-  highlightStyle = 'glow',
+  density = "comfortable",
+  highlightStyle = "glow",
   staggerDelay = 0,
   onClick,
 }: CellProps) {
-  const { theme } = useTheme()
-  const isCompact = density === 'compact'
-  const cellSize = isCompact ? 'calc(var(--layout-cell) * 0.85)' : 'var(--layout-cell)'
-  const isNeo = theme.style === 'neobrutalism'
-  const neoRadius = theme.styleProps.borderRadius
+  const { theme } = useTheme();
+  const isCompact = density === "compact";
+  const cellSize = isCompact ? "calc(var(--layout-cell) * 0.85)" : "var(--layout-cell)";
 
   function handleClick() {
-    if (chip !== null || !onClick) return
-    onClick(row, col)
+    if (chip !== null || !onClick) return;
+    onClick(row, col);
   }
 
   const background =
     chip !== null
-      ? 'var(--cell-bg-empty)'
+      ? "var(--cell-bg-empty)"
       : isValid
-        ? 'var(--cell-bg-valid-radial)'
-        : 'var(--cell-bg-empty)'
+        ? "var(--cell-bg-valid-radial)"
+        : "var(--cell-bg-empty)";
 
-  const _boxShadow =
-    isValid && chip === null && highlightStyle === 'glow'
-      ? isNeo
-        ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
-        : 'var(--shadow-glow-valid)'
+  const boxShadow =
+    isValid && chip === null && highlightStyle === "glow"
+      ? "var(--shadow-glow-valid)"
       : chip === null
-        ? isNeo
-          ? `${theme.styleProps.borderWidth > 0 ? 'none' : 'var(--shadow-inner-sm)'}`
-          : 'var(--shadow-inner-sm)'
-        : undefined
+        ? "var(--shadow-inner-sm)"
+        : undefined;
 
-  const pulseActive = isValid && chip === null && highlightStyle === 'pulse'
-  const pulseTransition = cellPulseTransition(theme.animationPreset)
-  const isOccupied = chip !== null
-  const rippleAnim = isOccupied
-    ? `placement-ripple ${theme.animationPreset.placementRipple.duration}s ease-out forwards`
-    : undefined
-  const entranceAnim = `cell-entrance ${theme.animationPreset.cellEntrance.duration}s ease-out forwards`
-  const delay = staggerDelay ? `${staggerDelay}s` : undefined
+  const pulseActive = isValid && chip === null && highlightStyle === "pulse";
+  const pulseTransition = cellPulseTransition(theme.animationPreset);
+  const isOccupied = chip !== null;
+  const rippleAnim = isOccupied ? `placement-ripple ${theme.animationPreset.placementRipple.duration}s ease-out forwards` : undefined;
+  const entranceAnim = `cell-entrance ${theme.animationPreset.cellEntrance.duration}s ease-out forwards`;
+  const delay = staggerDelay ? `${staggerDelay}s` : undefined;
 
   return (
     <motion.div
@@ -74,8 +66,8 @@ export function Cell({
       data-valid={isValid}
       data-density={density}
       data-occupied={isOccupied}
-      data-hover={chip === null && isValid ? 'brightness-scale' : 'none'}
-      data-highlight={isValid && chip === null ? highlightStyle : 'none'}
+      data-hover={chip === null && isValid ? "brightness-scale" : "none"}
+      data-highlight={isValid && chip === null ? highlightStyle : "none"}
       {...(pulseActive
         ? {
             animate: { scale: [1, 1.04, 1] },
@@ -84,37 +76,31 @@ export function Cell({
         : {})}
       onClick={handleClick}
       onKeyDown={(event) => {
-        if (event.key === 'Enter' || event.key === ' ') handleClick()
+        if (event.key === "Enter" || event.key === " ") handleClick();
       }}
       style={{
-        alignItems: 'center',
+        alignItems: "center",
         animation: rippleAnim || entranceAnim,
         animationDelay: delay,
-        aspectRatio: '1',
+        aspectRatio: "1",
         background,
-        border: isNeo
-          ? `${theme.styleProps.borderWidth}px solid ${isValid && chip === null ? 'rgba(5, 150, 105, 0.6)' : theme.styleProps.borderColor}`
-          : `1px solid ${isValid ? 'rgba(5, 150, 105, 0.3)' : 'rgba(255,255,255,0.04)'}`,
-        borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-md)',
-        boxShadow: isNeo
-          ? isValid && chip === null
-            ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
-            : 'none'
-          : isValid
-            ? '0 0 12px rgba(5, 150, 105, 0.15), inset 0 1px 2px rgba(255,255,255,0.05)'
-            : 'inset 0 1px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.02)',
-        cursor: isValid && chip === null && onClick ? 'pointer' : 'default',
-        display: 'flex',
+        border: `1px solid ${isValid ? "rgba(5, 150, 105, 0.3)" : "rgba(255,255,255,0.04)"}`,
+        borderRadius: "var(--radius-md)",
+        boxShadow: isValid 
+          ? "0 0 12px rgba(5, 150, 105, 0.15), inset 0 1px 2px rgba(255,255,255,0.05)" 
+          : "inset 0 1px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.02)",
+        cursor: isValid && chip === null && onClick ? "pointer" : "default",
+        display: "flex",
         height: cellSize,
-        justifyContent: 'center',
-        outline: 'none',
-        outlineOffset: 'var(--focus-ring-offset)',
-        padding: isCompact ? '2px' : 'var(--space-xs)',
+        justifyContent: "center",
+        outline: "none",
+        outlineOffset: "var(--focus-ring-offset)",
+        padding: isCompact ? "2px" : "var(--space-xs)",
         width: cellSize,
       }}
-      whileHover={chip === null && isValid ? { scale: isNeo ? 1 : 1.02 } : undefined}
+      whileHover={chip === null && isValid ? { scale: 1.02 } : undefined}
     >
       {chip !== null ? <Chip chip={chip} isSelected={false} isValid={false} /> : null}
     </motion.div>
-  )
+  );
 }

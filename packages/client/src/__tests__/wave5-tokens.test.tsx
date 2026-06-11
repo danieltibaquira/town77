@@ -1,12 +1,12 @@
+import { describe, it, expect } from 'vitest'
 import fs from 'fs'
 import path from 'path'
 import { screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { renderWithTheme } from './helpers'
 import { Cell } from '../components/Cell'
 import { Grid } from '../components/Grid'
 import { ScoreTable } from '../components/ScoreTable'
 import { town77Theme } from '../themes/town77'
-import { renderWithTheme } from './helpers'
 
 describe('Wave 5: Color & Typography', () => {
   const tokensPath = path.join(__dirname, '../styles/tokens.css')
@@ -26,7 +26,7 @@ describe('Wave 5: Color & Typography', () => {
     })
 
     it('accent glow tokens use theme accent color', () => {
-      const _accent = town77Theme.colorPalette['color-1']
+      const accent = town77Theme.colorPalette['color-1']
       expect(tokensContent).toMatch(/accent-glow-soft.*#C4A35A|accent-glow-soft.*rgba/)
     })
   })
@@ -41,7 +41,9 @@ describe('Wave 5: Color & Typography', () => {
         [null, null],
         [null, null],
       ] as any
-      const { container } = renderWithTheme(<Grid grid={gridData} validCells={[]} />)
+      const { container } = renderWithTheme(
+        <Grid grid={gridData} validCells={[]} />
+      )
       const gridEl = container.querySelector('[data-testid="grid"]')
       const style = gridEl?.getAttribute('style') || ''
       expect(style).toContain('var(--surface-board-grad)')
@@ -72,9 +74,9 @@ describe('Wave 5: Color & Typography', () => {
   describe('T5: Typography drama', () => {
     it('ScoreTable uses tabular-nums for numbers', () => {
       renderWithTheme(
-        <ScoreTable
-          scores={[{ playerId: 'p1', name: 'Alice', placed: 10, remaining: 2, combined: 8 }]}
-        />,
+        <ScoreTable scores={[
+          { playerId: 'p1', name: 'Alice', placed: 10, remaining: 2, combined: 8 },
+        ]} />
       )
       const scoreCell = screen.getByTestId('score-placed-p1')
       const style = scoreCell.getAttribute('style') || ''

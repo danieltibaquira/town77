@@ -1,11 +1,11 @@
 import http from 'http'
-import type { ClientToServerEvents, ServerToClientEvents } from '@town77/shared-types'
 import { Server } from 'socket.io'
+import type { ClientToServerEvents, ServerToClientEvents } from '@town77/shared-types'
 import { createApp, wireHandlers } from './app'
 import { openDatabase } from './db/client'
 import { logger } from './logger'
 
-const PORT = Number.parseInt(process.env.PORT ?? '3077', 10)
+const PORT = parseInt(process.env.PORT ?? '3077', 10)
 const DB_PATH = process.env.DB_PATH ?? './town77.db'
 
 const db = openDatabase(DB_PATH)

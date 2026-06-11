@@ -1,6 +1,6 @@
+import { describe, it, expect, beforeAll } from 'vitest'
 import fs from 'fs'
 import path from 'path'
-import { beforeAll, describe, expect, it } from 'vitest'
 
 describe('Design System Tokens', () => {
   const projectRoot = path.join(__dirname, '../../../../')
@@ -48,16 +48,7 @@ describe('Design System Tokens', () => {
     })
 
     it('defines all spacing primitives', () => {
-      const spaces = [
-        '--space-2xs',
-        '--space-xs',
-        '--space-sm',
-        '--space-md',
-        '--space-lg',
-        '--space-xl',
-        '--space-2xl',
-        '--space-3xl',
-      ]
+      const spaces = ['--space-2xs', '--space-xs', '--space-sm', '--space-md', '--space-lg', '--space-xl', '--space-2xl', '--space-3xl']
       spaces.forEach((token) => {
         expect(tokensContent).toContain(token)
       })
@@ -75,15 +66,18 @@ describe('Design System Tokens', () => {
         '--space-3xl': '64px',
       }
       Object.entries(expectedValues).forEach(([token, value]) => {
-        const match = tokensContent.match(
-          new RegExp(`${token.replace(/--/, '--')}:\\s*(${value});`),
-        )
+        const match = tokensContent.match(new RegExp(`${token.replace(/--/, '--')}:\\s*(${value});`))
         expect(match).not.toBeNull()
       })
     })
 
     it('defines all radius primitives', () => {
-      const radii = ['--radius-sm', '--radius-md', '--radius-lg', '--radius-pill']
+      const radii = [
+        '--radius-sm',
+        '--radius-md',
+        '--radius-lg',
+        '--radius-pill',
+      ]
       radii.forEach((token) => {
         expect(tokensContent).toContain(token)
       })
@@ -140,21 +134,33 @@ describe('Design System Tokens', () => {
 
   describe('Elevation & Shadow Tokens', () => {
     it('defines all elevation shadow levels (xs through xl)', () => {
-      const shadows = ['--shadow-xs', '--shadow-sm', '--shadow-md', '--shadow-lg', '--shadow-xl']
+      const shadows = [
+        '--shadow-xs',
+        '--shadow-sm',
+        '--shadow-md',
+        '--shadow-lg',
+        '--shadow-xl',
+      ]
       shadows.forEach((token) => {
         expect(tokensContent).toContain(token)
       })
     })
 
     it('defines inner shadow tokens for inset surfaces', () => {
-      const innerShadows = ['--shadow-inner-xs', '--shadow-inner-sm']
+      const innerShadows = [
+        '--shadow-inner-xs',
+        '--shadow-inner-sm',
+      ]
       innerShadows.forEach((token) => {
         expect(tokensContent).toContain(token)
       })
     })
 
     it('defines glow shadow tokens for active states', () => {
-      const glowShadows = ['--shadow-glow-accent', '--shadow-glow-valid']
+      const glowShadows = [
+        '--shadow-glow-accent',
+        '--shadow-glow-valid',
+      ]
       glowShadows.forEach((token) => {
         expect(tokensContent).toContain(token)
       })
@@ -172,13 +178,7 @@ describe('Design System Tokens', () => {
     })
 
     it('shadow tokens use rgba for dark theme compatibility', () => {
-      const shadowTokens = [
-        '--shadow-xs',
-        '--shadow-sm',
-        '--shadow-md',
-        '--shadow-lg',
-        '--shadow-xl',
-      ]
+      const shadowTokens = ['--shadow-xs', '--shadow-sm', '--shadow-md', '--shadow-lg', '--shadow-xl']
       shadowTokens.forEach((token) => {
         const match = tokensContent.match(new RegExp(`${token.replace(/--/, '--')}:\\s*([^;]+);`))
         expect(match).not.toBeNull()
@@ -192,23 +192,17 @@ describe('Design System Tokens', () => {
   describe('Responsive Breakpoints', () => {
     it('defines mobile breakpoint for layout-cell (max-width: 480px)', () => {
       expect(tokensContent).toContain('@media (max-width: 480px)')
-      expect(tokensContent).toMatch(
-        /@media\s*\(max-width:\s*480px\)\s*\{[\s\S]*--layout-cell:\s*clamp\(\s*36px/,
-      )
+      expect(tokensContent).toMatch(/@media\s*\(max-width:\s*480px\)\s*\{[\s\S]*--layout-cell:\s*clamp\(\s*36px/)
     })
 
     it('defines tablet breakpoint for layout-cell (481px-768px)', () => {
       expect(tokensContent).toContain('@media (min-width: 481px) and (max-width: 768px)')
-      expect(tokensContent).toMatch(
-        /@media\s*\(min-width:\s*481px\)\s*and\s*\(max-width:\s*768px\)\s*\{[\s\S]*--layout-cell:\s*clamp\(\s*40px/,
-      )
+      expect(tokensContent).toMatch(/@media\s*\(min-width:\s*481px\)\s*and\s*\(max-width:\s*768px\)\s*\{[\s\S]*--layout-cell:\s*clamp\(\s*40px/)
     })
 
     it('defines desktop breakpoint for layout-cell (min-width: 769px)', () => {
       expect(tokensContent).toContain('@media (min-width: 769px)')
-      expect(tokensContent).toMatch(
-        /@media\s*\(min-width:\s*769px\)\s*\{[\s\S]*--layout-cell:\s*clamp\(\s*48px/,
-      )
+      expect(tokensContent).toMatch(/@media\s*\(min-width:\s*769px\)\s*\{[\s\S]*--layout-cell:\s*clamp\(\s*48px/)
     })
   })
 
@@ -231,17 +225,7 @@ describe('Design System Tokens', () => {
         expect(tokensContent).toContain(token)
         // Extract category (word after first dash, skip the empty first element)
         const parts = token.split('-').filter(Boolean)
-        expect([
-          'color',
-          'duration',
-          'space',
-          'text',
-          'font',
-          'layout',
-          'radius',
-          'ease',
-          'chip',
-        ]).toContain(parts[0])
+        expect(['color', 'duration', 'space', 'text', 'font', 'layout', 'radius', 'ease', 'chip']).toContain(parts[0])
       })
     })
   })

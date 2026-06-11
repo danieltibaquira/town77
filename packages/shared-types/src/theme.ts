@@ -105,7 +105,7 @@ export interface ThemeFonts {
   ui: string
 }
 
-export type ThemeStyle = 'refined' | 'neobrutalism'
+export type ThemeStyle = "refined" | "neobrutalism"
 
 export interface ThemeStyleProps {
   borderWidth: number

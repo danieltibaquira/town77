@@ -1,16 +1,16 @@
+import { describe, it, expect, beforeEach } from 'vitest'
 import fs from 'fs'
 import path from 'path'
-import { createGrid } from '@town77/game-engine'
-import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { renderWithTheme } from './helpers'
 import { Cell } from '../components/Cell'
 import { Chip } from '../components/Chip'
 import { Grid } from '../components/Grid'
 import { ScoreTable } from '../components/ScoreTable'
 import { Toast } from '../components/Toast'
 import { GameScreen } from '../screens/GameScreen'
+import { createGrid } from '@town77/game-engine'
+import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
 import { useGameStore } from '../store/gameStore'
-import { renderWithTheme } from './helpers'
 
 describe('Wave 7: Quality Gates', () => {
   const tokensPath = path.join(__dirname, '../styles/tokens.css')
@@ -53,13 +53,7 @@ describe('Wave 7: Quality Gates', () => {
     })
 
     it('Chip renders with aria-label for colorblind users', () => {
-      renderWithTheme(
-        <Chip
-          chip={{ id: 'c1', color: '1', shape: 'circle', value: 5 }}
-          isSelected={false}
-          isValid={true}
-        />,
-      )
+      renderWithTheme(<Chip chip={{ id: 'c1', color: '1', shape: 'circle', value: 5 }} isSelected={false} isValid={true} />)
       const chip = document.querySelector('[data-testid="chip-1-circle"]')
       expect(chip?.getAttribute('aria-label') || '').toBeTruthy()
     })

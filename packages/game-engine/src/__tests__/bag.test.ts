@@ -1,7 +1,7 @@
-import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
 import { describe, expect, it } from 'vitest'
-import { dealHands, drawChips, initBag, shuffle } from '../bag'
+import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
 import { SeededRNG } from '../rng'
+import { dealHands, drawChips, initBag, shuffle } from '../bag'
 
 describe('initBag', () => {
   it('produces correct total chip count', () => {
@@ -16,7 +16,7 @@ describe('initBag', () => {
     const rng = new SeededRNG(1)
     const config = DEFAULT_GAME_CONFIG.chips
     const bag = initBag(config, rng)
-    const keys = bag.map((c) => `${c.color}:${c.shape}`)
+    const keys = bag.map(c => `${c.color}:${c.shape}`)
     expect(new Set(keys).size).toBe(49)
   })
 
@@ -44,7 +44,7 @@ describe('dealHands', () => {
     const bag = initBag(DEFAULT_GAME_CONFIG.chips, new SeededRNG(1))
     const { hands } = dealHands(bag, 3, 4)
     expect(hands).toHaveLength(3)
-    hands.forEach((h) => expect(h).toHaveLength(4))
+    hands.forEach(h => expect(h).toHaveLength(4))
   })
 
   it('removes dealt chips from remaining bag', () => {

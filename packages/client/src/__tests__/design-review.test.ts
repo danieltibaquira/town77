@@ -1,6 +1,6 @@
+import { describe, it, expect, beforeAll } from 'vitest'
 import fs from 'fs'
 import path from 'path'
-import { beforeAll, describe, expect, it } from 'vitest'
 
 describe('Design Review & Case Studies', () => {
   const projectRoot = path.join(__dirname, '../../../../')

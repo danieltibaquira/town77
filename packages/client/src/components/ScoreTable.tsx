@@ -1,6 +1,6 @@
-import type { Score } from '@town77/shared-types'
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
+import type { Score } from '@town77/shared-types'
 import { scorePopTransition } from '../lib/motion'
 import { useTheme } from '../lib/theme'
 
@@ -79,10 +79,7 @@ export function ScoreTable({ scores }: ScoreTableProps) {
                   {score.remaining}
                 </motion.span>
               </td>
-              <td
-                data-testid={`score-combined-${score.playerId}`}
-                style={{ ...cellStyle, fontWeight: 700 }}
-              >
+              <td data-testid={`score-combined-${score.playerId}`} style={{ ...cellStyle, fontWeight: 700 }}>
                 <motion.span
                   initial={{ scale: 0.5 }}
                   animate={{ scale: 1 }}

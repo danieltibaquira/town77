@@ -49,7 +49,7 @@
 
   /* T4: Font Loading */
   --font-display: swap;
-  --font-family-fallback: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-family-fallback: 'Segoe UI', system-ui, -apple-system, sans-serif;
 
   /* T5: Layout Stability */
   --layout-contain: layout style paint;
@@ -108,49 +108,18 @@
   --cell-bg-valid: var(--color-surface-cell-valid);
   --cell-bg-invalid: var(--color-surface-cell-invalid);
   --cell-bg-hover: var(--color-surface-cell-hover);
-  --cell-bg-valid-radial: radial-gradient(
-    circle at center,
-    rgba(90, 155, 106, 0.25) 0%,
-    var(--color-surface-cell-valid) 70%
-  );
+  --cell-bg-valid-radial: radial-gradient(circle at center, rgba(90, 155, 106, 0.25) 0%, var(--color-surface-cell-valid) 70%);
   --cell-radius: var(--radius-sm);
 
   /* T2: Board Surface Gradient */
-  --surface-board-grad: radial-gradient(
-    circle at 50% 50%,
-    rgba(30, 41, 59, 0.95) 0%,
-    rgba(15, 23, 42, 0.98) 100%
-  );
+  --surface-board-grad: radial-gradient(circle at 50% 50%, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%);
 
   --button-radius: var(--radius-md);
 
-  /* Neobrutalism Theme Variables */
-  --neo-border-width: 0px;
-  --neo-border-color: transparent;
-  --neo-shadow-offset: 0px;
-  --neo-shadow-color: transparent;
-  --neo-radius: 8px;
-  --neo-border: var(--neo-border-width) solid var(--neo-border-color);
-  --neo-shadow: var(--neo-shadow-offset) var(--neo-shadow-offset) 0px var(--neo-shadow-color);
-  --neo-shadow-hover: calc(var(--neo-shadow-offset) + 2px) calc(var(--neo-shadow-offset) + 2px) 0px
-    var(--neo-shadow-color);
-  --neo-shadow-active: calc(var(--neo-shadow-offset) - 2px) calc(var(--neo-shadow-offset) - 2px) 0px
-    var(--neo-shadow-color);
-  --neo-transition: all 0.1s linear;
-
   /* Surface Textures */
   --texture-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  --surface-grid-grad: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.03) 0%,
-    transparent 50%,
-    rgba(0, 0, 0, 0.15) 100%
-  );
-  --surface-felt-grad: radial-gradient(
-      circle at 25% 25%,
-      rgba(255, 255, 255, 0.02) 0%,
-      transparent 50%
-    ), radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.01) 0%, transparent 50%);
+  --surface-grid-grad: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, transparent 50%, rgba(0,0,0,0.15) 100%);
+  --surface-felt-grad: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.02) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(255,255,255,0.01) 0%, transparent 50%);
 }
 
 /* Responsive Breakpoints for Grid Cell Sizing */

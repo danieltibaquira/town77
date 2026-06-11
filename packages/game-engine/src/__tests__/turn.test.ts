@@ -1,8 +1,8 @@
+import { describe, expect, it } from 'vitest'
 import type { Chip } from '@town77/shared-types'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
-import { describe, expect, it } from 'vitest'
-import { initBag } from '../bag'
 import { SeededRNG } from '../rng'
+import { initBag } from '../bag'
 import { canDiscard, canExchange, doDiscard, doExchange } from '../turn'
 
 const RED_COTTAGE: Chip = { color: 'color-1', shape: 'cottage' }
@@ -23,7 +23,9 @@ describe('canExchange', () => {
 
   it('returns true for 4 chips sharing same shape', () => {
     const hand = [RED_COTTAGE, BLUE_COTTAGE, GREEN_COTTAGE, YELLOW_BARN]
-    expect(canExchange(hand, [RED_COTTAGE, BLUE_COTTAGE, GREEN_COTTAGE], exchangeConfig)).toBe(true)
+    expect(
+      canExchange(hand, [RED_COTTAGE, BLUE_COTTAGE, GREEN_COTTAGE], exchangeConfig),
+    ).toBe(true)
   })
 
   it('returns false for 2 chips (below minimum)', () => {
@@ -44,7 +46,9 @@ describe('canExchange', () => {
 
   it('returns false when chips do not share color or shape', () => {
     const hand = [RED_COTTAGE, BLUE_COTTAGE, GREEN_COTTAGE, YELLOW_BARN]
-    expect(canExchange(hand, [RED_COTTAGE, BLUE_COTTAGE, YELLOW_BARN], exchangeConfig)).toBe(false)
+    expect(canExchange(hand, [RED_COTTAGE, BLUE_COTTAGE, YELLOW_BARN], exchangeConfig)).toBe(
+      false,
+    )
   })
 
   it('returns false when chip is not in hand', () => {
@@ -66,12 +70,7 @@ describe('doExchange', () => {
     const hand = [RED_COTTAGE, RED_TOWER, RED_BARN, BLUE_COTTAGE]
     const bag = initBag(DEFAULT_GAME_CONFIG.chips, new SeededRNG(1))
     const total = hand.length + bag.length
-    const { newHand, newBag } = doExchange(
-      hand,
-      bag,
-      [RED_COTTAGE, RED_TOWER, RED_BARN],
-      new SeededRNG(1),
-    )
+    const { newHand, newBag } = doExchange(hand, bag, [RED_COTTAGE, RED_TOWER, RED_BARN], new SeededRNG(1))
     expect(newHand.length + newBag.length).toBe(total)
   })
 

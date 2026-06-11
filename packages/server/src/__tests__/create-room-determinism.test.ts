@@ -1,12 +1,7 @@
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import type { RoomJoinedPayload } from '@town77/shared-types'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import {
-  type TestClient,
-  type TestServer,
-  connectClient,
-  createTestServer,
-} from './helpers/test-server'
+import { createTestServer, connectClient, type TestServer, type TestClient } from './helpers/test-server'
 
 describe('create_room determinism', () => {
   let server: TestServer

@@ -5,22 +5,8 @@
     "enabled": true,
     "rules": {
       "recommended": true,
-      "correctness": { "noUnusedVariables": "warn" },
-      "complexity": { "noForEach": "off", "useOptionalChain": "warn" },
-      "suspicious": {
-        "noExplicitAny": "off",
-        "noAssignInExpressions": "off",
-        "noArrayIndexKey": "off"
-      },
-      "a11y": {
-        "useSemanticElements": "off",
-        "noSvgWithoutTitle": "off"
-      },
-      "style": {
-        "useNodejsImportProtocol": "off",
-        "noNonNullAssertion": "off",
-        "noUnusedTemplateLiteral": "warn"
-      }
+      "correctness": { "noUnusedVariables": "error" },
+      "suspicious": { "noExplicitAny": "error" }
     }
   },
   "formatter": {
@@ -29,10 +15,7 @@
     "indentWidth": 2,
     "lineWidth": 100
   },
-  "javascript": {
-    "formatter": { "quoteStyle": "single", "semicolons": "asNeeded" }
-  },
   "files": {
-    "ignore": ["**/node_modules", "**/dist", "**/*.d.ts", "**/playwright-report"]
+    "ignore": ["**/node_modules", "**/dist", "**/*.d.ts"]
   }
 }

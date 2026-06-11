@@ -1,5 +1,5 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockNavigate = vi.fn()
 
@@ -17,8 +17,8 @@ vi.mock('../../store/gameStore', () => {
   }
 })
 
-import { useRequireGame } from '../../hooks/useRequireGame'
 import { useGameStore } from '../../store/gameStore'
+import { useRequireGame } from '../../hooks/useRequireGame'
 
 describe('useRequireGame', () => {
   beforeEach(() => {

@@ -1,19 +1,9 @@
 import { randomInt } from 'crypto'
-import {
-  applyPlacement,
-  calculateScores,
-  dealHands,
-  drawChips,
-  findBotAction,
-  getValidCells,
-  isFirstChipOnGrid,
-  isGameOver,
-  isValidPlacement,
-} from '@town77/game-engine'
 import type { GameState } from '@town77/shared-types'
-import type { Db, Io, Sock } from '../app'
+import { dealHands, findBotAction, getValidCells, isFirstChipOnGrid, isValidPlacement, applyPlacement, drawChips, calculateScores, isGameOver } from '@town77/game-engine'
 import { getRoom, updateRoomState } from '../db/rooms'
 import { logger } from '../logger'
+import type { Io, Sock, Db } from '../app'
 
 export function startSoloGameHandler(io: Io, socket: Sock, db: Db) {
   return () => {
@@ -40,11 +30,7 @@ export function startSoloGameHandler(io: Io, socket: Sock, db: Db) {
       return
     }
 
-    const { hands, remainingBag } = dealHands(
-      state.bag,
-      state.players.length,
-      state.config.handSize,
-    )
+    const { hands, remainingBag } = dealHands(state.bag, state.players.length, state.config.handSize)
     const firstPlayerIndex = state.seed % state.players.length
 
     const updatedState: GameState = {
@@ -61,7 +47,7 @@ export function startSoloGameHandler(io: Io, socket: Sock, db: Db) {
 
     // If bot goes first, trigger its turn
     const botPlayer = updatedState.players[firstPlayerIndex]
-    if (botPlayer?.id.startsWith('bot-')) {
+    if (botPlayer && botPlayer.id.startsWith('bot-')) {
       setTimeout(() => runBotTurn(io, db, roomCode, updatedState), 1000)
     }
   }
@@ -106,7 +92,10 @@ export function runBotTurn(io: Io, db: Db, roomCode: string, currentState: GameS
     }
 
     const newGrid = applyPlacement(currentState.grid, row, col, chip)
-    const handWithout = [...botPlayer.hand.slice(0, chipIdx), ...botPlayer.hand.slice(chipIdx + 1)]
+    const handWithout = [
+      ...botPlayer.hand.slice(0, chipIdx),
+      ...botPlayer.hand.slice(chipIdx + 1),
+    ]
 
     const { drawn, remainingBag } = drawChips(currentState.bag, 1)
     const newHand = [...handWithout, ...drawn]
@@ -140,7 +129,7 @@ export function runBotTurn(io: Io, db: Db, roomCode: string, currentState: GameS
 
     // If next turn is also bot, chain it
     const nextPlayer = updatedState.players[nextTurnIndex]
-    if (nextPlayer?.id.startsWith('bot-')) {
+    if (nextPlayer && nextPlayer.id.startsWith('bot-')) {
       setTimeout(() => runBotTurn(io, db, roomCode, updatedState), 1000)
     }
   } else if (action.type === 'discard') {
@@ -155,7 +144,10 @@ export function runBotTurn(io: Io, db: Db, roomCode: string, currentState: GameS
       return
     }
 
-    const newHand = [...botPlayer.hand.slice(0, chipIdx), ...botPlayer.hand.slice(chipIdx + 1)]
+    const newHand = [
+      ...botPlayer.hand.slice(0, chipIdx),
+      ...botPlayer.hand.slice(chipIdx + 1),
+    ]
     const newBag = [...currentState.bag]
     let drew = false
     if (newBag.length > 0) {
@@ -181,7 +173,7 @@ export function runBotTurn(io: Io, db: Db, roomCode: string, currentState: GameS
     io.to(roomCode).emit('state_update', { state: updatedState })
 
     const nextPlayer = updatedState.players[nextTurnIndex]
-    if (nextPlayer?.id.startsWith('bot-')) {
+    if (nextPlayer && nextPlayer.id.startsWith('bot-')) {
       setTimeout(() => runBotTurn(io, db, roomCode, updatedState), 1000)
     }
   }

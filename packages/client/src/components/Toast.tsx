@@ -37,13 +37,7 @@ export function Toast({ message, onDismiss }: ToastProps) {
         type="button"
         data-testid="toast-dismiss"
         onClick={onDismiss}
-        style={{
-          background: 'transparent',
-          border: 'none',
-          color: 'var(--color-text-secondary)',
-          cursor: 'pointer',
-          fontSize: 'var(--text-lg)',
-        }}
+        style={{ background: 'transparent', border: 'none', color: 'var(--color-text-secondary)', cursor: 'pointer', fontSize: 'var(--text-lg)' }}
       >
         ×
       </button>

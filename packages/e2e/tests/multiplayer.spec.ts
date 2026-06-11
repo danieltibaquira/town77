@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 
 test.describe('Multiplayer Game Flow', () => {
   test('two players can join and start a game', async ({ browser }) => {
@@ -20,12 +20,8 @@ test.describe('Multiplayer Game Flow', () => {
     await expect(page2.getByTestId('lobby-screen')).toBeVisible({ timeout: 10000 })
 
     // Both players should see each other
-    await expect(page1.locator('[data-testid^="player-badge-"]')).toHaveCount(2, {
-      timeout: 15000,
-    })
-    await expect(page2.locator('[data-testid^="player-badge-"]')).toHaveCount(2, {
-      timeout: 15000,
-    })
+    await expect(page1.locator('[data-testid^="player-badge-"]')).toHaveCount(2, { timeout: 15000 })
+    await expect(page2.locator('[data-testid^="player-badge-"]')).toHaveCount(2, { timeout: 15000 })
 
     // Player 1 (host) starts game
     await expect(page1.getByTestId('btn-start-game')).toBeEnabled()
@@ -63,9 +59,7 @@ test.describe('Multiplayer Game Flow', () => {
     await expect(page2.getByTestId('lobby-screen')).toBeVisible({ timeout: 10000 })
 
     // Wait for both players to see each other before starting
-    await expect(page1.locator('[data-testid^="player-badge-"]')).toHaveCount(2, {
-      timeout: 15000,
-    })
+    await expect(page1.locator('[data-testid^="player-badge-"]')).toHaveCount(2, { timeout: 15000 })
 
     await page1.getByTestId('btn-start-game').click()
     await expect(page1.getByTestId('game-screen')).toBeVisible({ timeout: 10000 })
@@ -82,9 +76,7 @@ test.describe('Multiplayer Game Flow', () => {
       await handChips.first().click()
 
       // Valid cells should be highlighted
-      const validCells = page1
-        .locator('[data-valid="true"]')
-        .filter({ hasNot: page1.locator('[data-testid^="chip-"]') })
+      const validCells = page1.locator('[data-valid="true"]').filter({ hasNot: page1.locator('[data-testid^="chip-"]') })
       const validCount = await validCells.count()
 
       if (validCount > 0) {

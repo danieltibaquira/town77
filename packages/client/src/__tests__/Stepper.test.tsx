@@ -1,8 +1,8 @@
+import { describe, it, expect, vi } from 'vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
-import { Stepper } from '../components/Stepper'
 import { renderWithTheme } from './helpers'
+import { Stepper } from '../components/Stepper'
 
 describe('Stepper', () => {
   it('displays current value', () => {

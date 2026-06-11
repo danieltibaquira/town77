@@ -1,15 +1,15 @@
+import { describe, it, expect, beforeEach } from 'vitest'
 import fs from 'fs'
 import path from 'path'
 import { screen } from '@testing-library/react'
 import { createGrid } from '@town77/game-engine'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { renderWithTheme } from './helpers'
 import { Cell } from '../components/Cell'
 import { Grid } from '../components/Grid'
 import { GameScreen } from '../screens/GameScreen'
 import { useGameStore } from '../store/gameStore'
 import { town77Theme } from '../themes/town77'
-import { renderWithTheme } from './helpers'
 
 function makeGameState() {
   return {

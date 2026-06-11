@@ -1,9 +1,9 @@
 import { randomInt } from 'crypto'
-import { dealHands } from '@town77/game-engine'
 import type { GameState } from '@town77/shared-types'
-import type { Db, Io, Sock } from '../app'
+import { dealHands } from '@town77/game-engine'
 import { getRoom, updateRoomState } from '../db/rooms'
 import { logger } from '../logger'
+import type { Io, Sock, Db } from '../app'
 
 export function startGameHandler(io: Io, socket: Sock, db: Db) {
   return () => {
@@ -34,11 +34,7 @@ export function startGameHandler(io: Io, socket: Sock, db: Db) {
       return
     }
 
-    const { hands, remainingBag } = dealHands(
-      state.bag,
-      state.players.length,
-      state.config.handSize,
-    )
+    const { hands, remainingBag } = dealHands(state.bag, state.players.length, state.config.handSize)
     const firstPlayerIndex = state.seed % state.players.length
 
     const updatedState: GameState = {

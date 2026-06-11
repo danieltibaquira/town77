@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { generateRandomName } from '../../lib/randomName'
 
 describe('generateRandomName', () => {
@@ -17,7 +17,7 @@ describe('generateRandomName', () => {
     for (let i = 0; i < 50; i++) {
       const name = generateRandomName()
       const parts = name.split(' ')
-      const num = Number.parseInt(parts[parts.length - 1]!, 10)
+      const num = parseInt(parts[parts.length - 1]!, 10)
       expect(num).toBeGreaterThanOrEqual(10)
       expect(num).toBeLessThanOrEqual(99)
     }
@@ -25,16 +25,8 @@ describe('generateRandomName', () => {
 
   it('uses only known adjectives', () => {
     const validAdjectives = [
-      'Valiente',
-      'Astuto',
-      'Rápido',
-      'Sabio',
-      'Audaz',
-      'Brillante',
-      'Creativo',
-      'Dinámico',
-      'Épico',
-      'Feroz',
+      'Valiente', 'Astuto', 'Rápido', 'Sabio', 'Audaz',
+      'Brillante', 'Creativo', 'Dinámico', 'Épico', 'Feroz',
     ]
     for (let i = 0; i < 50; i++) {
       const name = generateRandomName()
@@ -45,16 +37,8 @@ describe('generateRandomName', () => {
 
   it('uses only known nouns', () => {
     const validNouns = [
-      'Constructor',
-      'Arquitecto',
-      'Diseñador',
-      'Maestro',
-      'Explorador',
-      'Pionero',
-      'Estratega',
-      'Campeón',
-      'Líder',
-      'Visionario',
+      'Constructor', 'Arquitecto', 'Diseñador', 'Maestro', 'Explorador',
+      'Pionero', 'Estratega', 'Campeón', 'Líder', 'Visionario',
     ]
     for (let i = 0; i < 50; i++) {
       const name = generateRandomName()

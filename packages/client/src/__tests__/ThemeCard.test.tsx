@@ -1,9 +1,9 @@
+import { describe, it, expect, vi } from 'vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
-import { ThemeCard } from '../components/ThemeCard'
-import { town77Theme } from '../themes/town77'
 import { renderWithTheme } from './helpers'
+import { town77Theme } from '../themes/town77'
+import { ThemeCard } from '../components/ThemeCard'
 
 describe('ThemeCard', () => {
   it('renders theme name', () => {
@@ -13,10 +13,7 @@ describe('ThemeCard', () => {
 
   it('sets data-selected when selected', () => {
     renderWithTheme(<ThemeCard theme={town77Theme} isSelected onClick={() => {}} />)
-    expect(screen.getByTestId(`theme-card-${town77Theme.id}`)).toHaveAttribute(
-      'data-selected',
-      'true',
-    )
+    expect(screen.getByTestId(`theme-card-${town77Theme.id}`)).toHaveAttribute('data-selected', 'true')
   })
 
   it('renders color swatches from palette', () => {

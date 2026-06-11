@@ -1,6 +1,6 @@
+import { describe, it, expect } from 'vitest'
+import { createGrid, initBag, SeededRNG, findBotAction, dealHands } from '../../src'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
-import { describe, expect, it } from 'vitest'
-import { SeededRNG, createGrid, dealHands, findBotAction, initBag } from '../../src'
 
 function makeSoloState(seed = 42) {
   const rng = new SeededRNG(seed)
@@ -11,14 +11,7 @@ function makeSoloState(seed = 42) {
     grid: createGrid(7, 7),
     bag: remainingBag,
     players: [
-      {
-        id: 'human',
-        name: 'Human',
-        hand: hands[0]!,
-        placed: 0,
-        hasDiscarded: false,
-        connected: true,
-      },
+      { id: 'human', name: 'Human', hand: hands[0]!, placed: 0, hasDiscarded: false, connected: true },
       { id: 'bot', name: 'Bot', hand: hands[1]!, placed: 0, hasDiscarded: false, connected: true },
     ],
     turnIndex: 0,
@@ -48,7 +41,7 @@ describe('bot AI', () => {
     const action = findBotAction(state, 'bot')
     if (action?.type === 'place') {
       const hasChip = state.players[1]!.hand.some(
-        (h) => h.color === action.chip.color && h.shape === action.chip.shape,
+        h => h.color === action.chip.color && h.shape === action.chip.shape,
       )
       expect(hasChip).toBe(true)
     }

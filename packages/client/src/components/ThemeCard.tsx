@@ -27,18 +27,12 @@ export function ThemeCard({ theme, isSelected, onClick }: ThemeCardProps) {
         textAlign: 'left' as const,
       }}
     >
-      <span
-        style={{ color: 'var(--color-text-primary)', fontSize: 'var(--text-sm)', fontWeight: 600 }}
-      >
+      <span style={{ color: 'var(--color-text-primary)', fontSize: 'var(--text-sm)', fontWeight: 600 }}>
         {theme.name}
       </span>
       <div style={{ display: 'flex', gap: 2 }}>
         {colors.map((color, i) => (
-          <div
-            key={i}
-            data-testid={`theme-swatch-${i}`}
-            style={{ background: color, borderRadius: 'var(--radius-sm)', flex: 1, height: 20 }}
-          />
+          <div key={i} data-testid={`theme-swatch-${i}`} style={{ background: color, borderRadius: 'var(--radius-sm)', flex: 1, height: 20 }} />
         ))}
       </div>
     </button>

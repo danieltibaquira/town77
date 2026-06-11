@@ -1,8 +1,8 @@
+import { describe, it, expect, vi } from 'vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
-import { Toast } from '../components/Toast'
 import { renderWithTheme } from './helpers'
+import { Toast } from '../components/Toast'
 
 describe('Toast', () => {
   it('renders message text', () => {

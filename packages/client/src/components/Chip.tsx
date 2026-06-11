@@ -1,47 +1,44 @@
-import type { Chip as ChipType } from '@town77/shared-types'
-import { motion } from 'framer-motion'
-import { chipDrawInTransition, hoverLiftTransition } from '../lib/motion'
-import { useTheme } from '../lib/theme'
+import type { Chip as ChipType } from "@town77/shared-types";
+import { motion } from "framer-motion";
+import { chipDrawInTransition, hoverLiftTransition } from "../lib/motion";
+import { useTheme } from "../lib/theme";
 
-type ChipSize = 'sm' | 'md' | 'lg'
-type ChipVariant = 'flat' | 'outline'
+type ChipSize = "sm" | "md" | "lg";
+type ChipVariant = "flat" | "outline";
 
 interface ChipProps {
-  chip: ChipType
-  isSelected: boolean
-  isValid: boolean
-  size?: ChipSize
-  variant?: ChipVariant
-  staggerIndex?: number
-  onClick?: () => void
+  chip: ChipType;
+  isSelected: boolean;
+  isValid: boolean;
+  size?: ChipSize;
+  variant?: ChipVariant;
+  staggerIndex?: number;
+  onClick?: () => void;
 }
 
 const SIZE_SCALE: Record<ChipSize, string> = {
-  sm: '0.6',
-  md: '1',
-  lg: '1.4',
-}
+  sm: "0.6",
+  md: "1",
+  lg: "1.4",
+};
 
 export function Chip({
   chip,
   isSelected,
   isValid,
   onClick,
-  size = 'md',
-  variant = 'flat',
+  size = "md",
+  variant = "flat",
   staggerIndex = 0,
 }: ChipProps) {
-  const { theme } = useTheme()
-  const svgPath = theme.shapes[chip.shape] ?? 'M5 35 L20 5 L35 35 Z'
+  const { theme } = useTheme();
+  const svgPath = theme.shapes[chip.shape] ?? "M5 35 L20 5 L35 35 Z";
   const colorIndex = Object.keys(theme.colorPalette).indexOf(chip.color) + 1
-  const _gradientId = `url(#chip-grad-${colorIndex})`
-  const scale = SIZE_SCALE[size]
-  const drawIn = chipDrawInTransition(theme.animationPreset, staggerIndex)
-  const targetScale = isSelected ? 1.08 : 1
-  const hoverLift = hoverLiftTransition(theme.animationPreset)
-  const isNeo = theme.style === 'neobrutalism'
-  const chipColor = theme.colorPalette[chip.color]
-  const neoRadius = theme.styleProps.borderRadius
+  const gradientId = `url(#chip-grad-${colorIndex})`
+  const scale = SIZE_SCALE[size];
+  const drawIn = chipDrawInTransition(theme.animationPreset, staggerIndex);
+  const targetScale = isSelected ? 1.08 : 1;
+  const hoverLift = hoverLiftTransition(theme.animationPreset);
 
   return (
     <motion.button
@@ -59,82 +56,56 @@ export function Chip({
       data-variant={variant}
       onClick={onClick}
       style={{
-        alignItems: 'center',
-        background: 'transparent',
-        borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-md)',
-        border: isNeo
-          ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
-          : 'none',
-        cursor: onClick ? 'pointer' : 'default',
-        display: 'flex',
+        alignItems: "center",
+        background: "transparent",
+        borderRadius: "var(--radius-md)",
+        cursor: onClick ? "pointer" : "default",
+        display: "flex",
         height: `calc(var(--chip-size) * ${scale})`,
-        justifyContent: 'center',
-        outline: isSelected ? '2px solid var(--color-text-accent)' : '0',
-        outlineOffset: '2px',
+        justifyContent: "center",
+        outline: isSelected ? "2px solid var(--color-text-accent)" : "0",
+        outlineOffset: "2px",
         padding: 4,
-        boxShadow: isNeo
-          ? isSelected
-            ? `0 0 0 2px var(--color-text-accent), ${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
-            : `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
-          : isSelected
-            ? '0 0 0 2px var(--color-text-accent), 0 4px 12px rgba(0,0,0,0.3), 0 0 16px rgba(245, 158, 11, 0.25)'
-            : '0 2px 4px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.1)',
-        transition: isNeo
-          ? 'var(--neo-transition)'
-          : 'box-shadow 150ms ease-out, transform 150ms ease-out',
+        boxShadow: isSelected
+          ? "0 0 0 2px var(--color-text-accent), 0 4px 12px rgba(0,0,0,0.3), 0 0 16px rgba(245, 158, 11, 0.25)"
+          : "0 2px 4px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.1)",
+        transition: "box-shadow 150ms ease-out, transform 150ms ease-out",
         width: `calc(var(--chip-size) * ${scale})`,
       }}
     >
       <svg aria-hidden="true" height="100%" viewBox="0 0 40 40" width="100%">
         <defs>
           <linearGradient id={`chip-grad-${colorIndex}`} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor={chipColor} stopOpacity={isNeo ? 1 : 0.9} />
-            <stop offset="100%" stopColor={chipColor} stopOpacity={isNeo ? 1 : 0.7} />
+            <stop offset="0%" stopColor={theme.colorPalette[chip.color]} stopOpacity="0.9" />
+            <stop offset="100%" stopColor={theme.colorPalette[chip.color]} stopOpacity="0.7" />
           </linearGradient>
-          {!isNeo && (
-            <filter id="chip-shadow">
-              <feDropShadow dx="0" dy="2" stdDeviation="2" floodOpacity="0.3" />
-            </filter>
-          )}
+          <filter id="chip-shadow">
+            <feDropShadow dx="0" dy="2" stdDeviation="2" floodOpacity="0.3" />
+          </filter>
         </defs>
-
+        
         {/* Layer 1: Drop shadow */}
-        {!isNeo && <rect x="2" y="2" width="36" height="36" rx="8" fill="rgba(0,0,0,0.3)" />}
+        <rect x="2" y="2" width="36" height="36" rx="8" fill="rgba(0,0,0,0.3)" />
 
         {/* Layer 2: Colored background */}
-        <rect
-          x="0"
-          y="0"
-          width="40"
-          height="40"
-          rx={neoRadius}
-          fill={`url(#chip-grad-${colorIndex})`}
-          {...(!isNeo ? { filter: 'url(#chip-shadow)' } : {})}
-        />
+        <rect x="0" y="0" width="40" height="40" rx="8" fill={`url(#chip-grad-${colorIndex})`} filter="url(#chip-shadow)" />
 
         {/* Layer 3: White shape silhouette */}
         <path
           d={svgPath}
-          fill={isNeo ? 'rgba(0,0,0,0.7)' : 'rgba(255,255,255,0.85)'}
-          stroke={isNeo ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.3)'}
+          fill="rgba(255,255,255,0.85)"
+          stroke="rgba(255,255,255,0.3)"
           strokeWidth="0.5"
         />
 
-        {/* Layer 4: Top highlight for 3D effect (refined only) */}
-        {!isNeo && <rect x="2" y="2" width="36" height="18" rx="8" fill="rgba(255,255,255,0.15)" />}
+        {/* Layer 4: Top highlight for 3D effect */}
+        <rect x="2" y="2" width="36" height="18" rx="8" fill="rgba(255,255,255,0.15)" />
 
         {/* Layer 5: Red vignette overlay for invalid state */}
         {!isValid && (
-          <rect
-            x="0"
-            y="0"
-            width="40"
-            height="40"
-            rx={neoRadius}
-            fill={isNeo ? 'rgba(180, 40, 40, 0.3)' : 'rgba(180, 40, 40, 0.4)'}
-          />
+          <rect x="0" y="0" width="40" height="40" rx="8" fill="rgba(180, 40, 40, 0.4)" />
         )}
       </svg>
     </motion.button>
-  )
+  );
 }

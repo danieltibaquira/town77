@@ -1,5 +1,5 @@
-import type { Chip, Grid } from '@town77/shared-types'
 import { describe, expect, it } from 'vitest'
+import type { Chip, Grid } from '@town77/shared-types'
 import {
   applyPlacement,
   createGrid,
@@ -19,9 +19,9 @@ describe('createGrid', () => {
   it('creates a grid with correct dimensions', () => {
     const grid = createGrid(7, 7)
     expect(grid).toHaveLength(7)
-    grid.forEach((row) => {
+    grid.forEach(row => {
       expect(row).toHaveLength(7)
-      row.forEach((cell) => expect(cell).toBeNull())
+      row.forEach(cell => expect(cell).toBeNull())
     })
   })
 })
@@ -153,16 +153,16 @@ describe('gridIsConsistent', () => {
   })
 
   it('returns false when row has duplicate color', () => {
-    const grid = createGrid(7, 7)
+    let grid = createGrid(7, 7)
     // Force an invalid state directly (bypassing validation)
-    const raw = grid.map((r) => [...r]) as Grid
+    const raw = grid.map(r => [...r]) as Grid
     raw[3]![3] = COTTAGE_RED
     raw[3]![4] = TOWER_RED // same color in same row
     expect(gridIsConsistent(raw)).toBe(false)
   })
 
   it('returns false when column has duplicate shape', () => {
-    const raw = createGrid(7, 7).map((r) => [...r]) as Grid
+    const raw = createGrid(7, 7).map(r => [...r]) as Grid
     raw[3]![3] = COTTAGE_RED
     raw[4]![3] = COTTAGE_BLUE // same shape in same column
     expect(gridIsConsistent(raw)).toBe(false)

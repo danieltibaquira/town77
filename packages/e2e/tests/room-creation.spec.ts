@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test'
+import { test, expect } from '@playwright/test'
 
 test.describe('Room Creation Flow', () => {
   test('config screen has random name pre-filled', async ({ page }) => {

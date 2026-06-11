@@ -1,8 +1,8 @@
+import { describe, it, expect, vi } from 'vitest'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
-import { ConfigScreen } from '../../screens/ConfigScreen'
 import { renderWithTheme } from '../helpers'
+import { ConfigScreen } from '../../screens/ConfigScreen'
 
 // Mock store and router
 vi.mock('../../store/gameStore', () => ({

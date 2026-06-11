@@ -1,5 +1,5 @@
-import type { GameConfig, GameState } from '@town77/shared-types'
 import type Database from 'better-sqlite3'
+import type { GameConfig, GameState } from '@town77/shared-types'
 
 export interface RoomRow {
   code: string
@@ -19,15 +19,7 @@ export function createRoom(
   db.prepare(
     `INSERT INTO rooms (code, theme_id, config_json, state_json, seed, created_at, updated_at)
      VALUES (?, ?, ?, ?, ?, ?, ?)`,
-  ).run(
-    params.code,
-    params.themeId,
-    JSON.stringify(params.config),
-    JSON.stringify(params.state),
-    params.seed,
-    now,
-    now,
-  )
+  ).run(params.code, params.themeId, JSON.stringify(params.config), JSON.stringify(params.state), params.seed, now, now)
 }
 
 export function getRoom(db: Database.Database, code: string): RoomRow | undefined {

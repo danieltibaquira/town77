@@ -1,7 +1,7 @@
-import type { AnimationPreset } from '@town77/shared-types'
-import { describe, expect, it } from 'vitest'
-import { playfulPastelTheme } from '../themes/playful-pastel'
+import { describe, it, expect } from 'vitest'
 import { town77Theme } from '../themes/town77'
+import { playfulPastelTheme } from '../themes/playful-pastel'
+import type { AnimationPreset } from '@town77/shared-types'
 
 const themes = [town77Theme, playfulPastelTheme]
 

@@ -10,20 +10,19 @@ export function ResultsScreen() {
   const navigate = useNavigate()
   const { theme } = useTheme()
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const isNeo = theme.style === 'neobrutalism'
-  const neoRadius = theme.styleProps.borderRadius
 
   const scores = useGameStore((s) => s.scores)
   const disconnect = useGameStore((s) => s.disconnect)
 
+  // T14: Win celebration — confetti burst
   useEffect(() => {
     if (!canvasRef.current) return
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     const dpr = window.devicePixelRatio || 1
-    const w = (canvas.width = canvas.offsetWidth * dpr)
-    const h = (canvas.height = canvas.offsetHeight * dpr)
+    const w = canvas.width = canvas.offsetWidth * dpr
+    const h = canvas.height = canvas.offsetHeight * dpr
     ctx.scale(dpr, dpr)
 
     const colors = Object.values(theme.colorPalette)
@@ -49,7 +48,7 @@ export function ResultsScreen() {
       for (const p of particles) {
         p.x += p.vx * 0.1
         p.y += p.vy * 0.1
-        p.vy += 0.5
+        p.vy += 0.5 // gravity
         p.life = 1 - progress
         ctx.globalAlpha = p.life
         ctx.fillStyle = p.color || '#ffffff'
@@ -65,17 +64,7 @@ export function ResultsScreen() {
 
   if (!scores || scores.length === 0) {
     return (
-      <main
-        data-testid="results-screen"
-        style={{
-          background: isNeo ? theme.surfaces.background : 'var(--color-surface-bg)',
-          color: 'var(--color-text-primary)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '100vh',
-        }}
-      >
+      <main data-testid="results-screen" style={{ background: 'var(--color-surface-bg)', color: 'var(--color-text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
         {t('tied')}
       </main>
     )
@@ -86,43 +75,13 @@ export function ResultsScreen() {
   const winnerText = winners.map((w) => w.name).join(', ')
 
   return (
-    <main
-      data-testid="results-screen"
-      style={{
-        alignItems: 'center',
-        background: isNeo ? theme.surfaces.background : 'var(--color-surface-bg)',
-        color: 'var(--color-text-primary)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 'var(--space-lg)',
-        minHeight: '100vh',
-        padding: 'var(--space-xl)',
-        position: 'relative',
-      }}
-    >
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
+    <main data-testid="results-screen" style={{ alignItems: 'center', background: 'var(--color-surface-bg)', color: 'var(--color-text-primary)', display: 'flex', flexDirection: 'column', gap: 'var(--space-lg)', minHeight: '100vh', padding: 'var(--space-xl)', position: 'relative' }}>
+      {/* T14: Celebration canvas overlay */}
+      <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }} />
 
-      <h1
-        data-testid="results-title"
-        style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', margin: 0 }}
-      >
-        {t('winner')}
-      </h1>
+      <h1 data-testid="results-title" style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', margin: 0 }}>{t('winner')}</h1>
 
-      <div
-        data-testid="results-winner-name"
-        style={{ color: 'var(--color-text-accent)', fontSize: 'var(--text-lg)', fontWeight: 700 }}
-      >
+      <div data-testid="results-winner-name" style={{ color: 'var(--color-text-accent)', fontSize: 'var(--text-lg)', fontWeight: 700 }}>
         {winners.length === scores.length ? t('tied') : winnerText}
       </div>
 
@@ -131,42 +90,10 @@ export function ResultsScreen() {
       </div>
 
       <div style={{ display: 'flex', gap: 'var(--space-md)' }}>
-        <button
-          type="button"
-          data-testid="btn-play-again"
-          onClick={() => navigate('/')}
-          style={{
-            background: isNeo ? '#ffe66d' : 'var(--color-text-accent)',
-            border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : 'none',
-            borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-lg)',
-            boxShadow: isNeo ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : 'none',
-            color: isNeo ? '#000000' : 'var(--color-surface-bg)',
-            cursor: 'pointer',
-            fontSize: 'var(--text-base)',
-            fontWeight: 700,
-            padding: 'var(--space-md) var(--space-xl)',
-          }}
-        >
+        <button type="button" data-testid="btn-play-again" onClick={() => navigate('/')} style={{ background: 'var(--color-text-accent)', border: 'none', borderRadius: 'var(--radius-lg)', color: 'var(--color-surface-bg)', cursor: 'pointer', fontSize: 'var(--text-base)', fontWeight: 700, padding: 'var(--space-md) var(--space-xl)' }}>
           {t('play_again')}
         </button>
-        <button
-          type="button"
-          data-testid="btn-new-room"
-          onClick={() => {
-            disconnect()
-            navigate('/')
-          }}
-          style={{
-            background: isNeo ? '#ffffff' : 'var(--color-surface-cell)',
-            border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : 'none',
-            borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-lg)',
-            boxShadow: isNeo ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : 'none',
-            color: isNeo ? '#000000' : 'var(--color-text-primary)',
-            cursor: 'pointer',
-            fontSize: 'var(--text-base)',
-            padding: 'var(--space-md) var(--space-xl)',
-          }}
-        >
+        <button type="button" data-testid="btn-new-room" onClick={() => { disconnect(); navigate('/') }} style={{ background: 'var(--color-surface-cell)', border: 'none', borderRadius: 'var(--radius-lg)', color: 'var(--color-text-primary)', cursor: 'pointer', fontSize: 'var(--text-base)', padding: 'var(--space-md) var(--space-xl)' }}>
           {t('new_room')}
         </button>
       </div>

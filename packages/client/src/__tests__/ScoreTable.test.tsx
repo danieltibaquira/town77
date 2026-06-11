@@ -1,8 +1,8 @@
+import { describe, it, expect } from 'vitest'
 import { screen } from '@testing-library/react'
-import type { Score } from '@town77/shared-types'
-import { describe, expect, it } from 'vitest'
-import { ScoreTable } from '../components/ScoreTable'
 import { renderWithTheme } from './helpers'
+import type { Score } from '@town77/shared-types'
+import { ScoreTable } from '../components/ScoreTable'
 
 const scores: Score[] = [
   { playerId: 'p1', name: 'Alice', placed: 10, remaining: 2, combined: 8 },
