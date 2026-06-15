@@ -27,6 +27,7 @@ export interface GameConfig {
   handSize: number
   scoring: ScoringConfig
   exchange: ExchangeConfig
+  maxPlayers?: number
 }
 
 export const DEFAULT_GAME_CONFIG: GameConfig = {

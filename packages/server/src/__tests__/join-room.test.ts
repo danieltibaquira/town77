@@ -73,4 +73,25 @@ describe('join_room', () => {
     expect(recovered.sessionToken).toBe(sessionToken)
     returner.disconnect()
   })
+
+  it('rejects when room is full (respects config.maxPlayers)', async () => {
+    const max2 = { ...DEFAULT_GAME_CONFIG, maxPlayers: 2 }
+    const { code } = await new Promise<RoomJoinedPayload>((resolve) => {
+      host.on('room_joined', resolve)
+      host.emit('create_room', { config: max2, themeId: 'town77', playerName: 'Alice' })
+    })
+
+    await new Promise<RoomJoinedPayload>((resolve) => {
+      guest.on('room_joined', resolve)
+      guest.emit('join_room', { code, playerName: 'Bob' })
+    })
+
+    const third = await connectClient(server)
+    const err = await new Promise<{ code: string }>((resolve) => {
+      third.on('error', resolve)
+      third.emit('join_room', { code, playerName: 'Charlie' })
+    })
+    expect(err.code).toBe('ROOM_FULL')
+    third.disconnect()
+  })
 })

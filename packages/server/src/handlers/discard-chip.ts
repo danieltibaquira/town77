@@ -1,7 +1,8 @@
 import type { DiscardChipPayload, GameState } from '@town77/shared-types'
-import { canDiscard, doDiscard } from '@town77/game-engine'
+import { canDiscard, doDiscard, isGameOver, calculateScores } from '@town77/game-engine'
 import { getRoom, updateRoomState } from '../db/rooms'
 import { runBotTurn } from './solo-game'
+import { nextTurnIndex } from './turn-utils'
 import { logger } from '../logger'
 import type { Io, Sock, Db } from '../app'
 
@@ -47,22 +48,36 @@ export function discardChipHandler(io: Io, socket: Sock, db: Db) {
 
     const { newHand, newBag } = doDiscard(currentPlayer.hand, state.bag, payload.chip)
 
-    const nextTurnIndex = (state.turnIndex + 1) % state.players.length
+    const updatedPlayers = state.players.map((p, i) =>
+      i === state.turnIndex ? { ...p, hand: newHand, hasDiscarded: true } : p,
+    )
+    const nextTurnIdx = nextTurnIndex(
+      { ...state, players: updatedPlayers },
+      state.turnIndex,
+    )
     const updatedState: GameState = {
       ...state,
       bag: newBag,
-      players: state.players.map((p, i) =>
-        i === state.turnIndex ? { ...p, hand: newHand, hasDiscarded: true } : p,
-      ),
-      turnIndex: nextTurnIndex,
+      players: updatedPlayers,
+      turnIndex: nextTurnIdx,
     }
 
     updateRoomState(db, roomCode, updatedState)
     logger.info({ roomCode, playerId }, 'chip.discarded')
+
+    if (isGameOver(updatedState.grid, updatedState.bag, updatedState.players)) {
+      const finalState: GameState = { ...updatedState, phase: 'finished' }
+      updateRoomState(db, roomCode, finalState)
+      const scores = calculateScores(finalState.players, finalState.config.scoring)
+      logger.info({ roomCode, scores }, 'game.over')
+      io.to(roomCode).emit('game_over', { scores })
+      return
+    }
+
     io.to(roomCode).emit('state_update', { state: updatedState })
 
     // Trigger bot turn if next player is a bot
-    const nextPlayer = updatedState.players[nextTurnIndex]
+    const nextPlayer = updatedState.players[nextTurnIdx]
     if (nextPlayer && nextPlayer.id.startsWith('bot-')) {
       setTimeout(() => runBotTurn(io, db, roomCode, updatedState), 1000)
     }

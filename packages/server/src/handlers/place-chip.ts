@@ -9,6 +9,7 @@ import {
 } from '@town77/game-engine'
 import { getRoom, updateRoomState } from '../db/rooms'
 import { runBotTurn } from './solo-game'
+import { nextTurnIndex } from './turn-utils'
 import { logger } from '../logger'
 import type { Io, Sock, Db } from '../app'
 
@@ -68,14 +69,17 @@ export function placeChipHandler(io: Io, socket: Sock, db: Db) {
       i === state.turnIndex ? { ...p, hand: newHand, placed: p.placed + 1 } : p,
     )
 
-    const nextTurnIndex = (state.turnIndex + 1) % state.players.length
+    const nextTurnIdx = nextTurnIndex(
+      { ...state, players: updatedPlayers },
+      state.turnIndex,
+    )
 
     const updatedState: GameState = {
       ...state,
       grid: newGrid,
       bag: remainingBag,
       players: updatedPlayers,
-      turnIndex: nextTurnIndex,
+      turnIndex: nextTurnIdx,
     }
 
     if (isGameOver(updatedState.grid, updatedState.bag, updatedState.players)) {
@@ -92,7 +96,7 @@ export function placeChipHandler(io: Io, socket: Sock, db: Db) {
     io.to(roomCode).emit('state_update', { state: updatedState })
 
     // Trigger bot turn if next player is a bot
-    const nextPlayer = updatedState.players[nextTurnIndex]
+    const nextPlayer = updatedState.players[nextTurnIdx]
     if (nextPlayer && nextPlayer.id.startsWith('bot-')) {
       setTimeout(() => runBotTurn(io, db, roomCode, updatedState), 1000)
     }

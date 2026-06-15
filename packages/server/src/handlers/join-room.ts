@@ -5,8 +5,6 @@ import { generateSessionToken, generatePlayerId } from '../room/session'
 import { logger } from '../logger'
 import type { Io, Sock, Db } from '../app'
 
-const MAX_PLAYERS = 5
-
 export function joinRoomHandler(_io: Io, socket: Sock, db: Db) {
   return (payload: JoinRoomPayload) => {
     const { code, playerName, sessionToken } = payload
@@ -49,7 +47,8 @@ export function joinRoomHandler(_io: Io, socket: Sock, db: Db) {
       socket.emit('error', { code: 'GAME_IN_PROGRESS', messageKey: 'errors.game_in_progress' })
       return
     }
-    if (state.players.length >= MAX_PLAYERS) {
+    const max = state.config.maxPlayers ?? 5
+    if (state.players.length >= max) {
       socket.emit('error', { code: 'ROOM_FULL', messageKey: 'errors.room_full' })
       return
     }
