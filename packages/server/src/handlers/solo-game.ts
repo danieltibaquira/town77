@@ -54,6 +54,16 @@ export function startSoloGameHandler(io: Io, socket: Sock, db: Db) {
 }
 
 export function runBotTurn(io: Io, db: Db, roomCode: string, currentState: GameState): void {
+  // The bot turn is scheduled via setTimeout, so any throw here would be an
+  // unhandled rejection. Contain it: log and leave the persisted state as-is.
+  try {
+    runBotTurnInner(io, db, roomCode, currentState)
+  } catch (err) {
+    logger.error({ roomCode, error: (err as Error).message }, 'bot.turn_failed')
+  }
+}
+
+function runBotTurnInner(io: Io, db: Db, roomCode: string, currentState: GameState): void {
   const botPlayer = currentState.players[currentState.turnIndex]
   if (!botPlayer || !botPlayer.id.startsWith('bot-')) return
 

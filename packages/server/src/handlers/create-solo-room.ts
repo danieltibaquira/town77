@@ -57,9 +57,18 @@ export function createSoloRoomHandler(_io: Io, socket: Sock, db: Db) {
     }
 
     const botToken = generateSessionToken()
-    createRoom(db, { code, themeId, config, state, seed })
-    createPlayer(db, { id: playerId, roomCode: code, name: playerName, sessionToken })
-    createPlayer(db, { id: botId, roomCode: code, name: 'Bot', sessionToken: botToken })
+    try {
+      createRoom(db, { code, themeId, config, state, seed })
+      createPlayer(db, { id: playerId, roomCode: code, name: playerName, sessionToken })
+      createPlayer(db, { id: botId, roomCode: code, name: 'Bot', sessionToken: botToken })
+    } catch (err) {
+      logger.error(
+        { roomCode: code, playerId, error: (err as Error).message },
+        'solo.room.create_failed',
+      )
+      socket.emit('error', { code: 'INTERNAL_ERROR', messageKey: 'errors.internal' })
+      return
+    }
 
     socket.data = { playerId, roomCode: code }
     void socket.join(code)
