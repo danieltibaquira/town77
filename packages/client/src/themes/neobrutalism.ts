@@ -25,8 +25,8 @@ export const neobrutalismTheme: Theme = {
   surfaces: {
     background: "#f5f5f5",
     grid: "#ffffff",
-    cell: "#f0f0f0",
-    cellHover: "#e0e0e0",
+    cell: "#1A1A1A",
+    cellHover: "#2E2E2E",
     cellValid: "#95e1d3",
     cellInvalid: "#ff6b6b",
   },

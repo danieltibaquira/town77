@@ -37,8 +37,8 @@ export function PlayerBadge({
         alignItems: "center",
         background: isCurrentTurn
           ? isNeo
-            ? "#ffe66d"
-            : "linear-gradient(135deg, #d4b76a 0%, #c4a35a 100%)"
+            ? "var(--neo-accent)"
+            : "linear-gradient(135deg, var(--accent-gold-light) 0%, var(--accent-gold) 100%)"
           : "var(--color-surface-cell)",
         borderRadius: isNeo ? `${neoRadius}px` : "var(--radius-pill)",
         border: isCurrentTurn
@@ -52,7 +52,7 @@ export function PlayerBadge({
           ? isNeo
             ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
             : "var(--shadow-glow-accent), 0 0 12px rgba(196, 163, 90, 0.2)"
-          : "var(--shadow-xs)",
+          : undefined,
         color: isCurrentTurn
           ? isNeo
             ? "#000000"

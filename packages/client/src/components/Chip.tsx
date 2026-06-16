@@ -117,6 +117,11 @@ export function Chip({
         <rect x="2" y="2" width="36" height="18" rx="8" fill="rgba(255,255,255,0.15)" />
         )}
 
+        {/* Layer 4b: Specular sheen ellipse (refined only) */}
+        {!isNeo && (
+        <ellipse cx="14" cy="12" rx="10" ry="6" fill="url(#chip-sheen)" />
+        )}
+
         {/* Layer 5: Red vignette overlay for invalid state */}
         {!isValid && (
           <rect x="0" y="0" width="40" height="40" rx="8" fill="rgba(180, 40, 40, 0.4)" />

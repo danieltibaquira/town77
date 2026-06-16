@@ -28,15 +28,17 @@ export function Grid({ grid, validCells, density = "comfortable", onCellClick }:
       data-density={density}
       style={{
         background: "var(--color-surface-grid)",
-        backgroundImage: isNeo ? "none" : "var(--texture-noise), var(--surface-grid-grad)",
-        backgroundBlendMode: isNeo ? "normal" : "overlay, normal",
+        backgroundImage: isNeo
+          ? "none"
+          : "var(--texture-wood), var(--surface-board-grad), var(--surface-grid-grad)",
+        backgroundBlendMode: isNeo ? "normal" : "overlay, normal, normal",
         borderRadius: isNeo ? `${neoRadius}px` : "var(--radius-lg)",
         border: isNeo
           ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
           : "1px solid rgba(255,255,255,0.06)",
         boxShadow: isNeo
           ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
-          : "var(--shadow-lg), inset 0 2px 8px rgba(0,0,0,0.2)",
+          : "var(--shadow-md), inset 0 2px 8px rgba(0,0,0,0.2)",
         display: "grid",
         gap,
         gridTemplateColumns: `repeat(${cols}, var(--layout-cell))`,

@@ -102,11 +102,7 @@ export function Cell({
             : `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
           : `1px solid ${isValid ? "rgba(5, 150, 105, 0.3)" : "rgba(255,255,255,0.04)"}`,
         borderRadius: isNeo ? `${neoRadius}px` : "var(--radius-md)",
-        boxShadow: isNeo && isValid
-          ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
-          : isValid
-            ? "0 0 12px rgba(5, 150, 105, 0.15), inset 0 1px 2px rgba(255,255,255,0.05)"
-            : "inset 0 1px 2px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.02)",
+        boxShadow,
         cursor: isValid && chip === null && onClick ? "pointer" : "default",
         display: "flex",
         height: cellSize,

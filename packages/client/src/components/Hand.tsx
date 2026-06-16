@@ -36,7 +36,7 @@ export function Hand({ chips, selectedChip, layoutMode = "scrolling", onSelect }
           : "2px solid rgba(196, 163, 90, 0.12)",
         boxShadow: isNeo
           ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}`
-          : "var(--shadow-md), inset 0 2px 8px rgba(0,0,0,0.3)",
+          : "var(--shadow-md), var(--shadow-inner-xs)",
         display: "flex",
         flexWrap: isStacked ? "wrap" : "nowrap",
         gap: layoutMode === "compact" ? "var(--space-xs)" : "var(--space-md)",

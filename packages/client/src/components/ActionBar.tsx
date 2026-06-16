@@ -49,8 +49,8 @@ export function ActionBar({
     ...baseButtonStyle,
     background: canExchange
       ? isNeo
-        ? "#ffe66d"
-        : "linear-gradient(180deg, #d4b76a 0%, #c4a35a 100%)"
+        ? "var(--neo-accent)"
+        : "linear-gradient(180deg, var(--accent-gold-light) 0%, var(--accent-gold) 100%)"
       : "var(--color-surface-cell)",
     color: canExchange
       ? isNeo
@@ -72,7 +72,7 @@ export function ActionBar({
     background: canDiscard
       ? isNeo
         ? "#ffffff"
-        : "linear-gradient(180deg, #3a3447 0%, #2e2847 100%)"
+        : "linear-gradient(180deg, var(--surface-button-discard-light) 0%, var(--surface-button-discard-dark) 100%)"
       : "var(--color-surface-cell)",
     color: canDiscard
       ? isNeo

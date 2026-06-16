@@ -20,7 +20,7 @@ export function Toast({ message, onDismiss }: ToastProps) {
       style={{
         alignItems: 'center',
         animation: shake.animation,
-        background: isNeo ? '#ffe66d' : 'var(--cell-bg-invalid)',
+        background: isNeo ? 'var(--neo-accent)' : 'var(--cell-bg-invalid)',
         borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-md)',
         bottom: 'var(--space-lg)',
         color: isNeo ? '#000000' : 'var(--color-text-primary)',
