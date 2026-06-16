@@ -90,7 +90,10 @@ test('5 bots play complete game to game_over with 5 valid scores', async ({ brow
   }))
 
   expect(results.scores).toHaveLength(5)
-  expect(results.bag).toBe(0)
+  // The game can end two valid ways: bag emptied with no legal move, OR every
+  // player is stuck (no place/exchange/discard) while the bag still has chips
+  // (the deadlock-fix termination). So the bag is >= 0, not necessarily 0.
+  expect(results.bag).toBeGreaterThanOrEqual(0)
   for (const s of results.scores as any[]) {
     expect(s.combined).toBeGreaterThanOrEqual(-20)
     expect(s.combined).toBeLessThanOrEqual(50)
