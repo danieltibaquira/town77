@@ -15,11 +15,11 @@ export const town77Theme: Theme = {
   },
   colorPalette: {
     "color-1": "#dc2626",
-    "color-2": "#2563eb",
+    "color-2": "#3b82f6",
     "color-3": "#059669",
     "color-4": "#f59e0b",
     "color-5": "#db2777",
-    "color-6": "#4f46e5",
+    "color-6": "#6366f1",
     "color-7": "#ea580c",
   },
   surfaces: {
