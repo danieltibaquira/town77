@@ -29,12 +29,12 @@ async function autoPlayTurn(page: Page): Promise<boolean> {
   }
 
   if (action.type === 'exchange') {
-    // The exchange chip-selection UI is not yet wired (handleExchange sends an
-    // empty set), so drive the exchange through the store action directly.
-    await page.evaluate(
-      (chips) => (window as any).__store.getState().exchangeChips(chips),
-      action.chips,
-    )
+    // Select a chip from the same-color set, then click exchange — the UI
+    // exchanges the selected chip's color group.
+    const chip = action.chips[0]!
+    await page.getByTestId(`chip-${chip.color}-${chip.shape}`).first().click()
+    await page.waitForTimeout(50)
+    await page.getByTestId('btn-exchange').click()
     return true
   }
 

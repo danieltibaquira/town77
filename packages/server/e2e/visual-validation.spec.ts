@@ -48,11 +48,10 @@ test('UI elements validated across 10 turns of gameplay', async ({ browser }) =>
         await p.waitForTimeout(50)
         await p.getByTestId('btn-discard').click()
       } else if (action.type === 'exchange') {
-        // Exchange chip-selection UI is not yet wired; drive via store action.
-        await p.evaluate(
-          (chips) => (window as any).__store.getState().exchangeChips(chips),
-          action.chips,
-        )
+        const chip = action.chips[0]!
+        await p.getByTestId(`chip-${chip.color}-${chip.shape}`).first().click()
+        await p.waitForTimeout(50)
+        await p.getByTestId('btn-exchange').click()
       }
 
       await p.waitForTimeout(200)

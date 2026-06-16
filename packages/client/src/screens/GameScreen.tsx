@@ -11,6 +11,7 @@ import { useValidCells } from '../hooks/useValidCells'
 import { bagShakeTransition, exchangeFlashTransition, turnSweepTransition } from '../lib/motion'
 import { useTheme } from '../lib/theme'
 import { useGameStore } from '../store/gameStore'
+import { selectExchangeSet } from '../lib/exchange'
 
 export function GameScreen() {
   useRequireGame()
@@ -45,10 +46,6 @@ export function GameScreen() {
 
   // T10: Exchange flash animation
   const [flashKey, setFlashKey] = useState(0)
-  const handleExchange = () => {
-    setFlashKey((k) => k + 1)
-    exchangeChips([])
-  }
 
   // Auto-nav to results when game ends
   useEffect(() => {
@@ -87,7 +84,21 @@ export function GameScreen() {
     selectChip(null)
   }
 
-  const canExchange = isMyTurn && myPlayer !== undefined && myPlayer.hand.length >= gameState.config.exchange.min
+  // Exchange the selected chip's same-color group (>= min of that color, capped
+  // at max). Null when the selection cannot form a legal exchange.
+  const exchangeSet =
+    isMyTurn && myPlayer
+      ? selectExchangeSet(myPlayer.hand, selectedChip, gameState.config.exchange)
+      : null
+
+  function handleExchange() {
+    if (!exchangeSet) return
+    setFlashKey((k) => k + 1)
+    exchangeChips(exchangeSet)
+    selectChip(null)
+  }
+
+  const canExchange = exchangeSet !== null
   const canDiscard = isMyTurn && myPlayer !== undefined && !myPlayer.hasDiscarded && selectedChip !== null
 
   const turnSweep = turnSweepTransition(theme.animationPreset)
