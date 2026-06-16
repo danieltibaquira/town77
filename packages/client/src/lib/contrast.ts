@@ -1,8 +1,19 @@
 function parseHexColor(hex: string): [number, number, number] {
-  const cleaned = hex.replace("#", "");
-  const r = Number.parseInt(cleaned.substring(0, 2), 16) / 255;
-  const g = Number.parseInt(cleaned.substring(2, 4), 16) / 255;
-  const b = Number.parseInt(cleaned.substring(4, 6), 16) / 255;
+  const cleaned = hex.replace(/^#/, "").trim();
+  // Expand 3-digit shorthand (#abc -> #aabbcc) before validation.
+  const expanded =
+    cleaned.length === 3
+      ? cleaned
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : cleaned;
+  if (!/^[0-9a-fA-F]{6}$/.test(expanded)) {
+    throw new Error(`Invalid hex color: ${hex}`);
+  }
+  const r = Number.parseInt(expanded.substring(0, 2), 16) / 255;
+  const g = Number.parseInt(expanded.substring(2, 4), 16) / 255;
+  const b = Number.parseInt(expanded.substring(4, 6), 16) / 255;
   return [r, g, b];
 }
 
