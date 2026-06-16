@@ -14,6 +14,7 @@ import { startSoloGameHandler } from './handlers/solo-game'
 import { placeChipHandler } from './handlers/place-chip'
 import { exchangeChipsHandler } from './handlers/exchange-chips'
 import { discardChipHandler } from './handlers/discard-chip'
+import { disconnectHandler } from './handlers/disconnect'
 
 declare module 'socket.io' {
   interface SocketData {
@@ -39,9 +40,7 @@ export function wireHandlers(io: Io, db: Db): void {
     socket.on('exchange_chips', exchangeChipsHandler(io, socket, db))
     socket.on('discard_chip', discardChipHandler(io, socket, db))
 
-    socket.on('disconnect', () => {
-      logger.debug({ socketId: socket.id }, 'socket.disconnect')
-    })
+    socket.on('disconnect', disconnectHandler(io, socket, db))
   })
 }
 
