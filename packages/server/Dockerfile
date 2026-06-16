@@ -20,6 +20,13 @@ RUN pnpm --filter @town77/shared-types run build \
  && pnpm --filter @town77/game-engine run build \
  && pnpm --filter @town77/server run build
 
+# Test stage: runs the server suite in-container (Constitution rule 1 —
+# reproducible, no host-only test execution). Reuses the builder, which already
+# has devDeps (vitest) and a source-built better-sqlite3 native binding.
+FROM builder AS test
+ENV NODE_ENV=test
+CMD ["pnpm", "--filter", "@town77/server", "run", "test"]
+
 FROM node:22-alpine AS production
 WORKDIR /app
 RUN apk add --no-cache python3 make g++ && corepack enable pnpm
