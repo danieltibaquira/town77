@@ -3,7 +3,14 @@ import type { Chip } from '@town77/shared-types'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
 import { SeededRNG } from '../rng'
 import { initBag } from '../bag'
-import { canDiscard, canExchange, doDiscard, doExchange, findExchangeableColorSet } from '../turn'
+import {
+  canDiscard,
+  canExchange,
+  doDiscard,
+  doExchange,
+  findExchangeableColorSet,
+  pickFirstPlayer,
+} from '../turn'
 
 const RED_COTTAGE: Chip = { color: 'color-1', shape: 'cottage' }
 const RED_TOWER: Chip = { color: 'color-1', shape: 'tower' }
@@ -14,6 +21,25 @@ const GREEN_COTTAGE: Chip = { color: 'color-3', shape: 'cottage' }
 const YELLOW_BARN: Chip = { color: 'color-4', shape: 'barn' }
 
 const exchangeConfig = DEFAULT_GAME_CONFIG.exchange
+
+describe('pickFirstPlayer', () => {
+  it('is deterministic for a given seed and player count', () => {
+    expect(pickFirstPlayer(42, 3)).toBe(pickFirstPlayer(42, 3))
+  })
+
+  it('returns an index within [0, playerCount)', () => {
+    for (let seed = 0; seed < 50; seed++) {
+      const idx = pickFirstPlayer(seed, 4)
+      expect(idx).toBeGreaterThanOrEqual(0)
+      expect(idx).toBeLessThan(4)
+    }
+  })
+
+  it('is not simply seed % playerCount (decorrelated from the deck)', () => {
+    const differs = Array.from({ length: 50 }, (_, s) => pickFirstPlayer(s, 3) !== s % 3)
+    expect(differs.some(Boolean)).toBe(true)
+  })
+})
 
 describe('findExchangeableColorSet', () => {
   it('returns 3 chips of the same color when the hand has them', () => {

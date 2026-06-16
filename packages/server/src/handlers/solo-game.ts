@@ -1,6 +1,5 @@
-import { randomInt } from 'crypto'
 import type { GameState } from '@town77/shared-types'
-import { dealHands, findBotAction, getValidCells, isFirstChipOnGrid, isValidPlacement, applyPlacement, drawChips, calculateScores, isGameOver, doExchange, SeededRNG } from '@town77/game-engine'
+import { dealHands, findBotAction, isFirstChipOnGrid, isValidPlacement, applyPlacement, drawChips, calculateScores, isGameOver, doExchange, SeededRNG, pickFirstPlayer } from '@town77/game-engine'
 import { getRoom, updateRoomState } from '../db/rooms'
 import { logger } from '../logger'
 import type { Io, Sock, Db } from '../app'
@@ -31,7 +30,7 @@ export function startSoloGameHandler(io: Io, socket: Sock, db: Db) {
     }
 
     const { hands, remainingBag } = dealHands(state.bag, state.players.length, state.config.handSize)
-    const firstPlayerIndex = state.seed % state.players.length
+    const firstPlayerIndex = pickFirstPlayer(state.seed, state.players.length)
 
     const updatedState: GameState = {
       ...state,

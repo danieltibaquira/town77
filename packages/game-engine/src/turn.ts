@@ -1,6 +1,21 @@
 import type { Chip, ExchangeConfig } from '@town77/shared-types'
 import type { RNG } from './rng'
+import { SeededRNG } from './rng'
 import { shuffle } from './bag'
+
+// Golden-ratio constant — offsets the deck seed so the first-player draw uses
+// an independent stream, decorrelated from the shuffle (SeededRNG(seed)).
+const FIRST_PLAYER_SEED_OFFSET = 0x9e3779b9
+
+/**
+ * Pick the starting player index. Deterministic for a given seed (reproducible)
+ * but drawn from a derived RNG stream rather than `seed % playerCount`, which is
+ * biased, trivially predictable, and correlated with the deck shuffle.
+ */
+export function pickFirstPlayer(seed: number, playerCount: number): number {
+  const rng = new SeededRNG(seed + FIRST_PLAYER_SEED_OFFSET)
+  return Math.floor(rng.nextFloat() * playerCount)
+}
 
 export function canExchange(
   hand: Chip[],
