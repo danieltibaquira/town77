@@ -28,6 +28,16 @@ async function autoPlayTurn(page: Page): Promise<boolean> {
     return true
   }
 
+  if (action.type === 'exchange') {
+    // The exchange chip-selection UI is not yet wired (handleExchange sends an
+    // empty set), so drive the exchange through the store action directly.
+    await page.evaluate(
+      (chips) => (window as any).__store.getState().exchangeChips(chips),
+      action.chips,
+    )
+    return true
+  }
+
   return false
 }
 

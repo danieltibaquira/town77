@@ -21,10 +21,18 @@ test('UI elements validated across 10 turns of gameplay', async ({ browser }) =>
   await expect(hostPage.getByTestId('game-screen')).toBeVisible({ timeout: 10000 })
   await expect(botPage.getByTestId('game-screen')).toBeVisible({ timeout: 10000 })
 
-  for (let turn = 0; turn < 10; turn++) {
+  let finished = false
+  for (let turn = 0; turn < 10 && !finished; turn++) {
     for (const p of [hostPage, botPage]) {
       const gs: GameState = await p.evaluate(() => (window as any).__store.getState().gameState)
       const pid: string = await p.evaluate(() => (window as any).__store.getState().playerId)
+
+      // The deadlock fix lets short 2-player games end before 10 turns; stop
+      // asserting in-game UI once the game has finished.
+      if (!gs || gs.phase !== 'playing') {
+        finished = true
+        break
+      }
 
       if (gs.players[gs.turnIndex]?.id !== pid) continue
 
@@ -39,9 +47,24 @@ test('UI elements validated across 10 turns of gameplay', async ({ browser }) =>
         await p.getByTestId(`chip-${action.chip.color}-${action.chip.shape}`).click()
         await p.waitForTimeout(50)
         await p.getByTestId('btn-discard').click()
+      } else if (action.type === 'exchange') {
+        // Exchange chip-selection UI is not yet wired; drive via store action.
+        await p.evaluate(
+          (chips) => (window as any).__store.getState().exchangeChips(chips),
+          action.chips,
+        )
       }
 
       await p.waitForTimeout(200)
+
+      // A move may have ended the game (navigates to results) — stop asserting.
+      const stillPlaying = await p.evaluate(
+        () => (window as any).__store.getState().gameState?.phase === 'playing',
+      )
+      if (!stillPlaying) {
+        finished = true
+        break
+      }
 
       await expect(p.getByTestId('game-screen')).toBeVisible({ timeout: 3000 })
       await expect(p.getByTestId('turn-indicator')).toBeVisible()
