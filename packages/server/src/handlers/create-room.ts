@@ -5,12 +5,19 @@ import { createRoom } from '../db/rooms'
 import { createPlayer } from '../db/players'
 import { generateRoomCode } from '../room/code'
 import { generateSessionToken, generatePlayerId } from '../room/session'
+import { validatePlayerName } from '../room/validate'
 import { logger } from '../logger'
 import type { Io, Sock, Db } from '../app'
 
 export function createRoomHandler(_io: Io, socket: Sock, db: Db) {
   return (payload: CreateRoomPayload) => {
-    const { config, themeId, playerName } = payload
+    const { config, themeId } = payload
+
+    const playerName = validatePlayerName(payload.playerName)
+    if (!playerName) {
+      socket.emit('error', { code: 'VALIDATION_ERROR', messageKey: 'errors.invalid_name' })
+      return
+    }
 
     const code = generateRoomCode()
     const seed = payload.seed ?? randomInt(0, 2 ** 31)

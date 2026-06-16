@@ -2,6 +2,7 @@ import type { JoinRoomPayload, GameState } from '@town77/shared-types'
 import { createPlayer, getPlayerByToken } from '../db/players'
 import { getRoom, updateRoomState } from '../db/rooms'
 import { generateSessionToken, generatePlayerId } from '../room/session'
+import { validatePlayerName } from '../room/validate'
 import { logger } from '../logger'
 import type { Io, Sock, Db } from '../app'
 
@@ -53,6 +54,12 @@ export function joinRoomHandler(_io: Io, socket: Sock, db: Db) {
       return
     }
 
+    const name = validatePlayerName(playerName)
+    if (!name) {
+      socket.emit('error', { code: 'VALIDATION_ERROR', messageKey: 'errors.invalid_name' })
+      return
+    }
+
     const playerId = generatePlayerId()
     const newToken = generateSessionToken()
 
@@ -60,13 +67,13 @@ export function joinRoomHandler(_io: Io, socket: Sock, db: Db) {
       ...state,
       players: [
         ...state.players,
-        { id: playerId, name: playerName, hand: [], placed: 0, hasDiscarded: false, connected: true },
+        { id: playerId, name, hand: [], placed: 0, hasDiscarded: false, connected: true },
       ],
     }
 
     try {
       updateRoomState(db, code, updatedState)
-      createPlayer(db, { id: playerId, roomCode: code, name: playerName, sessionToken: newToken })
+      createPlayer(db, { id: playerId, roomCode: code, name, sessionToken: newToken })
     } catch (err) {
       logger.error(
         { roomCode: code, playerId, error: (err as Error).message },

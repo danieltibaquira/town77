@@ -6,6 +6,7 @@
   "internal": "Something went wrong. Please try again.",
   "invalid_discard": "Invalid discard",
   "invalid_exchange": "Invalid exchange",
+  "invalid_name": "Name must be 1-32 characters",
   "invalid_placement": "Invalid placement",
   "not_enough_players": "Need at least 2 players",
   "not_host": "Only the host can start",

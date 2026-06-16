@@ -6,6 +6,7 @@
   "internal": "Algo salió mal. Inténtalo de nuevo.",
   "invalid_discard": "Descarte inválido",
   "invalid_exchange": "Intercambio inválido",
+  "invalid_name": "El nombre debe tener entre 1 y 32 caracteres",
   "invalid_placement": "Colocación inválida",
   "not_enough_players": "Se necesitan al menos 2 jugadores",
   "not_host": "Solo el anfitrión puede iniciar",

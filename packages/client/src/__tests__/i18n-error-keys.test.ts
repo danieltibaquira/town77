@@ -15,6 +15,7 @@ const EMITTED_ERROR_KEYS = [
   'internal',
   'invalid_discard',
   'invalid_exchange',
+  'invalid_name',
   'invalid_placement',
   'not_enough_players',
   'not_host',
