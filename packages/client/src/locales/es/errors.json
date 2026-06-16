@@ -1,12 +1,16 @@
 {
-  "invalid_placement": "Colocación inválida",
-  "not_your_turn": "No es tu turno",
-  "exchange_rule_violated": "Regla de intercambio violada",
   "already_discarded": "Ya descartaste en esta partida",
-  "room_not_found": "Sala no encontrada",
+  "already_started": "La partida ya empezó",
   "game_in_progress": "La partida ya inició",
+  "game_not_active": "La partida no está activa",
+  "internal": "Algo salió mal. Inténtalo de nuevo.",
+  "invalid_discard": "Descarte inválido",
+  "invalid_exchange": "Intercambio inválido",
+  "invalid_placement": "Colocación inválida",
   "not_enough_players": "Se necesitan al menos 2 jugadores",
   "not_host": "Solo el anfitrión puede iniciar",
+  "not_in_room": "No estás en una sala",
+  "not_your_turn": "No es tu turno",
   "room_full": "Sala llena",
-  "internal": "Algo salió mal. Inténtalo de nuevo."
+  "room_not_found": "Sala no encontrada"
 }

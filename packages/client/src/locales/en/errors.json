@@ -1,12 +1,16 @@
 {
-  "invalid_placement": "Invalid placement",
-  "not_your_turn": "Not your turn",
-  "exchange_rule_violated": "Exchange rule violated",
   "already_discarded": "Already discarded this game",
-  "room_not_found": "Room not found",
+  "already_started": "Game already started",
   "game_in_progress": "Game already in progress",
+  "game_not_active": "Game is not active",
+  "internal": "Something went wrong. Please try again.",
+  "invalid_discard": "Invalid discard",
+  "invalid_exchange": "Invalid exchange",
+  "invalid_placement": "Invalid placement",
   "not_enough_players": "Need at least 2 players",
   "not_host": "Only the host can start",
+  "not_in_room": "You are not in a room",
+  "not_your_turn": "Not your turn",
   "room_full": "Room full",
-  "internal": "Something went wrong. Please try again."
+  "room_not_found": "Room not found"
 }
