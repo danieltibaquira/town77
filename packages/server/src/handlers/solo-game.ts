@@ -63,7 +63,15 @@ export function runBotTurn(io: Io, db: Db, roomCode: string, currentState: GameS
   }
 }
 
-function runBotTurnInner(io: Io, db: Db, roomCode: string, currentState: GameState): void {
+function runBotTurnInner(io: Io, db: Db, roomCode: string, _captured: GameState): void {
+  // Re-read the current state from the DB rather than trusting the snapshot
+  // captured when this turn was scheduled — a human may have moved (or the
+  // room changed) during the setTimeout delay.
+  const roomRow = getRoom(db, roomCode)
+  if (!roomRow) return
+  const currentState: GameState = JSON.parse(roomRow.state_json) as GameState
+  if (currentState.phase !== 'playing') return
+
   const botPlayer = currentState.players[currentState.turnIndex]
   if (!botPlayer || !botPlayer.id.startsWith('bot-')) return
 

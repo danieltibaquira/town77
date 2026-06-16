@@ -18,6 +18,9 @@ vi.mock('../db/players', () => ({ createPlayer: vi.fn() }))
 
 import { createSoloRoomHandler } from '../handlers/create-solo-room'
 import { runBotTurn } from '../handlers/solo-game'
+import { getRoom } from '../db/rooms'
+
+const mockGetRoom = getRoom as unknown as ReturnType<typeof vi.fn>
 
 const io = { to: vi.fn(() => ({ emit: vi.fn() })) }
 
@@ -60,6 +63,9 @@ describe('runBotTurn — DB failure handling', () => {
       themeId: 'town77',
       seed: 1,
     }
+    // runBotTurn re-reads state from the DB; return a bot-turn state so it
+    // reaches the (throwing) updateRoomState and must catch it.
+    mockGetRoom.mockReturnValue({ state_json: JSON.stringify(state) })
     // Empty grid -> bot places first chip -> updateRoomState throws -> must catch
     expect(() => runBotTurn(io as never, {} as never, 'CODE', state as never)).not.toThrow()
   })
