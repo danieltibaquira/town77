@@ -40,8 +40,17 @@ export function createRoomHandler(_io: Io, socket: Sock, db: Db) {
       seed,
     }
 
-    createRoom(db, { code, themeId, config, state, seed })
-    createPlayer(db, { id: playerId, roomCode: code, name: playerName, sessionToken })
+    try {
+      createRoom(db, { code, themeId, config, state, seed })
+      createPlayer(db, { id: playerId, roomCode: code, name: playerName, sessionToken })
+    } catch (err) {
+      logger.error(
+        { roomCode: code, playerId, error: (err as Error).message },
+        'room.create_failed',
+      )
+      socket.emit('error', { code: 'INTERNAL_ERROR', messageKey: 'errors.internal' })
+      return
+    }
 
     socket.data = { playerId, roomCode: code }
     void socket.join(code)

@@ -61,10 +61,11 @@ describe('isValidPlacement — adjacency', () => {
 
   it('allows placement adjacent to existing chip', () => {
     const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    expect(isValidPlacement(grid, 3, 4, TOWER_BLUE, false)).toBe(true)
-    expect(isValidPlacement(grid, 4, 3, TOWER_BLUE, false)).toBe(true)
-    expect(isValidPlacement(grid, 3, 2, TOWER_BLUE, false)).toBe(true)
-    expect(isValidPlacement(grid, 2, 3, TOWER_BLUE, false)).toBe(true)
+    // TOWER_RED shares color with COTTAGE_RED — a legal same-color line partner
+    expect(isValidPlacement(grid, 3, 4, TOWER_RED, false)).toBe(true)
+    expect(isValidPlacement(grid, 4, 3, TOWER_RED, false)).toBe(true)
+    expect(isValidPlacement(grid, 3, 2, TOWER_RED, false)).toBe(true)
+    expect(isValidPlacement(grid, 2, 3, TOWER_RED, false)).toBe(true)
   })
 
   it('rejects diagonal placement', () => {
@@ -78,32 +79,51 @@ describe('isValidPlacement — adjacency', () => {
   })
 })
 
-describe('isValidPlacement — row/column uniqueness', () => {
-  it('rejects chip with duplicate color in same row', () => {
+describe('isValidPlacement — Qwirkle line rule', () => {
+  // A chip is legal in a line only if it shares exactly one attribute with
+  // every line neighbor (same color XOR same shape). Sharing neither (broken
+  // line) or both (exact duplicate) is illegal.
+
+  it('allows chip sharing color in same row (same-color line)', () => {
     const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    // TOWER_RED has same color as COTTAGE_RED — same row
-    expect(isValidPlacement(grid, 3, 4, TOWER_RED, false)).toBe(false)
+    // TOWER_RED: same color, different shape
+    expect(isValidPlacement(grid, 3, 4, TOWER_RED, false)).toBe(true)
   })
 
-  it('rejects chip with duplicate shape in same row', () => {
+  it('allows chip sharing shape in same row (same-shape line)', () => {
     const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    // COTTAGE_BLUE has same shape as COTTAGE_RED — same row
-    expect(isValidPlacement(grid, 3, 4, COTTAGE_BLUE, false)).toBe(false)
+    // COTTAGE_BLUE: same shape, different color
+    expect(isValidPlacement(grid, 3, 4, COTTAGE_BLUE, false)).toBe(true)
   })
 
-  it('rejects chip with duplicate color in same column', () => {
+  it('allows chip sharing color in same column', () => {
     const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    expect(isValidPlacement(grid, 4, 3, TOWER_RED, false)).toBe(false)
+    expect(isValidPlacement(grid, 4, 3, TOWER_RED, false)).toBe(true)
   })
 
-  it('rejects chip with duplicate shape in same column', () => {
+  it('allows chip sharing shape in same column', () => {
     const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    expect(isValidPlacement(grid, 4, 3, COTTAGE_BLUE, false)).toBe(false)
+    expect(isValidPlacement(grid, 4, 3, COTTAGE_BLUE, false)).toBe(true)
   })
 
-  it('allows chip with unique color and shape in row and column', () => {
+  it('rejects chip sharing neither color nor shape (broken line)', () => {
     const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    expect(isValidPlacement(grid, 3, 4, TOWER_BLUE, false)).toBe(true)
+    // TOWER_BLUE: different color and different shape
+    expect(isValidPlacement(grid, 3, 4, TOWER_BLUE, false)).toBe(false)
+  })
+
+  it('rejects exact duplicate chip in same line', () => {
+    const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
+    // COTTAGE_RED again: shares both color and shape
+    expect(isValidPlacement(grid, 3, 4, COTTAGE_RED, false)).toBe(false)
+  })
+
+  it('rejects chip that breaks an established same-color line', () => {
+    // Row 3 is a red line: COTTAGE_RED, TOWER_RED
+    let grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
+    grid = applyPlacement(grid, 3, 4, TOWER_RED)
+    // COTTAGE_BLUE shares shape with COTTAGE_RED but shares nothing with TOWER_RED
+    expect(isValidPlacement(grid, 3, 5, COTTAGE_BLUE, false)).toBe(false)
   })
 })
 
@@ -130,11 +150,12 @@ describe('getValidCells', () => {
 
   it('returns only adjacent cells with no conflict for second chip', () => {
     const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    const cells = getValidCells(grid, TOWER_BLUE, false)
-    // Must be adjacent to (3,3) AND have no color/shape conflicts
+    // TOWER_RED shares color with COTTAGE_RED — a legal line partner
+    const cells = getValidCells(grid, TOWER_RED, false)
+    // Must be adjacent to (3,3) AND form a legal line
     expect(cells.length).toBeGreaterThan(0)
     cells.forEach(([r, c]) => {
-      expect(isValidPlacement(grid, r, c, TOWER_BLUE, false)).toBe(true)
+      expect(isValidPlacement(grid, r, c, TOWER_RED, false)).toBe(true)
     })
   })
 })

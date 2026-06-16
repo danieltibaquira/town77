@@ -64,8 +64,17 @@ export function joinRoomHandler(_io: Io, socket: Sock, db: Db) {
       ],
     }
 
-    updateRoomState(db, code, updatedState)
-    createPlayer(db, { id: playerId, roomCode: code, name: playerName, sessionToken: newToken })
+    try {
+      updateRoomState(db, code, updatedState)
+      createPlayer(db, { id: playerId, roomCode: code, name: playerName, sessionToken: newToken })
+    } catch (err) {
+      logger.error(
+        { roomCode: code, playerId, error: (err as Error).message },
+        'player.join_failed',
+      )
+      socket.emit('error', { code: 'INTERNAL_ERROR', messageKey: 'errors.internal' })
+      return
+    }
 
     socket.data = { playerId, roomCode: code }
     void socket.join(code)

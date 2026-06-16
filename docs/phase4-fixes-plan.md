@@ -681,3 +681,9 @@ After these fixes:
 2. Run E2E tests to catch runtime bugs
 3. Test on multiple screen sizes
 4. Document the E2E testing workflow for the team
+
+---
+
+## Related: Code Review Remediation (2026-06-15)
+
+See [`code-review-fixes.md`](code-review-fixes.md) — a symlink to the TaskForge tracker for the 42-finding Claude Code code review, reduced to 3 priority-batched tasks (P0, P1, P2). P0#2 (hook violation in `GameScreen.tsx`) was completed 2026-06-15.

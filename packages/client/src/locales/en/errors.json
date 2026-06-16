@@ -7,5 +7,6 @@
   "game_in_progress": "Game already in progress",
   "not_enough_players": "Need at least 2 players",
   "not_host": "Only the host can start",
-  "room_full": "Room full"
+  "room_full": "Room full",
+  "internal": "Something went wrong. Please try again."
 }

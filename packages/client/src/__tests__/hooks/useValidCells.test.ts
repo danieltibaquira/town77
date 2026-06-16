@@ -20,9 +20,10 @@ describe('useValidCells', () => {
   it('filters cells after a chip is placed', () => {
     const grid: Grid = Array.from({ length: 7 }, () => Array(7).fill(null))
     grid[3]![3] = { color: 'color-1', shape: 'cottage' }
-    const nextChip: Chip = { color: 'color-2', shape: 'tower' }
+    // Shares color with the placed chip — a legal same-color line partner
+    const nextChip: Chip = { color: 'color-1', shape: 'tower' }
     const { result } = renderHook(() => useValidCells(grid, nextChip))
-    // Should only include adjacent cells that pass row/column uniqueness
+    // Should only include adjacent cells that form a legal Qwirkle line
     expect(result.current.length).toBeGreaterThan(0)
     expect(result.current.length).toBeLessThan(49)
     // Each returned cell should be a [row, col] tuple

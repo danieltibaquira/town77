@@ -57,6 +57,13 @@ export function GameScreen() {
     }
   }, [gameState?.phase, navigate, roomCode])
 
+  // P0#2 fix: useValidCells must be called unconditionally, BEFORE the early
+  // return below. Otherwise React throws "Rendered more hooks than during the
+  // previous render" when the store transitions from null → populated.
+  // The hook itself short-circuits on null grid + null chip, so passing
+  // gameState?.grid is safe.
+  const validCells = useValidCells(gameState?.grid, selectedChip)
+
   if (!gameState || !playerId) {
     return (
       <main data-testid="game-screen" style={{ background: 'var(--color-surface-bg)', color: 'var(--color-text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
@@ -67,7 +74,6 @@ export function GameScreen() {
 
   const myPlayer = gameState.players.find((p) => p.id === playerId)
   const isMyTurn = gameState.players[gameState.turnIndex]?.id === playerId
-  const validCells = useValidCells(gameState.grid, selectedChip)
 
   function handleCellClick(row: number, col: number) {
     if (!selectedChip || !isMyTurn) return

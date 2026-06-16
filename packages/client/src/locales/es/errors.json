@@ -7,5 +7,6 @@
   "game_in_progress": "La partida ya inició",
   "not_enough_players": "Se necesitan al menos 2 jugadores",
   "not_host": "Solo el anfitrión puede iniciar",
-  "room_full": "Sala llena"
+  "room_full": "Sala llena",
+  "internal": "Algo salió mal. Inténtalo de nuevo."
 }

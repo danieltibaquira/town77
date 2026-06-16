@@ -7,6 +7,8 @@ import { calculateScores, isGameOver } from '../scoring'
 const RED_COTTAGE = { color: 'color-1', shape: 'cottage' }
 const BLUE_TOWER = { color: 'color-2', shape: 'tower' }
 const GREEN_BARN = { color: 'color-3', shape: 'barn' }
+// Shares color with RED_COTTAGE — a legal same-color line partner
+const RED_TOWER = { color: 'color-1', shape: 'tower' }
 
 function makePlayer(
   overrides: Partial<PlayerState> = {},
@@ -76,8 +78,8 @@ describe('isGameOver', () => {
 
   it('returns false when bag empty but valid placements still exist', () => {
     const grid = applyPlacement(createGrid(7, 7), 3, 3, RED_COTTAGE)
-    const players = [makePlayer({ hand: [BLUE_TOWER] })]
-    // BLUE_TOWER can be placed adjacent to RED_COTTAGE
+    const players = [makePlayer({ hand: [RED_TOWER] })]
+    // RED_TOWER forms a legal same-color line adjacent to RED_COTTAGE
     expect(isGameOver(grid, [], players)).toBe(false)
   })
 })

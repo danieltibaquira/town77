@@ -25,19 +25,22 @@ export function isValidPlacement(
 
   for (let c = 0; c < cols; c++) {
     const cell = grid[row]?.[c]
-    if (cell != null) {
-      if (cell.color === chip.color || cell.shape === chip.shape) return false
-    }
+    if (cell != null && !sharesExactlyOneAttribute(cell, chip)) return false
   }
 
   for (let r = 0; r < rows; r++) {
     const cell = grid[r]?.[col]
-    if (cell != null) {
-      if (cell.color === chip.color || cell.shape === chip.shape) return false
-    }
+    if (cell != null && !sharesExactlyOneAttribute(cell, chip)) return false
   }
 
   return true
+}
+
+// Qwirkle line rule: two chips in the same line are compatible only when they
+// share exactly one attribute — same color XOR same shape. Sharing neither
+// breaks the line; sharing both is an illegal duplicate.
+function sharesExactlyOneAttribute(a: Chip, b: Chip): boolean {
+  return (a.color === b.color) !== (a.shape === b.shape)
 }
 
 function hasAdjacentChip(grid: Grid, row: number, col: number): boolean {
