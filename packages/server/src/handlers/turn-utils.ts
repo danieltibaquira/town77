@@ -1,12 +1,14 @@
 import type { GameState } from '@town77/shared-types'
-import { getValidCells, isFirstChipOnGrid } from '@town77/game-engine'
+import { getValidCells, isFirstChipOnGrid, findExchangeableColorSet } from '@town77/game-engine'
 
 function playerCanAct(state: GameState, playerIndex: number): boolean {
   const player = state.players[playerIndex]
   if (!player || player.hand.length === 0) return false
   if (!player.hasDiscarded) return true
   const isFirst = isFirstChipOnGrid(state.grid)
-  return player.hand.some((chip) => getValidCells(state.grid, chip, isFirst).length > 0)
+  if (player.hand.some((chip) => getValidCells(state.grid, chip, isFirst).length > 0)) return true
+  // A player who has discarded can still act by exchanging 3 same-color chips.
+  return findExchangeableColorSet(player.hand) !== null
 }
 
 export function nextTurnIndex(state: GameState, current: number): number {

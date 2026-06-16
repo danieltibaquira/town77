@@ -3,7 +3,7 @@ import type { Chip } from '@town77/shared-types'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
 import { SeededRNG } from '../rng'
 import { initBag } from '../bag'
-import { canDiscard, canExchange, doDiscard, doExchange } from '../turn'
+import { canDiscard, canExchange, doDiscard, doExchange, findExchangeableColorSet } from '../turn'
 
 const RED_COTTAGE: Chip = { color: 'color-1', shape: 'cottage' }
 const RED_TOWER: Chip = { color: 'color-1', shape: 'tower' }
@@ -14,6 +14,32 @@ const GREEN_COTTAGE: Chip = { color: 'color-3', shape: 'cottage' }
 const YELLOW_BARN: Chip = { color: 'color-4', shape: 'barn' }
 
 const exchangeConfig = DEFAULT_GAME_CONFIG.exchange
+
+describe('findExchangeableColorSet', () => {
+  it('returns 3 chips of the same color when the hand has them', () => {
+    const hand = [RED_COTTAGE, RED_TOWER, RED_BARN, BLUE_COTTAGE]
+    const set = findExchangeableColorSet(hand)
+    expect(set).not.toBeNull()
+    expect(set).toHaveLength(3)
+    expect(set!.every((c) => c.color === 'color-1')).toBe(true)
+  })
+
+  it('returns null when no color has at least 3 chips', () => {
+    const hand = [RED_COTTAGE, RED_TOWER, BLUE_COTTAGE, GREEN_COTTAGE]
+    expect(findExchangeableColorSet(hand)).toBeNull()
+  })
+
+  it('returns null for an empty hand', () => {
+    expect(findExchangeableColorSet([])).toBeNull()
+  })
+
+  it('returns a set that passes canExchange', () => {
+    const hand = [RED_COTTAGE, RED_TOWER, RED_BARN, RED_ROWHOUSE]
+    const set = findExchangeableColorSet(hand)
+    expect(set).not.toBeNull()
+    expect(canExchange(hand, set!, exchangeConfig)).toBe(true)
+  })
+})
 
 describe('canExchange', () => {
   it('returns true for 3 chips sharing same color', () => {

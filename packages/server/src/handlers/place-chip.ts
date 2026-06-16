@@ -71,7 +71,7 @@ export function placeChipHandler(io: Io, socket: Sock, db: Db) {
       )
 
       const nextTurnIdx = nextTurnIndex(
-        { ...state, players: updatedPlayers },
+        { ...state, grid: newGrid, players: updatedPlayers },
         state.turnIndex,
       )
 

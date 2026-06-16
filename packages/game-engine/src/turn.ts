@@ -41,6 +41,23 @@ export function doExchange(
   return { newHand, newBag }
 }
 
+/**
+ * Find 3 chips in the hand that share a color, suitable for an exchange.
+ * Returns null when no color has at least 3 chips.
+ */
+export function findExchangeableColorSet(hand: Chip[]): Chip[] | null {
+  const byColor = new Map<string, Chip[]>()
+  for (const chip of hand) {
+    const group = byColor.get(chip.color) ?? []
+    group.push(chip)
+    byColor.set(chip.color, group)
+  }
+  for (const group of byColor.values()) {
+    if (group.length >= 3) return group.slice(0, 3)
+  }
+  return null
+}
+
 export function canDiscard(hasDiscarded: boolean): boolean {
   return !hasDiscarded
 }

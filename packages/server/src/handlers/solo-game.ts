@@ -1,6 +1,6 @@
 import { randomInt } from 'crypto'
 import type { GameState } from '@town77/shared-types'
-import { dealHands, findBotAction, getValidCells, isFirstChipOnGrid, isValidPlacement, applyPlacement, drawChips, calculateScores, isGameOver } from '@town77/game-engine'
+import { dealHands, findBotAction, getValidCells, isFirstChipOnGrid, isValidPlacement, applyPlacement, drawChips, calculateScores, isGameOver, doExchange, SeededRNG } from '@town77/game-engine'
 import { getRoom, updateRoomState } from '../db/rooms'
 import { logger } from '../logger'
 import type { Io, Sock, Db } from '../app'
@@ -170,6 +170,30 @@ export function runBotTurn(io: Io, db: Db, roomCode: string, currentState: GameS
 
     updateRoomState(db, roomCode, updatedState)
     logger.info({ roomCode, botId: botPlayer.id, drew }, 'bot.discarded')
+    io.to(roomCode).emit('state_update', { state: updatedState })
+
+    const nextPlayer = updatedState.players[nextTurnIndex]
+    if (nextPlayer && nextPlayer.id.startsWith('bot-')) {
+      setTimeout(() => runBotTurn(io, db, roomCode, updatedState), 1000)
+    }
+  } else if (action.type === 'exchange') {
+    const rng = new SeededRNG(currentState.seed + currentState.turnIndex)
+    const { newHand, newBag } = doExchange(botPlayer.hand, currentState.bag, action.chips, rng)
+
+    const updatedPlayers = currentState.players.map((p, i) =>
+      i === currentState.turnIndex ? { ...p, hand: newHand } : p,
+    )
+
+    const nextTurnIndex = (currentState.turnIndex + 1) % currentState.players.length
+    const updatedState: GameState = {
+      ...currentState,
+      bag: newBag,
+      players: updatedPlayers,
+      turnIndex: nextTurnIndex,
+    }
+
+    updateRoomState(db, roomCode, updatedState)
+    logger.info({ roomCode, botId: botPlayer.id, count: action.chips.length }, 'bot.exchanged')
     io.to(roomCode).emit('state_update', { state: updatedState })
 
     const nextPlayer = updatedState.players[nextTurnIndex]

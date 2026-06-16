@@ -12,7 +12,8 @@ describe('bot auto-play', () => {
   afterEach(() => server.close())
 
   it('three bots play a full game to game_over', async () => {
-    const { bot: host, code } = await createBotHost(server, 'Bot-1')
+    // Fixed seed for a deterministic, reproducible game.
+    const { bot: host, code } = await createBotHost(server, 'Bot-1', undefined, 42)
     const bot2 = await createBotClient(server, code, 'Bot-2')
     const bot3 = await createBotClient(server, code, 'Bot-3')
 

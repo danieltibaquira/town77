@@ -82,4 +82,57 @@ describe('isGameOver', () => {
     // RED_TOWER forms a legal same-color line adjacent to RED_COTTAGE
     expect(isGameOver(grid, [], players)).toBe(false)
   })
+
+  it('returns true when bag has chips but no player can progress (deadlock)', () => {
+    // Full grid -> no placement possible for anyone.
+    let grid: Grid = createGrid(7, 7)
+    for (let r = 0; r < 7; r++) {
+      for (let c = 0; c < 7; c++) {
+        grid = applyPlacement(grid, r, c, RED_COTTAGE)
+      }
+    }
+    const bag = [BLUE_TOWER, GREEN_BARN] // bag NOT empty
+    const players = [
+      // already discarded, no 3-same-color -> cannot place/exchange/discard
+      makePlayer({ id: 'p1', hand: [BLUE_TOWER, GREEN_BARN], hasDiscarded: true }),
+      makePlayer({ id: 'p2', hand: [RED_COTTAGE, BLUE_TOWER], hasDiscarded: true }),
+    ]
+    expect(isGameOver(grid, bag, players)).toBe(true)
+  })
+
+  it('returns false when bag has chips and a stuck player can still exchange', () => {
+    let grid: Grid = createGrid(7, 7)
+    for (let r = 0; r < 7; r++) {
+      for (let c = 0; c < 7; c++) {
+        grid = applyPlacement(grid, r, c, RED_COTTAGE)
+      }
+    }
+    const bag = [BLUE_TOWER]
+    const players = [
+      // already discarded but holds 3 chips of color-1 -> can still exchange
+      makePlayer({
+        id: 'p1',
+        hand: [
+          { color: 'color-1', shape: 'cottage' },
+          { color: 'color-1', shape: 'tower' },
+          { color: 'color-1', shape: 'barn' },
+        ],
+        hasDiscarded: true,
+      }),
+    ]
+    expect(isGameOver(grid, bag, players)).toBe(false)
+  })
+
+  it('returns false when a stuck player has not discarded yet', () => {
+    let grid: Grid = createGrid(7, 7)
+    for (let r = 0; r < 7; r++) {
+      for (let c = 0; c < 7; c++) {
+        grid = applyPlacement(grid, r, c, RED_COTTAGE)
+      }
+    }
+    const players = [
+      makePlayer({ id: 'p1', hand: [BLUE_TOWER], hasDiscarded: false }),
+    ]
+    expect(isGameOver(grid, [BLUE_TOWER], players)).toBe(false)
+  })
 })
