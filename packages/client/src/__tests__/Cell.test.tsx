@@ -19,6 +19,24 @@ describe("Cell", () => {
     expect(screen.getByTestId("cell-1-1")).toHaveAttribute("data-valid", "true");
   });
 
+  it("exposes a non-empty accessible name with the 1-based cell position", () => {
+    renderWithTheme(<Cell row={2} col={3} chip={null} isValid={true} />);
+    const label = screen.getByTestId("cell-2-3").getAttribute("aria-label") ?? "";
+    // Language-agnostic: must be non-empty and reference the 1-based position
+    expect(label).not.toBe("");
+    expect(label).toMatch(/3/);
+    expect(label).toMatch(/4/);
+  });
+
+  it("exposes an accessible name for an occupied cell", () => {
+    renderWithTheme(
+      <Cell row={0} col={0} chip={{ color: "color-1", shape: "barn" }} isValid={false} />,
+    );
+    const label = screen.getByTestId("cell-0-0").getAttribute("aria-label") ?? "";
+    expect(label).not.toBe("");
+    expect(label).toMatch(/1/);
+  });
+
   it("calls onClick with row and col on empty valid cell", () => {
     const onClick = vi.fn();
     renderWithTheme(<Cell row={2} col={3} chip={null} isValid={true} onClick={onClick} />);

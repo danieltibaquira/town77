@@ -9,5 +9,8 @@
   "start_game": "Iniciar juego",
   "waiting_for_host": "Esperando al anfitrión",
   "player_joined": "{{name}} se unió",
-  "player_left": "{{name}} se fue"
+  "player_left": "{{name}} se fue",
+  "cell_empty": "Celda vacía, fila {{row}}, columna {{col}}",
+  "cell_valid": "Colocación válida, fila {{row}}, columna {{col}}",
+  "cell_occupied": "Celda ocupada, fila {{row}}, columna {{col}}"
 }

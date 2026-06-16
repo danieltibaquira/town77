@@ -9,5 +9,8 @@
   "start_game": "Start game",
   "waiting_for_host": "Waiting for host",
   "player_joined": "{{name}} joined",
-  "player_left": "{{name}} left"
+  "player_left": "{{name}} left",
+  "cell_empty": "Empty cell, row {{row}}, column {{col}}",
+  "cell_valid": "Valid placement, row {{row}}, column {{col}}",
+  "cell_occupied": "Occupied cell, row {{row}}, column {{col}}"
 }

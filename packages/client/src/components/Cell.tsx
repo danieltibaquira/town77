@@ -1,5 +1,6 @@
 import type { Chip as ChipType } from "@town77/shared-types";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { cellPulseTransition } from "../lib/motion";
 import { useTheme } from "../lib/theme";
 import { Chip } from "./Chip";
@@ -29,8 +30,12 @@ export function Cell({
   onClick,
 }: CellProps) {
   const { theme } = useTheme();
+  const { t } = useTranslation("game");
   const isNeo = theme.style === "neobrutalism";
   const neoRadius = theme.styleProps.borderRadius;
+
+  const labelKey = chip !== null ? "cell_occupied" : isValid ? "cell_valid" : "cell_empty";
+  const ariaLabel = t(labelKey, { row: row + 1, col: col + 1 });
   const isCompact = density === "compact";
   const cellSize = isCompact ? "calc(var(--layout-cell) * 0.85)" : "var(--layout-cell)";
 
@@ -67,6 +72,7 @@ export function Cell({
   return (
     <motion.div
       role="button"
+      aria-label={ariaLabel}
       tabIndex={chip === null && onClick ? 0 : -1}
       data-testid={`cell-${row}-${col}`}
       data-valid={isValid}
