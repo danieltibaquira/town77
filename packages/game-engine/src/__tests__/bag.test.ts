@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
 import { SeededRNG } from '../rng'
-import { dealHands, drawChips, initBag, shuffle } from '../bag'
+import { dealHands, drawChips, initBag } from '../bag'
 
 describe('initBag', () => {
   it('produces correct total chip count', () => {

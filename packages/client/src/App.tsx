@@ -1,4 +1,3 @@
-import type { Theme } from "@town77/shared-types";
 import { Suspense, useEffect, useState } from "react";
 import { I18nextProvider } from "react-i18next";
 import { BrowserRouter } from "react-router-dom";

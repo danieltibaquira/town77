@@ -27,8 +27,6 @@ export function ActionBar({
   const { theme } = useTheme();
   const isNeo = theme.style === "neobrutalism";
   const neoRadius = theme.styleProps.borderRadius;
-  const minHeight = size === "sm" ? 32 : 48;
-  const isGhost = variant === "ghost";
 
   const baseButtonStyle = {
     borderRadius: isNeo ? `${neoRadius}px` : "var(--radius-md)",

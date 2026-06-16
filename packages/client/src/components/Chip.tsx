@@ -36,7 +36,6 @@ export function Chip({
   const neoRadius = theme.styleProps.borderRadius;
   const svgPath = theme.shapes[chip.shape] ?? "M5 35 L20 5 L35 35 Z";
   const colorIndex = Object.keys(theme.colorPalette).indexOf(chip.color) + 1
-  const gradientId = `url(#chip-grad-${colorIndex})`
   const chipColor = theme.colorPalette[chip.color];
   const scale = SIZE_SCALE[size];
   const drawIn = chipDrawInTransition(theme.animationPreset, staggerIndex);

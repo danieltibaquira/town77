@@ -19,9 +19,7 @@ export function GameScreen() {
   const navigate = useNavigate()
   const { theme } = useTheme()
   const isNeo = theme.style === "neobrutalism";
-  const neoRadius = theme.styleProps.borderRadius;
 
-  const connected = useGameStore((s) => s.connected)
   const gameState = useGameStore((s) => s.gameState)
   const playerId = useGameStore((s) => s.playerId)
   const roomCode = useGameStore((s) => s.roomCode)

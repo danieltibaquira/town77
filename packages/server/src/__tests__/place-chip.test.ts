@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import type { RoomJoinedPayload, StateUpdatePayload } from '@town77/shared-types'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
-import { createTestServer, connectClient, type TestServer, type TestClient } from './helpers/test-server'
+import { createTestServer, connectClient, type TestServer } from './helpers/test-server'
 
 async function startGame(server: TestServer) {
   const host = await connectClient(server)

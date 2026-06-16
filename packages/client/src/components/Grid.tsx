@@ -1,5 +1,4 @@
 import type { Grid as GridType } from "@town77/shared-types";
-import { cellEntranceTransition } from "../lib/motion";
 import { useTheme } from "../lib/theme";
 import { Cell } from "./Cell";
 
@@ -19,7 +18,6 @@ export function Grid({ grid, validCells, density = "comfortable", onCellClick }:
   const { theme } = useTheme();
   const isNeo = theme.style === "neobrutalism";
   const neoRadius = theme.styleProps.borderRadius;
-  const cellEntrance = cellEntranceTransition(theme.animationPreset);
 
   return (
     <div
