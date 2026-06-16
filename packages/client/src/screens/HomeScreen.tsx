@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../lib/theme";
-import { getThemeById } from "../themes";
+import { getThemeByIdSafe } from "../themes";
 
 export function HomeScreen() {
   const { t } = useTranslation("common");
@@ -13,8 +13,8 @@ export function HomeScreen() {
   function cycleTheme() {
     const order = ["town77", "playful-pastel", "neobrutalism"];
     const idx = order.indexOf(theme.id);
-    const next = order[(idx + 1) % order.length];
-    setTheme(getThemeById(next as any));
+    const next = order[(idx + 1) % order.length] ?? "town77";
+    setTheme(getThemeByIdSafe(next));
   }
 
   return (
