@@ -8,7 +8,8 @@ import { AppRouter } from "./router";
 import "./styles/reset.css";
 import "./styles/tokens.css";
 import "./styles/animations.css";
-import { getThemeById } from "./themes";
+import { getThemeById, getThemeByIdSafe } from "./themes";
+import { useGameStore } from "./store/gameStore";
 
 function GameConnectionProvider({ children }: { children: React.ReactNode }) {
   useGameConnection();
@@ -17,10 +18,21 @@ function GameConnectionProvider({ children }: { children: React.ReactNode }) {
 
 export function App() {
   const [theme, setTheme] = useState(() => getThemeById("town77"));
+  const gameState = useGameStore((s) => s.gameState);
 
   useEffect(() => {
     injectTokens(theme);
   }, [theme]);
+
+  // Sync theme from room state when joining a room
+  useEffect(() => {
+    if (gameState?.themeId) {
+      const roomTheme = getThemeByIdSafe(gameState.themeId);
+      if (roomTheme.id !== theme.id) {
+        setTheme(roomTheme);
+      }
+    }
+  }, [gameState?.themeId]);
 
   return (
     <I18nextProvider i18n={i18n}>

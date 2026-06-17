@@ -114,7 +114,7 @@ export function Cell({
       }}
       whileHover={chip === null && isValid ? { scale: 1.02 } : undefined}
     >
-      {chip !== null ? <Chip chip={chip} isSelected={false} isValid={false} /> : null}
+      {chip !== null ? <Chip chip={chip} isSelected={false} isValid={true} /> : null}
     </motion.div>
   );
 }
