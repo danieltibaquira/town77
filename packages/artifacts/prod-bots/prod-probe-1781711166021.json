@@ -1,0 +1,771 @@
+{
+  "roomName": "prod-probe-1781711166021",
+  "roomCode": "98BJNR",
+  "turns": 49,
+  "scores": [
+    {
+      "playerId": "f677c6b5e167ad56f7827c1d877e8a7e",
+      "name": "Host",
+      "placed": 10,
+      "remaining": 0,
+      "combined": 10
+    },
+    {
+      "playerId": "4ecf6b3c9e8b16171929bb5c173b72d7",
+      "name": "Bot2",
+      "placed": 9,
+      "remaining": 0,
+      "combined": 9
+    },
+    {
+      "playerId": "a2ade1fbfbfc82aa0b97613814ed25a6",
+      "name": "Bot3",
+      "placed": 10,
+      "remaining": 0,
+      "combined": 10
+    },
+    {
+      "playerId": "069ed8a8b0fb4aaf6d0f651836551597",
+      "name": "Bot4",
+      "placed": 6,
+      "remaining": 0,
+      "combined": 6
+    },
+    {
+      "playerId": "102ff4a01a34d34027e02ae5f0c0af88",
+      "name": "Bot5",
+      "placed": 9,
+      "remaining": 0,
+      "combined": 9
+    }
+  ],
+  "finalHash": "1f1561a62cee02a9decc320bba7352c2257978502d0781877c244fc7c8912dfc",
+  "hashConsistent": true,
+  "turnLog": [
+    {
+      "turn": 0,
+      "player": "Host",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-2",
+          "shape": "cottage"
+        },
+        "row": 0,
+        "col": 0
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "0229ad21da32fd9af8a22e40690d7595c91ead7e15502ac1c4d8a400cff73ddc"
+    },
+    {
+      "turn": 1,
+      "player": "Bot2",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-6",
+          "shape": "cottage"
+        },
+        "row": 0,
+        "col": 1
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "7e67fa9212a489ab92ed4311e977ed51d7910e4e7c43df07f4d1ca6b7035c48e"
+    },
+    {
+      "turn": 2,
+      "player": "Bot3",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-2",
+          "shape": "tower"
+        },
+        "row": 1,
+        "col": 0
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "ac85e4480f37a225739fe0ba4616cc0585fd3c768c5b90959d8bfe30e6d7d591"
+    },
+    {
+      "turn": 3,
+      "player": "Bot4",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-2",
+          "shape": "rowhouse"
+        },
+        "row": 2,
+        "col": 0
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "fd0e9655622298603dc0553b03250417bfdcb24ff4f6c1f254874eaec0d82f20"
+    },
+    {
+      "turn": 4,
+      "player": "Bot5",
+      "action": {
+        "type": "discard",
+        "chip": {
+          "color": "color-4",
+          "shape": "tower"
+        }
+      },
+      "scoreDelta": 0,
+      "boardStateHash": "fd0e9655622298603dc0553b03250417bfdcb24ff4f6c1f254874eaec0d82f20"
+    },
+    {
+      "turn": 5,
+      "player": "Host",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-5",
+          "shape": "cottage"
+        },
+        "row": 0,
+        "col": 2
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "df9dcae6914dd412cbb054c6def510b6927b5bc4b452b31b3b98bb0ea1bb5fd8"
+    },
+    {
+      "turn": 6,
+      "player": "Bot2",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-1",
+          "shape": "cottage"
+        },
+        "row": 0,
+        "col": 3
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "b2518bf3f6ffc1113c395a1f8e35aacdbee1b1719b54547580ae64a4efbbf5ba"
+    },
+    {
+      "turn": 7,
+      "player": "Bot3",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-4",
+          "shape": "cottage"
+        },
+        "row": 0,
+        "col": 4
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "0f1fa70473b58ce8b56e59ed1e6f9fa9a24e5a40a113f0fb809d26d2c4105839"
+    },
+    {
+      "turn": 8,
+      "player": "Bot4",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-2",
+          "shape": "barn"
+        },
+        "row": 3,
+        "col": 0
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "b023830f354f74eb237e03ec5b9bdcc0c9e021cae96ffb06092ba8b5c4744d94"
+    },
+    {
+      "turn": 9,
+      "player": "Bot5",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-1",
+          "shape": "tower"
+        },
+        "row": 1,
+        "col": 3
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "ce9dd3f6838cff07cd1cd13822a831a584b36362cc2df4e28874a7384e7e9bae"
+    },
+    {
+      "turn": 10,
+      "player": "Host",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-6",
+          "shape": "rowhouse"
+        },
+        "row": 2,
+        "col": 1
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "c7ceab5471601037dbb0e88011faf76d1d2a2fc4a11fbcde92152542f73e3a16"
+    },
+    {
+      "turn": 11,
+      "player": "Bot2",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-5",
+          "shape": "rowhouse"
+        },
+        "row": 2,
+        "col": 2
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "8d09e4ce71c450c460eb845350b669ba2d7fb093bfd086e76666e3f780a1d66c"
+    },
+    {
+      "turn": 12,
+      "player": "Bot3",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-5",
+          "shape": "tower"
+        },
+        "row": 1,
+        "col": 2
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "8b871337b18a483e13f2ab0d7157b94724cf017deb30537669d62daa547512c8"
+    },
+    {
+      "turn": 13,
+      "player": "Bot4",
+      "action": {
+        "type": "discard",
+        "chip": {
+          "color": "color-1",
+          "shape": "bungalow"
+        }
+      },
+      "scoreDelta": 0,
+      "boardStateHash": "8b871337b18a483e13f2ab0d7157b94724cf017deb30537669d62daa547512c8"
+    },
+    {
+      "turn": 14,
+      "player": "Bot5",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-2",
+          "shape": "skyscraper"
+        },
+        "row": 4,
+        "col": 0
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "3b622e9c942229b32e92877b47e2c6562c8bae8fb1cc37c5237e9e28c392b790"
+    },
+    {
+      "turn": 15,
+      "player": "Host",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-7",
+          "shape": "cottage"
+        },
+        "row": 0,
+        "col": 5
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "babbd56e6f4fa4e3f5226b3dfa0a2d75d9941c3d9bc6039a574dbecc17b0e0a6"
+    },
+    {
+      "turn": 16,
+      "player": "Bot2",
+      "action": {
+        "type": "discard",
+        "chip": {
+          "color": "color-3",
+          "shape": "tower"
+        }
+      },
+      "scoreDelta": 0,
+      "boardStateHash": "babbd56e6f4fa4e3f5226b3dfa0a2d75d9941c3d9bc6039a574dbecc17b0e0a6"
+    },
+    {
+      "turn": 17,
+      "player": "Bot3",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-6",
+          "shape": "tower"
+        },
+        "row": 1,
+        "col": 1
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "6447eb2967271282052e72812f48239ef6cb3a9d1d2c0cc3540beecb4713a3de"
+    },
+    {
+      "turn": 18,
+      "player": "Bot5",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-3",
+          "shape": "cottage"
+        },
+        "row": 0,
+        "col": 6
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "f123e259e4768dfc5282999edf5936a0f425cc171d61e13b99a1bcfad75dc263"
+    },
+    {
+      "turn": 19,
+      "player": "Host",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-7",
+          "shape": "tower"
+        },
+        "row": 1,
+        "col": 5
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "9fa4f87e7899779ad560effef94935d22be37b53202141b77b95e95b48451291"
+    },
+    {
+      "turn": 20,
+      "player": "Bot3",
+      "action": {
+        "type": "discard",
+        "chip": {
+          "color": "color-7",
+          "shape": "bungalow"
+        }
+      },
+      "scoreDelta": 0,
+      "boardStateHash": "9fa4f87e7899779ad560effef94935d22be37b53202141b77b95e95b48451291"
+    },
+    {
+      "turn": 21,
+      "player": "Bot5",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-1",
+          "shape": "rowhouse"
+        },
+        "row": 2,
+        "col": 3
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "d5b675a94c938a2793879c971c94458c73c8c91272579755f8faf6fbbf8f1640"
+    },
+    {
+      "turn": 22,
+      "player": "Host",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-4",
+          "shape": "rowhouse"
+        },
+        "row": 2,
+        "col": 4
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "696822eb9e649d8aa60660bb42b4df858be4bcdb978d867f637c41b0be87a63a"
+    },
+    {
+      "turn": 23,
+      "player": "Bot2",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-4",
+          "shape": "barn"
+        },
+        "row": 3,
+        "col": 4
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "d04d955f31325a5e42401106478502e481e6981b896e3c15c94e6a0a03b29be9"
+    },
+    {
+      "turn": 24,
+      "player": "Bot3",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-4",
+          "shape": "skyscraper"
+        },
+        "row": 4,
+        "col": 4
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "ac5097f6d973bd382cc6c675841af09fc84e65cbd99c37a9278c9504d8c98409"
+    },
+    {
+      "turn": 25,
+      "player": "Bot5",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-1",
+          "shape": "barn"
+        },
+        "row": 3,
+        "col": 3
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "b7052e91f589930144404751a0709aa1b7a9dd195289f13939bcaba6d53d2649"
+    },
+    {
+      "turn": 26,
+      "player": "Host",
+      "action": {
+        "type": "discard",
+        "chip": {
+          "color": "color-5",
+          "shape": "bungalow"
+        }
+      },
+      "scoreDelta": 0,
+      "boardStateHash": "b7052e91f589930144404751a0709aa1b7a9dd195289f13939bcaba6d53d2649"
+    },
+    {
+      "turn": 27,
+      "player": "Bot2",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-7",
+          "shape": "skyscraper"
+        },
+        "row": 4,
+        "col": 5
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "76612493b73f2c34c1bb1d367f274d9b56f8c70bbd4e6751022d2a8e8cce1924"
+    },
+    {
+      "turn": 28,
+      "player": "Bot3",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-4",
+          "shape": "bungalow"
+        },
+        "row": 5,
+        "col": 4
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "40dfeabc96ba42f170b7f9dd82b14494aca7d9f0a629fc31b352e37810f38392"
+    },
+    {
+      "turn": 29,
+      "player": "Bot5",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-4",
+          "shape": "victorian"
+        },
+        "row": 6,
+        "col": 4
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "1828fbcedcd09761af3bc913e11b9ffb220ec749ec16d4e7fa5f5c942ad5171f"
+    },
+    {
+      "turn": 30,
+      "player": "Host",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-7",
+          "shape": "victorian"
+        },
+        "row": 6,
+        "col": 5
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "d9d1f73daf5bc7fef85c207d89b25313b8e17a042665ef194da69c6f541bb1cb"
+    },
+    {
+      "turn": 31,
+      "player": "Bot2",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-3",
+          "shape": "victorian"
+        },
+        "row": 6,
+        "col": 6
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "2b00e10c4776739d884baf96b7740ceedfeb882aafdc9e6a89dd56e7df56c339"
+    },
+    {
+      "turn": 32,
+      "player": "Bot3",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-3",
+          "shape": "bungalow"
+        },
+        "row": 5,
+        "col": 6
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "8ee6f141ca1694469932f86025228594d70e2bef8a0d9e62da06f1504133e37c"
+    },
+    {
+      "turn": 33,
+      "player": "Bot4",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-1",
+          "shape": "victorian"
+        },
+        "row": 6,
+        "col": 3
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "0346a7a55c07746f7b59b57009592e160c071c94c16863179b1eeaab2b703c67"
+    },
+    {
+      "turn": 34,
+      "player": "Bot5",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-7",
+          "shape": "rowhouse"
+        },
+        "row": 2,
+        "col": 5
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "f786212208b7725f960cf5814c578b8cd24110c768d478306baf87fdb71c2327"
+    },
+    {
+      "turn": 35,
+      "player": "Host",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-3",
+          "shape": "skyscraper"
+        },
+        "row": 4,
+        "col": 6
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "d2ad8cd1651068105c98beb676faacedb10d725a8879bd126655a957e12d2f9e"
+    },
+    {
+      "turn": 36,
+      "player": "Bot2",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-7",
+          "shape": "barn"
+        },
+        "row": 3,
+        "col": 5
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "3b1758a1f069a2f3eca8e3160551c354b0d7aba239ad2f4ecc040fda5b88d4aa"
+    },
+    {
+      "turn": 37,
+      "player": "Bot3",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-5",
+          "shape": "victorian"
+        },
+        "row": 6,
+        "col": 2
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "93cce4fedab200350d8b688bfe5ec1582fcda8e40466b455880711d67e7846d9"
+    },
+    {
+      "turn": 38,
+      "player": "Bot4",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-6",
+          "shape": "victorian"
+        },
+        "row": 6,
+        "col": 1
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "c52487a73c082854ae77ab04a5986795589d0cd19a72963a27b9397922e20b89"
+    },
+    {
+      "turn": 39,
+      "player": "Bot5",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-6",
+          "shape": "skyscraper"
+        },
+        "row": 4,
+        "col": 1
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "0f60f68eee7b2855b5356b656b64403bb0a8ea8bb259653dd3405854471dc1b1"
+    },
+    {
+      "turn": 40,
+      "player": "Host",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-6",
+          "shape": "bungalow"
+        },
+        "row": 5,
+        "col": 1
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "df793c7e67633e0ed8c9eb471b8718d0751ff7935732f56606ecc8616b345982"
+    },
+    {
+      "turn": 41,
+      "player": "Bot2",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-2",
+          "shape": "victorian"
+        },
+        "row": 6,
+        "col": 0
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "40b33454dc2087490770a740d4375ba3396ab63c6915d8fb36ae8e46d5563a37"
+    },
+    {
+      "turn": 42,
+      "player": "Bot3",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-1",
+          "shape": "skyscraper"
+        },
+        "row": 4,
+        "col": 3
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "cb5ec85593b19f948293c9c8f1063740a5d42599c9da752a55ec48b52dec6858"
+    },
+    {
+      "turn": 43,
+      "player": "Bot4",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-3",
+          "shape": "barn"
+        },
+        "row": 3,
+        "col": 6
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "f51f78f4f36b9e978cc8c2c74718cda9059114bb738094f34f2550faaeeef272"
+    },
+    {
+      "turn": 44,
+      "player": "Bot5",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-3",
+          "shape": "rowhouse"
+        },
+        "row": 2,
+        "col": 6
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "7f7e523e4efe16479a42bdfc785d7d78054497ab95c8bf0da6cae7e47e53014e"
+    },
+    {
+      "turn": 45,
+      "player": "Host",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-5",
+          "shape": "barn"
+        },
+        "row": 3,
+        "col": 2
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "27684cdc3a3220aebb4bd59ccf5a72fedf28b9aa7cad8b86294b3898544601c1"
+    },
+    {
+      "turn": 46,
+      "player": "Bot2",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-6",
+          "shape": "barn"
+        },
+        "row": 3,
+        "col": 1
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "29109dabb0cf69fea8d7d6ae7bb0afe4d2c8b1285159652df1e895af2a215866"
+    },
+    {
+      "turn": 47,
+      "player": "Bot3",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-2",
+          "shape": "bungalow"
+        },
+        "row": 5,
+        "col": 0
+      },
+      "scoreDelta": 1,
+      "boardStateHash": "1f1561a62cee02a9decc320bba7352c2257978502d0781877c244fc7c8912dfc"
+    },
+    {
+      "turn": 48,
+      "player": "Bot4",
+      "action": {
+        "type": "place",
+        "chip": {
+          "color": "color-5",
+          "shape": "skyscraper"
+        },
+        "row": 4,
+        "col": 2
+      },
+      "scoreDelta": 0,
+      "boardStateHash": "1f1561a62cee02a9decc320bba7352c2257978502d0781877c244fc7c8912dfc"
+    }
+  ]
+}

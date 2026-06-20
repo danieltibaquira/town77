@@ -1,0 +1,9 @@
+services:
+  server-tests:
+    build:
+      context: .
+      dockerfile: packages/server/Dockerfile
+      target: test
+    environment:
+      NODE_ENV: test
+    command: ["pnpm", "--filter", "@town77/server", "run", "test"]

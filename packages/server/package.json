@@ -1,0 +1,36 @@
+{
+  "name": "@town77/server",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --no-splitting --external better-sqlite3",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "dev": "tsx watch src/index.ts",
+    "sim:deployed": "tsx scripts/bot-sim-deployed.ts"
+  },
+  "dependencies": {
+    "@town77/game-engine": "workspace:*",
+    "@town77/shared-types": "workspace:*",
+    "better-sqlite3": "^9.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "pino": "^9.5.0",
+    "socket.io": "^4.8.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "socket.io-client": "^4.8.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.22.4",
+    "typescript": "^5.5.0",
+    "vite-tsconfig-paths": "^5.0.0",
+    "vitest": "^2.0.0"
+  }
+}

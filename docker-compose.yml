@@ -1,0 +1,35 @@
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: packages/client/Dockerfile
+      target: production
+    ports:
+      - "8077:80"
+    depends_on:
+      server:
+        condition: service_healthy
+    restart: unless-stopped
+
+  server:
+    build:
+      context: .
+      dockerfile: packages/server/Dockerfile
+      target: production
+    environment:
+      NODE_ENV: production
+      PORT: "3077"
+      DB_PATH: /data/town77.db
+      LOG_LEVEL: info
+      CORS_ORIGIN: "*"
+    volumes:
+      - sqlite_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3077/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  sqlite_data:

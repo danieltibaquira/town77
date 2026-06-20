@@ -1,0 +1,22 @@
+app = "town77"
+primary_region = "iad"
+
+[build]
+
+[http_service]
+  internal_port = 3077
+  force_https = true
+
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+
+[mounts]
+  source = "town77_data"
+  destination = "/data"
+
+[env]
+  PORT = "3077"
+  DB_PATH = "/data/town77.db"
+  LOG_LEVEL = "info"
+  CORS_ORIGIN = "*"

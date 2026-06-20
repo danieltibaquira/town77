@@ -1,0 +1,134 @@
+import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useNavigate, useParams } from 'react-router-dom'
+import { PlayerBadge } from '../components/PlayerBadge'
+import { generateRandomName } from '../lib/randomName'
+import { useGameStore } from '../store/gameStore'
+import { useTheme } from '../lib/theme'
+
+export function LobbyScreen() {
+  const { t } = useTranslation('game')
+  const { t: tc } = useTranslation('common')
+  const { code: routeCode } = useParams<{ code: string }>()
+  const navigate = useNavigate()
+  const { theme } = useTheme()
+  const isNeo = theme.style === "neobrutalism";
+  const neoRadius = theme.styleProps.borderRadius;
+
+  const connected = useGameStore((s) => s.connected)
+  const gameState = useGameStore((s) => s.gameState)
+  const playerId = useGameStore((s) => s.playerId)
+  const roomCode = useGameStore((s) => s.roomCode) ?? routeCode
+  const startGame = useGameStore((s) => s.startGame)
+  const startSoloGame = useGameStore((s) => s.startSoloGame)
+  const joinRoom = useGameStore((s) => s.joinRoom)
+  const autoJoinAttempted = useRef(false)
+
+  // Navigate to game when phase changes to playing
+  useEffect(() => {
+    if (gameState?.phase === 'playing') {
+      navigate(`/game/${roomCode}`)
+    }
+  }, [gameState?.phase, navigate, roomCode])
+
+  useEffect(() => {
+    if (gameState || !routeCode || autoJoinAttempted.current) return
+    autoJoinAttempted.current = true
+
+    const token = localStorage.getItem('sessionToken')
+    const storedPlayerId = localStorage.getItem('playerId')
+    const storedName = localStorage.getItem('playerName')?.trim()
+    const storedRoomCode = localStorage.getItem('roomCode')
+
+    if (token && storedPlayerId && storedName && storedRoomCode === routeCode) {
+      joinRoom(routeCode, storedName, storedPlayerId, token)
+      return
+    }
+
+    const playerName = storedName || generateRandomName()
+    localStorage.setItem('playerName', playerName)
+    joinRoom(routeCode, playerName)
+  }, [gameState, joinRoom, routeCode])
+
+  if (!gameState || !playerId) {
+    return (
+      <main data-testid="lobby-screen" style={{ background: 'var(--color-surface-bg)', color: 'var(--color-text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
+        {tc('connecting')}
+      </main>
+    )
+  }
+
+  const isHost = gameState.players[0]?.id === playerId
+  const hasBot = gameState.players.some(p => p.id.startsWith('bot-'))
+  const canStart = isHost && (gameState.players.length >= 2 || hasBot)
+
+  async function handleCopyCode() {
+    if (roomCode && navigator.clipboard) {
+      const roomUrl = `${window.location.origin}/room/${roomCode}`
+      await navigator.clipboard.writeText(roomUrl)
+    }
+  }
+
+  return (
+    <main data-testid="lobby-screen" style={{ alignItems: 'center', background: 'var(--color-surface-bg)', color: 'var(--color-text-primary)', display: 'flex', flexDirection: 'column', gap: 'var(--space-lg)', minHeight: '100vh', padding: 'var(--space-xl)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+        <span data-testid="room-code" style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-display)', fontWeight: 700, letterSpacing: '0.15em' }}>{roomCode}</span>
+        <button type="button" data-testid="btn-copy-code" onClick={handleCopyCode} style={{
+          background: 'var(--color-surface-panel)',
+          border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : 'none',
+          borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-sm)',
+          color: isNeo ? '#000000' : 'var(--color-text-secondary)',
+          cursor: 'pointer',
+          fontSize: 'var(--text-sm)',
+          padding: 'var(--space-xs) var(--space-sm)',
+          boxShadow: isNeo ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : undefined,
+        }}>{tc('copy_code')}</button>
+      </div>
+
+      <span style={{ color: connected ? 'var(--color-surface-cell-valid)' : 'var(--color-text-secondary)', fontSize: 'var(--text-sm)' }}>
+        {connected ? tc('connected') : tc('connecting')}
+      </span>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)', width: '100%', maxWidth: 400 }}>
+        {gameState.players.map((player, index) => (
+          <PlayerBadge key={player.id} player={player} isCurrentTurn={index === gameState.turnIndex} isMyPlayer={player.id === playerId} />
+        ))}
+      </div>
+
+      <div data-testid="lobby-config-summary" style={{
+        background: 'var(--color-surface-grid)',
+        borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-md)',
+        color: 'var(--color-text-secondary)',
+        fontSize: 'var(--text-sm)',
+        padding: 'var(--space-sm) var(--space-md)',
+        border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : undefined,
+      }}>
+        {gameState.config.grid.rows}×{gameState.config.grid.cols} · {gameState.config.chips.colors.length} colors · {gameState.config.chips.shapes.length} shapes
+      </div>
+
+      {isHost && (
+        <button type="button" data-testid="btn-start-game" disabled={!canStart} onClick={hasBot ? startSoloGame : startGame} style={{
+          background: canStart
+            ? isNeo
+              ? '#ffe66d'
+              : 'var(--color-text-accent)'
+            : 'var(--color-surface-panel)',
+          border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : 'none',
+          borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-lg)',
+          color: canStart
+            ? isNeo
+              ? '#000000'
+              : 'var(--color-surface-bg)'
+            : 'var(--color-text-secondary)',
+          cursor: canStart ? 'pointer' : 'not-allowed',
+          fontSize: 'var(--text-lg)',
+          fontWeight: 700,
+          padding: 'var(--space-md) var(--space-xl)',
+          boxShadow: isNeo && canStart ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : undefined,
+        }}>
+          {t('start_game')}
+        </button>
+      )}
+    </main>
+  )
+}

@@ -1,0 +1,9 @@
+{
+  "winner": "Ganador",
+  "placed": "Fichas colocadas",
+  "remaining": "Fichas restantes",
+  "total": "Puntaje total",
+  "play_again": "Jugar de nuevo",
+  "new_room": "Nueva sala",
+  "tied": "Empate"
+}

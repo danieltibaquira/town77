@@ -1,0 +1,9 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+*.db
+coverage/
+*.db-shm
+*.db-wal
+test-results/

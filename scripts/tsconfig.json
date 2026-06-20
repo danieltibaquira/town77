@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "@town77/shared-types": ["../packages/shared-types/src/index.ts"],
+      "@town77/game-engine": ["../packages/game-engine/src/index.ts"]
+    },
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  },
+  "include": ["."]
+}
