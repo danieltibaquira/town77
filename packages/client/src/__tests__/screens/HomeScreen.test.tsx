@@ -14,6 +14,7 @@ const standardGameConfig = {
     copies: 1,
   },
   handSize: 4,
+  maxPlayers: 5,
   scoring: { placedWeight: 1, remainingWeight: 1 },
   exchange: { min: 3, max: 4 },
 };

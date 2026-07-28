@@ -10,6 +10,6 @@ export {
   isValidPlacement,
 } from './grid'
 export { canDiscard, canExchange, doDiscard, doExchange, findExchangeableColorSet, pickFirstPlayer } from './turn'
-export { calculateScores, isGameOver } from './scoring'
+export { calculateScores, getWinningScores, isGameOver } from './scoring'
 export { findBotAction } from './bot'
 export type { BotAction, BotMove, BotExchange, BotDiscard } from './bot'

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { getWinningScores } from '@town77/game-engine'
 import { ScoreTable } from '../components/ScoreTable'
 import { useTheme } from '../lib/theme'
 import { useGameStore } from '../store/gameStore'
@@ -72,8 +73,7 @@ export function ResultsScreen() {
     )
   }
 
-  const maxCombined = Math.max(...scores.map((s) => s.combined))
-  const winners = scores.filter((s) => s.combined === maxCombined)
+  const winners = getWinningScores(scores)
   const winnerText = winners.map((w) => w.name).join(', ')
 
   return (

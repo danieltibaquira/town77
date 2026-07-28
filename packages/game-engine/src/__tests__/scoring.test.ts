@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { PlayerState, Grid } from '@town77/shared-types'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
 import { applyPlacement, createGrid } from '../grid'
-import { calculateScores, isGameOver } from '../scoring'
+import { calculateScores, getWinningScores, isGameOver } from '../scoring'
 
 const RED_COTTAGE = { color: 'color-1', shape: 'cottage' }
 const BLUE_TOWER = { color: 'color-2', shape: 'tower' }
@@ -50,6 +50,35 @@ describe('calculateScores', () => {
   it('returns one score per player', () => {
     const players = [makePlayer({ id: 'p1' }), makePlayer({ id: 'p2' })]
     expect(calculateScores(players, DEFAULT_GAME_CONFIG.scoring)).toHaveLength(2)
+  })
+})
+
+describe('getWinningScores', () => {
+  it('selects the player with the most placed chips even when their combined score is lower', () => {
+    const winners = getWinningScores([
+      { playerId: 'p1', name: 'Alice', placed: 5, remaining: 4, combined: 1 },
+      { playerId: 'p2', name: 'Bob', placed: 4, remaining: 0, combined: 4 },
+    ])
+
+    expect(winners.map(({ playerId }) => playerId)).toEqual(['p1'])
+  })
+
+  it('breaks a placed-chip tie by selecting the player with fewer chips remaining', () => {
+    const winners = getWinningScores([
+      { playerId: 'p1', name: 'Alice', placed: 5, remaining: 2, combined: 3 },
+      { playerId: 'p2', name: 'Bob', placed: 5, remaining: 1, combined: 4 },
+    ])
+
+    expect(winners.map(({ playerId }) => playerId)).toEqual(['p2'])
+  })
+
+  it('returns every player tied on placed and remaining chips', () => {
+    const winners = getWinningScores([
+      { playerId: 'p1', name: 'Alice', placed: 5, remaining: 1, combined: 4 },
+      { playerId: 'p2', name: 'Bob', placed: 5, remaining: 1, combined: 4 },
+    ])
+
+    expect(winners.map(({ playerId }) => playerId)).toEqual(['p1', 'p2'])
   })
 })
 

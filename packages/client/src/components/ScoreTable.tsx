@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
+import { getWinningScores } from '@town77/game-engine'
 import type { Score } from '@town77/shared-types'
 import { scorePopTransition } from '../lib/motion'
 import { useTheme } from '../lib/theme'
@@ -13,7 +14,7 @@ export function ScoreTable({ scores }: ScoreTableProps) {
   const { theme } = useTheme()
   const isNeo = theme.style === "neobrutalism";
   const neoRadius = theme.styleProps.borderRadius;
-  const maxCombined = Math.max(...scores.map((s) => s.combined))
+  const winnerIds = new Set(getWinningScores(scores).map((score) => score.playerId))
   const scorePop = scorePopTransition(theme.animationPreset)
 
   const headerStyle = {
@@ -57,7 +58,7 @@ export function ScoreTable({ scores }: ScoreTableProps) {
       </thead>
       <tbody>
         {scores.map((score, index) => {
-          const isWinner = score.combined === maxCombined
+          const isWinner = winnerIds.has(score.playerId)
           return (
             <tr
               key={score.playerId}

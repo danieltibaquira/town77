@@ -13,6 +13,24 @@ export function calculateScores(players: PlayerState[], config: ScoringConfig): 
 }
 
 /**
+ * Winners are ranked by game progress first, then by efficiency:
+ * most placed chips wins; fewer chips remaining breaks a tie.
+ */
+export function getWinningScores(scores: Score[]): Score[] {
+  if (scores.length === 0) return []
+
+  const best = scores.reduce((currentBest, score) => {
+    if (score.placed > currentBest.placed) return score
+    if (score.placed === currentBest.placed && score.remaining < currentBest.remaining) return score
+    return currentBest
+  })
+
+  return scores.filter(
+    score => score.placed === best.placed && score.remaining === best.remaining,
+  )
+}
+
+/**
  * A player can still progress the game when they can place a chip, can
  * exchange (3 chips of the same color), or have not used their one discard.
  * A player whose only option is to pass cannot progress.

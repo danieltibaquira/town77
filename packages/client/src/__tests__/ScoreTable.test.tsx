@@ -25,10 +25,22 @@ describe('ScoreTable', () => {
     expect(screen.getByTestId('score-combined-p1')).toHaveTextContent('8')
   })
 
-  it('marks the combined winner with data-winner', () => {
-    renderWithTheme(<ScoreTable scores={scores} />)
+  it('marks the player with the most placed chips as winner even when their combined score is lower', () => {
+    renderWithTheme(<ScoreTable scores={[
+      { playerId: 'p1', name: 'Alice', placed: 5, remaining: 4, combined: 1 },
+      { playerId: 'p2', name: 'Bob', placed: 4, remaining: 0, combined: 4 },
+    ]} />)
     expect(screen.getByTestId('score-row-p1')).toHaveAttribute('data-winner', 'true')
     expect(screen.getByTestId('score-row-p2')).toHaveAttribute('data-winner', 'false')
+  })
+
+  it('uses fewer chips remaining to break a placed-chip tie', () => {
+    renderWithTheme(<ScoreTable scores={[
+      { playerId: 'p1', name: 'Alice', placed: 5, remaining: 2, combined: 3 },
+      { playerId: 'p2', name: 'Bob', placed: 5, remaining: 1, combined: 4 },
+    ]} />)
+    expect(screen.getByTestId('score-row-p1')).toHaveAttribute('data-winner', 'false')
+    expect(screen.getByTestId('score-row-p2')).toHaveAttribute('data-winner', 'true')
   })
 
   it('handles ties (multiple winners)', () => {
