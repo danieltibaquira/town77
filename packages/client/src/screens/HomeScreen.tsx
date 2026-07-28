@@ -39,6 +39,10 @@ export function HomeScreen() {
     navigate('/cafe-queue/config');
   }
 
+  function handleWatchDemo() {
+    navigate('/cafe-queue/demo');
+  }
+
   function handleJoin() {
     const roomCode = joinCode.trim().toUpperCase();
     if (!roomCode) return;
@@ -123,6 +127,9 @@ export function HomeScreen() {
         </button>
         <button type="button" data-testid="btn-create-cafe-queue" onClick={handleCreateCafeQueue} style={{ background: "#ff6b6b", border: "3px solid #000", boxShadow: "4px 4px 0 #000", color: "#000", cursor: "pointer", fontSize: "var(--text-lg)", fontWeight: 900, minHeight: 56, padding: "var(--space-md) var(--space-xl)" }}>
           CAFE QUEUE
+        </button>
+        <button type="button" data-testid="btn-watch-cafe-demo" onClick={handleWatchDemo} style={{ background: "#4ecdc4", border: "3px solid #000", boxShadow: "4px 4px 0 #000", color: "#000", cursor: "pointer", fontSize: "var(--text-lg)", fontWeight: 900, minHeight: 56, padding: "var(--space-md) var(--space-xl)" }}>
+          WATCH DEMO
         </button>
         <input
           data-testid="input-room-code"

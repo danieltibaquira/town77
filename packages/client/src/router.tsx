@@ -6,6 +6,7 @@ import { JoinScreen } from "./screens/JoinScreen";
 import { LobbyScreen } from "./screens/LobbyScreen";
 import { ResultsScreen } from "./screens/ResultsScreen";
 import { CafeQueueConfigScreen } from './screens/CafeQueueConfigScreen';
+import { CafeQueueDemoScreen } from './screens/CafeQueueDemoScreen';
 
 export function AppRouter() {
   return (
@@ -13,6 +14,7 @@ export function AppRouter() {
       <Route path="/" element={<HomeScreen />} />
       <Route path="/config" element={<ConfigScreen />} />
       <Route path="/cafe-queue/config" element={<CafeQueueConfigScreen />} />
+      <Route path="/cafe-queue/demo" element={<CafeQueueDemoScreen />} />
       <Route path="/join" element={<JoinScreen />} />
       <Route path="/room/:code" element={<LobbyScreen />} />
       <Route path="/cafe-queue/room/:code" element={<LobbyScreen />} />
