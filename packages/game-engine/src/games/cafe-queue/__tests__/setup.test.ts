@@ -50,4 +50,10 @@ describe('Cafe Queue movement', () => {
     expect(() => applyMove(started, 'p1', 0, ['r1c1'], 0)).toThrow('INVALID_PATH')
     expect(() => applyMove(started, 'p1', 0, ['r0c1'], 0)).toThrow('OCCUPIED_FINAL_CELL')
   })
+
+  it('rejects a final cell occupied by another meeple owned by the active player', () => {
+    const started = startCafeQueueGame(createCafeQueueState(DEFAULT_CAFE_QUEUE_CONFIG, PLAYERS.slice(0, 2), 1))
+
+    expect(() => applyMove(started, 'p1', 0, ['r0c1'], 0)).toThrow('OCCUPIED_FINAL_CELL')
+  })
 })

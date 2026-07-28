@@ -147,8 +147,8 @@ function isAdjacent(from: CafeQueueCellId, to: CafeQueueCellId, diagonal: boolea
   return diagonal ? rowDistance <= 1 && colDistance <= 1 : rowDistance + colDistance === 1
 }
 
-function isOccupiedByOtherMeeple(state: CafeQueueState, playerId: string, cell: CafeQueueCellId): boolean {
-  return state.players.some((player) => player.id !== playerId && player.meeplePositions.includes(cell))
+function isOccupiedByMeeple(state: CafeQueueState, cell: CafeQueueCellId): boolean {
+  return state.players.some((player) => player.meeplePositions.includes(cell))
 }
 
 export function applyMove(
@@ -176,7 +176,7 @@ export function applyMove(
     from = destination
   }
   const finalCell = path[path.length - 1]
-  if (!finalCell || isOccupiedByOtherMeeple(state, playerId, finalCell)) {
+  if (!finalCell || isOccupiedByMeeple(state, finalCell)) {
     throw new CafeQueueRuleError('OCCUPIED_FINAL_CELL')
   }
 
