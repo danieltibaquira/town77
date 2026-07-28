@@ -5,6 +5,7 @@ import { PlayerBadge } from '../components/PlayerBadge'
 import { useGameStore } from '../store/gameStore'
 import { useTheme } from '../lib/theme'
 import { useRoomRecovery } from '../hooks/useRoomRecovery'
+import { isCafeQueueState } from '@town77/shared-types'
 
 export function LobbyScreen() {
   const { t } = useTranslation('game')
@@ -22,6 +23,10 @@ export function LobbyScreen() {
   const startGame = useGameStore((s) => s.startGame)
   const startSoloGame = useGameStore((s) => s.startSoloGame)
   useRoomRecovery(routeCode)
+
+  if (isCafeQueueState(gameState)) {
+    return <CafeQueueLobby gameState={gameState} playerId={playerId} roomCode={roomCode} connected={connected} startGame={startGame} />
+  }
 
   // Navigate to game when phase changes to playing
   useEffect(() => {
@@ -108,6 +113,31 @@ export function LobbyScreen() {
           {t('start_game')}
         </button>
       )}
+    </main>
+  )
+}
+
+function CafeQueueLobby({ gameState, playerId, roomCode, connected, startGame }: {
+  gameState: import('@town77/shared-types').CafeQueueState
+  playerId: string | null
+  roomCode: string | undefined
+  connected: boolean
+  startGame: () => void
+}) {
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (gameState.phase === 'playing') navigate(`/cafe-queue/game/${roomCode ?? ''}`)
+  }, [gameState.phase, navigate, roomCode])
+  const host = gameState.players[0]?.id === playerId
+  const canStart = host && gameState.players.length >= gameState.config.minPlayers
+  return (
+    <main data-testid="cafe-queue-lobby" style={{ background: 'var(--color-surface-bg)', color: 'var(--color-text-primary)', minHeight: '100vh', display: 'grid', alignContent: 'center', gap: 'var(--space-md)', padding: 'var(--space-xl)', textAlign: 'center' }}>
+      <h1 style={{ margin: 0 }}>CAFE QUEUE</h1>
+      <strong data-testid="room-code">{roomCode}</strong>
+      <span>{connected ? 'Connected' : 'Connecting'}</span>
+      <p>{gameState.players.length}/{gameState.config.maxPlayers} baristas</p>
+      {gameState.players.map((player) => <div key={player.id} style={{ border: '2px solid #000', background: player.id === playerId ? '#ffe66d' : '#fff', color: '#000', padding: 'var(--space-sm)' }}>{player.name}{player.id === playerId ? ' · you' : ''}</div>)}
+      {host && <button type="button" data-testid="btn-start-game" disabled={!canStart} onClick={startGame} style={{ padding: 'var(--space-md)', background: canStart ? '#4ecdc4' : '#777', color: '#000', border: '3px solid #000', fontWeight: 900 }}>START SERVICE</button>}
     </main>
   )
 }

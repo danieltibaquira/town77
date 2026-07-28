@@ -51,6 +51,13 @@ describe('Cafe Queue movement', () => {
     expect(moved.ingredientSupply.water).toBe(11)
   })
 
+  it('allows only one movement path per turn', () => {
+    const started = startCafeQueueGame(createCafeQueueState(DEFAULT_CAFE_QUEUE_CONFIG, PLAYERS, 1))
+    const moved = applyMove(started, 'p1', 0, ['r1c0'], 0)
+
+    expect(() => applyMove(moved, 'p1', 0, ['r2c0'], 0)).toThrow('ALREADY_MOVED')
+  })
+
   it('rejects diagonal movement and an occupied final cell', () => {
     const started = startCafeQueueGame(createCafeQueueState(DEFAULT_CAFE_QUEUE_CONFIG, PLAYERS, 1))
 

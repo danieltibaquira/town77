@@ -91,4 +91,11 @@ describe('gameStore emit actions', () => {
     discardChip(chip)
     expect(socket.emit).toHaveBeenCalledWith('discard_chip', { chip })
   })
+
+  it('sendCafeQueueAction emits only the typed server intent', () => {
+    const { sendCafeQueueAction } = useGameStore.getState()
+    const action = { type: 'end_turn' } as const
+    sendCafeQueueAction(action)
+    expect(socket.emit).toHaveBeenCalledWith('cafe_queue_action', { action })
+  })
 })

@@ -13,6 +13,8 @@ import { bagShakeTransition, exchangeFlashTransition, turnSweepTransition } from
 import { useTheme } from '../lib/theme'
 import { useGameStore } from '../store/gameStore'
 import { selectExchangeSet } from '../lib/exchange'
+import { isCafeQueueState, type GameState } from '@town77/shared-types'
+import { CafeQueueGameScreen } from './CafeQueueGameScreen'
 
 export function GameScreen() {
   const { code: routeCode } = useParams<{ code: string }>()
@@ -23,7 +25,8 @@ export function GameScreen() {
   const { theme } = useTheme()
   const isNeo = theme.style === "neobrutalism";
 
-  const gameState = useGameStore((s) => s.gameState)
+  const rawGameState = useGameStore((s) => s.gameState)
+  const gameState = rawGameState as GameState | null
   const playerId = useGameStore((s) => s.playerId)
   const roomCode = useGameStore((s) => s.roomCode)
   const selectedChip = useGameStore((s) => s.selectedChip)
@@ -68,6 +71,10 @@ export function GameScreen() {
         {t('waiting')}
       </main>
     )
+  }
+
+  if (isCafeQueueState(rawGameState)) {
+    return <CafeQueueGameScreen state={rawGameState} playerId={playerId} roomCode={roomCode} />
   }
 
   const myPlayer = gameState.players.find((p) => p.id === playerId)

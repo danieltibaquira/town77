@@ -75,6 +75,7 @@ function startingPlayer(
       meeplePositions: positions,
       cups,
       collectedThisTurn: emptyRecipe(),
+      hasMovedThisTurn: false,
       orderTabs: [[], [], [], []],
       completedOrders: [],
       completedThisTurn: 0,
@@ -164,6 +165,7 @@ export function applyMove(
   if (playerIndex !== state.turnIndex) throw new CafeQueueRuleError('NOT_YOUR_TURN')
   const player = state.players[playerIndex]
   if (!player || !player.meeplePositions[meepleIndex] || path.length === 0) throw new CafeQueueRuleError('INVALID_PATH')
+  if (player.hasMovedThisTurn) throw new CafeQueueRuleError('ALREADY_MOVED')
   if (path.length > state.config.normalMoveLimit + rushSpent || rushSpent > player.rushTokens || rushSpent < 0) {
     throw new CafeQueueRuleError('INVALID_PATH')
   }
@@ -194,7 +196,7 @@ export function applyMove(
   const positions = [...player.meeplePositions]
   positions[meepleIndex] = finalCell
   const players = state.players.map((candidate, index) => index === playerIndex
-    ? { ...candidate, meeplePositions: positions, collectedThisTurn: collected, rushTokens: candidate.rushTokens - rushSpent }
+    ? { ...candidate, meeplePositions: positions, collectedThisTurn: collected, hasMovedThisTurn: true, rushTokens: candidate.rushTokens - rushSpent }
     : candidate)
   return { ...state, players, ingredientSupply: supply, rushSupply: state.rushSupply + rushSpent }
 }

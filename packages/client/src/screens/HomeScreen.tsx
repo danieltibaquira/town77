@@ -35,6 +35,10 @@ export function HomeScreen() {
     createRoom(DEFAULT_GAME_CONFIG, "neobrutalism", savePlayerName());
   }
 
+  function handleCreateCafeQueue() {
+    navigate('/cafe-queue/config');
+  }
+
   function handleJoin() {
     const roomCode = joinCode.trim().toUpperCase();
     if (!roomCode) return;
@@ -116,6 +120,9 @@ export function HomeScreen() {
           }}
         >
           {t("create_room")}
+        </button>
+        <button type="button" data-testid="btn-create-cafe-queue" onClick={handleCreateCafeQueue} style={{ background: "#ff6b6b", border: "3px solid #000", boxShadow: "4px 4px 0 #000", color: "#000", cursor: "pointer", fontSize: "var(--text-lg)", fontWeight: 900, minHeight: 56, padding: "var(--space-md) var(--space-xl)" }}>
+          CAFE QUEUE
         </button>
         <input
           data-testid="input-room-code"

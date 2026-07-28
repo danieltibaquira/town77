@@ -5,15 +5,19 @@ import { HomeScreen } from "./screens/HomeScreen";
 import { JoinScreen } from "./screens/JoinScreen";
 import { LobbyScreen } from "./screens/LobbyScreen";
 import { ResultsScreen } from "./screens/ResultsScreen";
+import { CafeQueueConfigScreen } from './screens/CafeQueueConfigScreen';
 
 export function AppRouter() {
   return (
     <Routes>
       <Route path="/" element={<HomeScreen />} />
       <Route path="/config" element={<ConfigScreen />} />
+      <Route path="/cafe-queue/config" element={<CafeQueueConfigScreen />} />
       <Route path="/join" element={<JoinScreen />} />
       <Route path="/room/:code" element={<LobbyScreen />} />
+      <Route path="/cafe-queue/room/:code" element={<LobbyScreen />} />
       <Route path="/game/:code" element={<GameScreen />} />
+      <Route path="/cafe-queue/game/:code" element={<GameScreen />} />
       <Route path="/results/:code" element={<ResultsScreen />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

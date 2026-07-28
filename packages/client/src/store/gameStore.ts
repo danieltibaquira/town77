@@ -1,4 +1,4 @@
-import type { Chip, CreateRoomPayload, ErrorPayload, GameConfig, GameOverPayload, GameState, JoinRoomPayload } from "@town77/shared-types";
+import type { AnyGameState, CafeQueueAction, CafeQueueConfig, Chip, CreateRoomPayload, ErrorPayload, GameConfig, GameOverPayload, JoinRoomPayload } from "@town77/shared-types";
 import { create } from "zustand";
 import { socket } from "../lib/socket";
 
@@ -9,7 +9,7 @@ interface SessionPayload {
 }
 
 interface GameStore {
-  gameState: GameState | null;
+  gameState: AnyGameState | null;
   playerId: string | null;
   sessionToken: string | null;
   roomCode: string | null;
@@ -18,7 +18,7 @@ interface GameStore {
   scores: GameOverPayload["scores"] | null;
   connected: boolean;
 
-  setGameState: (state: GameState) => void;
+  setGameState: (state: AnyGameState) => void;
   setSession: (session: SessionPayload) => void;
   selectChip: (chip: Chip | null) => void;
   setError: (error: ErrorPayload) => void;
@@ -28,7 +28,7 @@ interface GameStore {
   connect: () => void;
   disconnect: () => void;
 
-  createRoom: (config: GameConfig, themeId: string, playerName: string, seed?: number) => void;
+  createRoom: (config: GameConfig | CafeQueueConfig, themeId: string, playerName: string, seed?: number) => void;
   createSoloRoom: (config: GameConfig, themeId: string, playerName: string, seed?: number) => void;
   joinRoom: (code: string, playerName: string, playerId?: string, sessionToken?: string) => void;
   startGame: () => void;
@@ -36,6 +36,7 @@ interface GameStore {
   placeChip: (chip: Chip, row: number, col: number) => void;
   exchangeChips: (chips: Chip[]) => void;
   discardChip: (chip: Chip) => void;
+  sendCafeQueueAction: (action: CafeQueueAction) => void;
 }
 
 function persistSession(payload: SessionPayload): void {
@@ -69,7 +70,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     socket.on("disconnect", () => set({ connected: false }));
     socket.on("room_joined", (payload) => {
       set({
-        gameState: payload.state,
+        gameState: payload.state as unknown as AnyGameState,
         playerId: payload.playerId,
         roomCode: payload.code,
         sessionToken: payload.sessionToken,
@@ -80,7 +81,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         sessionToken: payload.sessionToken,
       });
     });
-    socket.on("state_update", ({ state }) => set({ gameState: state }));
+    socket.on("state_update", ({ state }) => set({ gameState: state as unknown as AnyGameState }));
     socket.on("error", (lastError) => set({ lastError }));
     socket.on("game_over", ({ scores }) => {
       const currentState = get().gameState;
@@ -99,7 +100,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   createRoom: (config, themeId, playerName, seed) => {
-    const payload: CreateRoomPayload = { config, themeId, playerName };
+    const payload = { config, themeId, playerName } as CreateRoomPayload;
     if (seed !== undefined) payload.seed = seed;
     socket.emit("create_room", payload);
   },
@@ -135,5 +136,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   discardChip: (chip) => {
     socket.emit("discard_chip", { chip });
+  },
+
+  sendCafeQueueAction: (action) => {
+    socket.emit("cafe_queue_action", { action });
   },
 }));

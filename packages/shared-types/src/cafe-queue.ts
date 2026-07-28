@@ -36,6 +36,7 @@ export interface CafeQueuePlayer {
   meeplePositions: CafeQueueCellId[]
   cups: CafeQueueCup[]
   collectedThisTurn: CafeQueueRecipe
+  hasMovedThisTurn: boolean
   orderTabs: [CafeQueueOrder[], CafeQueueOrder[], CafeQueueOrder[], CafeQueueOrder[]]
   completedOrders: CafeQueueOrder[]
   completedThisTurn: number

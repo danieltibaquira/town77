@@ -73,7 +73,7 @@ export function endCafeQueueTurn(
   const endedPlayer = overloaded.players[playerIndex]!
   const ingredientSupply = returnIngredients(state.ingredientSupply, endedPlayer.collectedThisTurn)
   const withReturnedCollection = overloaded.players.map((player, index) => index === playerIndex
-    ? { ...player, collectedThisTurn: {}, completedThisTurn: 0 }
+    ? { ...player, collectedThisTurn: {}, hasMovedThisTurn: false, completedThisTurn: 0 }
     : player)
   const aged = ageOrders(withReturnedCollection, state.rushSupply)
   const closeArmed = wasCloseArmed
