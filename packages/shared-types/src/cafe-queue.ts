@@ -51,6 +51,7 @@ export interface CafeQueueConfig {
   cols: 4
   cupsPerPlayer: 3
   normalMoveLimit: 3
+  board: Record<CafeQueueCellId, CafeQueueIngredient>
   ingredientSupply: Record<CafeQueueIngredient, number>
   rushSupply: number
 }
@@ -63,6 +64,12 @@ export const DEFAULT_CAFE_QUEUE_CONFIG: CafeQueueConfig = {
   cols: 4,
   cupsPerPlayer: 3,
   normalMoveLimit: 3,
+  board: {
+    r0c0: 'beans', r0c1: 'milk', r0c2: 'steam', r0c3: 'ice',
+    r1c0: 'water', r1c1: 'tea', r1c2: 'chocolate', r1c3: 'caramel',
+    r2c0: 'milk', r2c1: 'steam', r2c2: 'ice', r2c3: 'beans',
+    r3c0: 'tea', r3c1: 'water', r3c2: 'caramel', r3c3: 'chocolate',
+  },
   ingredientSupply: {
     beans: 18,
     milk: 12,
