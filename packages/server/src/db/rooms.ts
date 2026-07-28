@@ -1,5 +1,6 @@
 import type Database from 'better-sqlite3'
-import type { GameConfig, GameState } from '@town77/shared-types'
+import type { AnyGameState, CafeQueueConfig, GameConfig } from '@town77/shared-types'
+import { isCafeQueueState } from '@town77/shared-types'
 
 export interface RoomRow {
   code: string
@@ -13,7 +14,7 @@ export interface RoomRow {
 
 export function createRoom(
   db: Database.Database,
-  params: { code: string; themeId: string; config: GameConfig; state: GameState; seed: number },
+  params: { code: string; themeId: string; config: GameConfig | CafeQueueConfig; state: AnyGameState; seed: number },
 ): void {
   const now = Date.now()
   db.prepare(
@@ -26,7 +27,7 @@ export function getRoom(db: Database.Database, code: string): RoomRow | undefine
   return db.prepare('SELECT * FROM rooms WHERE code = ?').get(code) as RoomRow | undefined
 }
 
-export function updateRoomState(db: Database.Database, code: string, state: GameState): void {
+export function updateRoomState(db: Database.Database, code: string, state: AnyGameState): void {
   db.prepare('UPDATE rooms SET state_json = ?, updated_at = ? WHERE code = ?').run(
     JSON.stringify(state),
     Date.now(),
@@ -40,12 +41,11 @@ export function resetConnectedPlayers(db: Database.Database): void {
 
   db.transaction(() => {
     for (const room of rooms) {
-      const state = JSON.parse(room.state_json) as GameState
+      const state = JSON.parse(room.state_json) as AnyGameState
       if (!state.players.some((player) => player.connected)) continue
-      const resetState: GameState = {
-        ...state,
-        players: state.players.map((player) => ({ ...player, connected: false })),
-      }
+      const resetState: AnyGameState = isCafeQueueState(state)
+        ? { ...state, players: state.players.map((player) => ({ ...player, connected: false })) }
+        : { ...state, players: state.players.map((player) => ({ ...player, connected: false })) }
       update.run(JSON.stringify(resetState), Date.now(), room.code)
     }
   })()

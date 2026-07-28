@@ -9,6 +9,13 @@ const PLAYERS = [
 ]
 
 describe('Cafe Queue setup', () => {
+  it('creates a one-host lobby and defers the player minimum to game start', () => {
+    const state = createCafeQueueState(DEFAULT_CAFE_QUEUE_CONFIG, PLAYERS.slice(0, 1), 41)
+
+    expect(state.phase).toBe('lobby')
+    expect(state.players).toHaveLength(1)
+  })
+
   it('seeds the starting player with two tab-one orders and every other player with one', () => {
     const state = startCafeQueueGame(createCafeQueueState(DEFAULT_CAFE_QUEUE_CONFIG, PLAYERS, 41))
 

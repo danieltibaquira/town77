@@ -1,5 +1,5 @@
 import { randomInt } from 'crypto'
-import type { CreateRoomPayload, GameState } from '@town77/shared-types'
+import type { GameState, TilePlacementCreateRoomPayload } from '@town77/shared-types'
 import { initBag, createGrid, SeededRNG } from '@town77/game-engine'
 import { createRoom } from '../db/rooms'
 import { createPlayer } from '../db/players'
@@ -13,7 +13,7 @@ import { PresenceRegistry } from '../socket/presence'
 import type { Io, Sock, Db } from '../app'
 
 export function createSoloRoomHandler(_io: Io, socket: Sock, db: Db, presence = new PresenceRegistry()) {
-  return (payload: CreateRoomPayload) => {
+  return (payload: TilePlacementCreateRoomPayload) => {
     const { config, themeId } = payload
 
     const playerName = validatePlayerName(payload.playerName)
@@ -80,6 +80,6 @@ export function createSoloRoomHandler(_io: Io, socket: Sock, db: Db, presence = 
     void socket.join(code)
 
     logger.info({ roomCode: code, playerId, playerName }, 'solo.room.created')
-    socket.emit('room_joined', { code, playerId, sessionToken, state: projectStateForPlayer(state, playerId) })
+    socket.emit('room_joined', { code, playerId, sessionToken, state: projectStateForPlayer(state, playerId) as GameState })
   }
 }

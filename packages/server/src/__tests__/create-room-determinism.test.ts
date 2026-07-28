@@ -80,7 +80,7 @@ describe('create_room determinism', () => {
       })
     })
 
-    expect(payload.state.bag).toHaveLength(49)
+    expect(payload.state.bag).toHaveLength(53)
     expect(payload.state.seed).toBeGreaterThanOrEqual(0)
   })
 })

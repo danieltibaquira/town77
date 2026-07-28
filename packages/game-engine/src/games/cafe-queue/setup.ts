@@ -91,7 +91,7 @@ export function createCafeQueueState(
   setupPlayers: SetupPlayer[],
   seed: number,
 ): CafeQueueState {
-  if (setupPlayers.length < config.minPlayers || setupPlayers.length > config.maxPlayers) {
+  if (setupPlayers.length < 1 || setupPlayers.length > config.maxPlayers) {
     throw new CafeQueueRuleError('INVALID_PLAYER_COUNT')
   }
 

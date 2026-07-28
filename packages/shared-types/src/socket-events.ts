@@ -1,18 +1,27 @@
 import type { Chip } from './chip'
 import type { GameConfig } from './game-config'
 import type { GameState, Score } from './game-state'
-import type { CafeQueueAction } from './cafe-queue'
+import type { CafeQueueAction, CafeQueueConfig } from './cafe-queue'
 
 export interface CafeQueueActionPayload {
   action: CafeQueueAction
 }
 
-export interface CreateRoomPayload {
+export interface TilePlacementCreateRoomPayload {
   config: GameConfig
   themeId: string
   playerName: string
   seed?: number
 }
+
+export interface CafeQueueCreateRoomPayload {
+  config: CafeQueueConfig
+  themeId: string
+  playerName: string
+  seed?: number
+}
+
+export type CreateRoomPayload = TilePlacementCreateRoomPayload | CafeQueueCreateRoomPayload
 
 export interface JoinRoomPayload {
   code: string
@@ -64,11 +73,12 @@ export type ServerToClientEvents = {
 
 export type ClientToServerEvents = {
   create_room: (payload: CreateRoomPayload) => void
-  create_solo_room: (payload: CreateRoomPayload) => void
+  create_solo_room: (payload: TilePlacementCreateRoomPayload) => void
   join_room: (payload: JoinRoomPayload) => void
   start_game: () => void
   start_solo_game: () => void
   place_chip: (payload: PlaceChipPayload) => void
   exchange_chips: (payload: ExchangeChipsPayload) => void
   discard_chip: (payload: DiscardChipPayload) => void
+  cafe_queue_action: (payload: CafeQueueActionPayload) => void
 }

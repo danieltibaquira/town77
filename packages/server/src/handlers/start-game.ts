@@ -1,5 +1,6 @@
-import type { GameState } from '@town77/shared-types'
-import { dealHands, pickFirstPlayer } from '@town77/game-engine'
+import type { AnyGameState, GameState } from '@town77/shared-types'
+import { isCafeQueueState } from '@town77/shared-types'
+import { dealHands, pickFirstPlayer, startCafeQueueGame } from '@town77/game-engine'
 import { getRoom, updateRoomState } from '../db/rooms'
 import { logger } from '../logger'
 import { emitStateToRoom } from '../state/broadcast'
@@ -20,7 +21,27 @@ export function startGameHandler(io: Io, socket: Sock, db: Db) {
         return
       }
 
-      const state: GameState = JSON.parse(roomRow.state_json) as GameState
+      const parsedState = JSON.parse(roomRow.state_json) as AnyGameState
+      if (isCafeQueueState(parsedState)) {
+        if (parsedState.players[0]?.id !== playerId) {
+          socket.emit('error', { code: 'NOT_HOST', messageKey: 'errors.not_host' })
+          return
+        }
+        if (parsedState.players.length < parsedState.config.minPlayers) {
+          socket.emit('error', { code: 'NOT_ENOUGH_PLAYERS', messageKey: 'errors.not_enough_players' })
+          return
+        }
+        if (parsedState.phase !== 'lobby') {
+          socket.emit('error', { code: 'ALREADY_STARTED', messageKey: 'errors.already_started' })
+          return
+        }
+        const updatedState = startCafeQueueGame(parsedState)
+        updateRoomState(db, roomCode, updatedState)
+        logger.info({ roomCode, gameId: updatedState.gameId }, 'game.started')
+        emitStateToRoom(io, roomCode, updatedState)
+        return
+      }
+      const state: GameState = parsedState
 
       if (state.players[0]?.id !== playerId) {
         socket.emit('error', { code: 'NOT_HOST', messageKey: 'errors.not_host' })

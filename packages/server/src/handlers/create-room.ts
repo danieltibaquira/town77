@@ -1,6 +1,6 @@
 import { randomInt } from 'crypto'
-import type { CreateRoomPayload, GameState } from '@town77/shared-types'
-import { initBag, createGrid, SeededRNG } from '@town77/game-engine'
+import type { AnyGameState, CafeQueueConfig, CreateRoomPayload, GameConfig, GameState } from '@town77/shared-types'
+import { createCafeQueueState, initBag, createGrid, SeededRNG } from '@town77/game-engine'
 import { createRoom } from '../db/rooms'
 import { createPlayer } from '../db/players'
 import { runInTransaction } from '../db/transactions'
@@ -27,27 +27,31 @@ export function createRoomHandler(_io: Io, socket: Sock, db: Db, presence = new 
     const playerId = generatePlayerId()
     const sessionToken = generateSessionToken()
 
-    const rng = new SeededRNG(seed)
-    const bag = initBag(config.chips, rng, config.grid.rows * config.grid.cols + config.handSize)
-
-    const state: GameState = {
-      grid: createGrid(config.grid.rows, config.grid.cols),
-      bag,
-      players: [
-        {
-          id: playerId,
-          name: playerName,
-          hand: [],
-          placed: 0,
-          hasDiscarded: false,
-          connected: true,
-        },
-      ],
-      turnIndex: 0,
-      phase: 'lobby',
-      config,
-      themeId,
-      seed,
+    let state: AnyGameState
+    if (isCafeQueueConfig(config)) {
+      state = createCafeQueueState(config, [{ id: playerId, name: playerName }], seed)
+    } else {
+      const rng = new SeededRNG(seed)
+      const bag = initBag(config.chips, rng, config.grid.rows * config.grid.cols + config.handSize)
+      state = {
+        grid: createGrid(config.grid.rows, config.grid.cols),
+        bag,
+        players: [
+          {
+            id: playerId,
+            name: playerName,
+            hand: [],
+            placed: 0,
+            hasDiscarded: false,
+            connected: true,
+          },
+        ],
+        turnIndex: 0,
+        phase: 'lobby',
+        config,
+        themeId,
+        seed,
+      } satisfies GameState
     }
 
     try {
@@ -69,6 +73,10 @@ export function createRoomHandler(_io: Io, socket: Sock, db: Db, presence = new 
     void socket.join(code)
 
     logger.info({ roomCode: code, playerId, playerName }, 'room.created')
-    socket.emit('room_joined', { code, playerId, sessionToken, state: projectStateForPlayer(state, playerId) })
+    socket.emit('room_joined', { code, playerId, sessionToken, state: projectStateForPlayer(state, playerId) as GameState })
   }
+}
+
+function isCafeQueueConfig(config: GameConfig | CafeQueueConfig): config is CafeQueueConfig {
+  return 'gameId' in config && config.gameId === 'cafe-queue'
 }

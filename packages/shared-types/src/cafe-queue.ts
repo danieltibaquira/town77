@@ -101,6 +101,10 @@ export interface CafeQueueState {
   rushSupply: number
 }
 
+export function isCafeQueueState(state: unknown): state is CafeQueueState {
+  return typeof state === 'object' && state !== null && 'gameId' in state && state.gameId === 'cafe-queue'
+}
+
 export interface CafeQueueScore {
   playerId: string
   name: string

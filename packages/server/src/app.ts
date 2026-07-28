@@ -14,6 +14,7 @@ import { startSoloGameHandler } from './handlers/solo-game'
 import { placeChipHandler } from './handlers/place-chip'
 import { exchangeChipsHandler } from './handlers/exchange-chips'
 import { discardChipHandler } from './handlers/discard-chip'
+import { cafeQueueActionHandler } from './handlers/cafe-queue-action'
 import { disconnectHandler } from './handlers/disconnect'
 import { PresenceRegistry } from './socket/presence'
 import { RateLimiter } from './security/rate-limit'
@@ -30,7 +31,7 @@ export type Sock = Socket<ClientToServerEvents, ServerToClientEvents>
 export type Db = Database.Database
 
 const ROOM_ATTEMPT_EVENTS = new Set(['create_room', 'create_solo_room', 'join_room'])
-const MUTATION_EVENTS = new Set(['start_game', 'start_solo_game', 'place_chip', 'exchange_chips', 'discard_chip'])
+const MUTATION_EVENTS = new Set(['start_game', 'start_solo_game', 'place_chip', 'exchange_chips', 'discard_chip', 'cafe_queue_action'])
 
 export function wireHandlers(
   io: Io,
@@ -64,6 +65,7 @@ export function wireHandlers(
     socket.on('place_chip', placeChipHandler(io, socket, db))
     socket.on('exchange_chips', exchangeChipsHandler(io, socket, db))
     socket.on('discard_chip', discardChipHandler(io, socket, db))
+    socket.on('cafe_queue_action', cafeQueueActionHandler(io, socket, db))
 
     socket.on('disconnect', disconnectHandler(io, socket, db, presence))
   })
