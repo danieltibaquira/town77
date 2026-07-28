@@ -19,7 +19,7 @@ describe('create_room — playerName validation', () => {
 
   it('rejects a whitespace-only name with VALIDATION_ERROR and no DB write', () => {
     const socket = makeSocket()
-    const handler = createRoomHandler({} as never, socket as never, {} as never)
+    const handler = createRoomHandler({} as never, socket as never, { transaction: (work: () => void) => work } as never)
     handler({ config: DEFAULT_GAME_CONFIG, themeId: 'town77', playerName: '   ' } as never)
     expect(socket.emit).toHaveBeenCalledWith('error', {
       code: 'VALIDATION_ERROR',
@@ -45,7 +45,11 @@ describe('create_room — playerName validation', () => {
 
   it('accepts and trims a valid name', () => {
     const socket = makeSocket()
-    const handler = createRoomHandler({} as never, socket as never, {} as never)
+    const handler = createRoomHandler(
+      {} as never,
+      socket as never,
+      { transaction: (work: () => void) => work } as never,
+    )
     handler({ config: DEFAULT_GAME_CONFIG, themeId: 'town77', playerName: '  Alice  ' } as never)
     expect(createRoom).toHaveBeenCalledTimes(1)
     // emitted room_joined with the trimmed name in state

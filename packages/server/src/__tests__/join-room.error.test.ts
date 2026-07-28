@@ -34,13 +34,13 @@ describe('join_room — DB failure handling', () => {
 
   it('does not throw when join persistence fails', () => {
     const socket = makeSocket()
-    const handler = joinRoomHandler({} as never, socket as never, {} as never)
+    const handler = joinRoomHandler({} as never, socket as never, { transaction: (work: () => void) => work } as never)
     expect(() => handler(payload as never)).not.toThrow()
   })
 
   it('emits a graceful INTERNAL_ERROR when join persistence fails', () => {
     const socket = makeSocket()
-    const handler = joinRoomHandler({} as never, socket as never, {} as never)
+    const handler = joinRoomHandler({} as never, socket as never, { transaction: (work: () => void) => work } as never)
     handler(payload as never)
     expect(socket.emit).toHaveBeenCalledWith('error', {
       code: 'INTERNAL_ERROR',
@@ -50,7 +50,7 @@ describe('join_room — DB failure handling', () => {
 
   it('does not emit room_joined when join persistence fails', () => {
     const socket = makeSocket()
-    const handler = joinRoomHandler({} as never, socket as never, {} as never)
+    const handler = joinRoomHandler({} as never, socket as never, { transaction: (work: () => void) => work } as never)
     handler(payload as never)
     expect(socket.emit).not.toHaveBeenCalledWith('room_joined', expect.anything())
   })

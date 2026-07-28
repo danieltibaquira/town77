@@ -8,7 +8,7 @@ export interface ThemeContextValue {
 }
 
 export const ThemeContext = createContext<ThemeContextValue>({
-  theme: getThemeById("town77"),
+  theme: getThemeById("neobrutalism"),
   setTheme: () => {},
 });
 

@@ -37,6 +37,7 @@ describe('Session recovery', () => {
     localStorage.setItem('sessionToken', 'tok-abc')
     localStorage.setItem('playerId', 'p1')
     localStorage.setItem('playerName', 'Alice')
+    localStorage.setItem('roomCode', 'ABC123')
 
     renderWithTheme(<LobbyScreen />)
 

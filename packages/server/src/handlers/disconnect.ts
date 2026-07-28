@@ -1,14 +1,17 @@
 import type { GameState } from '@town77/shared-types'
 import { getRoom, updateRoomState } from '../db/rooms'
 import { logger } from '../logger'
+import { emitStateToRoom } from '../state/broadcast'
+import { PresenceRegistry } from '../socket/presence'
 import type { Io, Sock, Db } from '../app'
 
-export function disconnectHandler(io: Io, socket: Sock, db: Db) {
+export function disconnectHandler(io: Io, socket: Sock, db: Db, presence = new PresenceRegistry()) {
   return () => {
     logger.debug({ socketId: socket.id }, 'socket.disconnect')
 
     const { playerId, roomCode } = socket.data
     if (!playerId || !roomCode) return
+    if (presence.disconnect(playerId, socket.id) > 0) return
 
     try {
       const roomRow = getRoom(db, roomCode)
@@ -22,7 +25,7 @@ export function disconnectHandler(io: Io, socket: Sock, db: Db) {
 
       updateRoomState(db, roomCode, updatedState)
       logger.info({ roomCode, playerId }, 'player.disconnected')
-      io.to(roomCode).emit('state_update', { state: updatedState })
+      emitStateToRoom(io, roomCode, updatedState)
     } catch (err) {
       logger.error(
         { roomCode, playerId, error: (err as Error).message },

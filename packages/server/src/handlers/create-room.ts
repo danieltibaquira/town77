@@ -3,13 +3,16 @@ import type { CreateRoomPayload, GameState } from '@town77/shared-types'
 import { initBag, createGrid, SeededRNG } from '@town77/game-engine'
 import { createRoom } from '../db/rooms'
 import { createPlayer } from '../db/players'
+import { runInTransaction } from '../db/transactions'
 import { generateRoomCode } from '../room/code'
 import { generateSessionToken, generatePlayerId } from '../room/session'
 import { validatePlayerName } from '../room/validate'
 import { logger } from '../logger'
+import { projectStateForPlayer } from '../state/projection'
+import { PresenceRegistry } from '../socket/presence'
 import type { Io, Sock, Db } from '../app'
 
-export function createRoomHandler(_io: Io, socket: Sock, db: Db) {
+export function createRoomHandler(_io: Io, socket: Sock, db: Db, presence = new PresenceRegistry()) {
   return (payload: CreateRoomPayload) => {
     const { config, themeId } = payload
 
@@ -48,8 +51,10 @@ export function createRoomHandler(_io: Io, socket: Sock, db: Db) {
     }
 
     try {
-      createRoom(db, { code, themeId, config, state, seed })
-      createPlayer(db, { id: playerId, roomCode: code, name: playerName, sessionToken })
+      runInTransaction(db, () => {
+        createRoom(db, { code, themeId, config, state, seed })
+        createPlayer(db, { id: playerId, roomCode: code, name: playerName, sessionToken })
+      })
     } catch (err) {
       logger.error(
         { roomCode: code, playerId, error: (err as Error).message },
@@ -60,9 +65,10 @@ export function createRoomHandler(_io: Io, socket: Sock, db: Db) {
     }
 
     socket.data = { playerId, roomCode: code }
+    presence.connect(playerId, socket.id)
     void socket.join(code)
 
     logger.info({ roomCode: code, playerId, playerName }, 'room.created')
-    socket.emit('room_joined', { code, playerId, sessionToken, state })
+    socket.emit('room_joined', { code, playerId, sessionToken, state: projectStateForPlayer(state, playerId) })
   }
 }

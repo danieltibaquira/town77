@@ -9,7 +9,7 @@ export const THEMES: readonly Theme[] = [town77Theme, playfulPastelTheme, neobru
 
 const byId = new Map<string, Theme>(THEMES.map((theme) => [theme.id, theme]));
 
-const DEFAULT_THEME_ID: ThemeId = "town77";
+const DEFAULT_THEME_ID: ThemeId = "neobrutalism";
 
 export function getThemeById(id: ThemeId): Theme {
   const theme = byId.get(id);

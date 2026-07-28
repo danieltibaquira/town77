@@ -23,24 +23,17 @@ export function isValidPlacement(
   if (isFirstChip) return true
   if (!hasAdjacentChip(grid, row, col)) return false
 
-  for (let c = 0; c < cols; c++) {
-    const cell = grid[row]?.[c]
-    if (cell != null && !sharesExactlyOneAttribute(cell, chip)) return false
-  }
+  const rowChips = (grid[row] ?? []).filter((cell): cell is Chip => cell !== null)
+  const columnChips = grid.map((line) => line[col]).filter((cell): cell is Chip => cell !== null)
 
-  for (let r = 0; r < rows; r++) {
-    const cell = grid[r]?.[col]
-    if (cell != null && !sharesExactlyOneAttribute(cell, chip)) return false
-  }
+  if (!rowChips.every((cell) => differsInColorAndShape(cell, chip))) return false
+  if (!columnChips.every((cell) => differsInColorAndShape(cell, chip))) return false
 
   return true
 }
 
-// Qwirkle line rule: two chips in the same line are compatible only when they
-// share exactly one attribute — same color XOR same shape. Sharing neither
-// breaks the line; sharing both is an illegal duplicate.
-function sharesExactlyOneAttribute(a: Chip, b: Chip): boolean {
-  return (a.color === b.color) !== (a.shape === b.shape)
+function differsInColorAndShape(a: Chip, b: Chip): boolean {
+  return a.color !== b.color && a.shape !== b.shape
 }
 
 function hasAdjacentChip(grid: Grid, row: number, col: number): boolean {
@@ -76,20 +69,16 @@ export function gridIsConsistent(grid: Grid): boolean {
   const cols = grid[0]?.length ?? 0
 
   for (let r = 0; r < rows; r++) {
-    const chips = (grid[r] ?? []).filter((c): c is Chip => c !== null)
-    const colors = chips.map(c => c.color)
-    const shapes = chips.map(c => c.shape)
-    if (new Set(colors).size !== colors.length) return false
-    if (new Set(shapes).size !== shapes.length) return false
+    if (!areLinesConsistent((grid[r] ?? []).filter((cell): cell is Chip => cell !== null))) return false
   }
 
   for (let c = 0; c < cols; c++) {
-    const chips = grid.map(r => r[c]).filter((c): c is Chip => c !== null)
-    const colors = chips.map(ch => ch.color)
-    const shapes = chips.map(ch => ch.shape)
-    if (new Set(colors).size !== colors.length) return false
-    if (new Set(shapes).size !== shapes.length) return false
+    if (!areLinesConsistent(grid.map((row) => row[c]).filter((cell): cell is Chip => cell !== null))) return false
   }
 
   return true
+}
+
+function areLinesConsistent(chips: Chip[]): boolean {
+  return chips.every((chip, index) => chips.slice(index + 1).every((other) => differsInColorAndShape(chip, other)))
 }

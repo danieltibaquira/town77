@@ -2,6 +2,7 @@ import type { GameState } from '@town77/shared-types'
 import { dealHands, findBotAction, isFirstChipOnGrid, isValidPlacement, applyPlacement, drawChips, calculateScores, isGameOver, doExchange, SeededRNG, pickFirstPlayer } from '@town77/game-engine'
 import { getRoom, updateRoomState } from '../db/rooms'
 import { logger } from '../logger'
+import { emitStateToRoom } from '../state/broadcast'
 import type { Io, Sock, Db } from '../app'
 
 export function startSoloGameHandler(io: Io, socket: Sock, db: Db) {
@@ -42,7 +43,7 @@ export function startSoloGameHandler(io: Io, socket: Sock, db: Db) {
 
     updateRoomState(db, roomCode, updatedState)
     logger.info({ roomCode, firstPlayerIndex }, 'solo.game.started')
-    io.to(roomCode).emit('state_update', { state: updatedState })
+    emitStateToRoom(io, roomCode, updatedState)
 
     // If bot goes first, trigger its turn
     const botPlayer = updatedState.players[firstPlayerIndex]
@@ -80,7 +81,7 @@ function runBotTurnInner(io: Io, db: Db, roomCode: string, _captured: GameState)
     const nextTurnIndex = (currentState.turnIndex + 1) % currentState.players.length
     const passedState: GameState = { ...currentState, turnIndex: nextTurnIndex }
     updateRoomState(db, roomCode, passedState)
-    io.to(roomCode).emit('state_update', { state: passedState })
+    emitStateToRoom(io, roomCode, passedState)
     return
   }
 
@@ -94,7 +95,7 @@ function runBotTurnInner(io: Io, db: Db, roomCode: string, _captured: GameState)
       const nextTurnIndex = (currentState.turnIndex + 1) % currentState.players.length
       const passedState: GameState = { ...currentState, turnIndex: nextTurnIndex }
       updateRoomState(db, roomCode, passedState)
-      io.to(roomCode).emit('state_update', { state: passedState })
+      emitStateToRoom(io, roomCode, passedState)
       return
     }
 
@@ -104,7 +105,7 @@ function runBotTurnInner(io: Io, db: Db, roomCode: string, _captured: GameState)
       const nextTurnIndex = (currentState.turnIndex + 1) % currentState.players.length
       const passedState: GameState = { ...currentState, turnIndex: nextTurnIndex }
       updateRoomState(db, roomCode, passedState)
-      io.to(roomCode).emit('state_update', { state: passedState })
+      emitStateToRoom(io, roomCode, passedState)
       return
     }
 
@@ -142,7 +143,7 @@ function runBotTurnInner(io: Io, db: Db, roomCode: string, _captured: GameState)
 
     updateRoomState(db, roomCode, updatedState)
     logger.info({ roomCode, botId: botPlayer.id, row, col }, 'bot.placed')
-    io.to(roomCode).emit('state_update', { state: updatedState })
+    emitStateToRoom(io, roomCode, updatedState)
 
     // If next turn is also bot, chain it
     const nextPlayer = updatedState.players[nextTurnIndex]
@@ -157,7 +158,7 @@ function runBotTurnInner(io: Io, db: Db, roomCode: string, _captured: GameState)
       const nextTurnIndex = (currentState.turnIndex + 1) % currentState.players.length
       const passedState: GameState = { ...currentState, turnIndex: nextTurnIndex }
       updateRoomState(db, roomCode, passedState)
-      io.to(roomCode).emit('state_update', { state: passedState })
+      emitStateToRoom(io, roomCode, passedState)
       return
     }
 
@@ -187,7 +188,7 @@ function runBotTurnInner(io: Io, db: Db, roomCode: string, _captured: GameState)
 
     updateRoomState(db, roomCode, updatedState)
     logger.info({ roomCode, botId: botPlayer.id, drew }, 'bot.discarded')
-    io.to(roomCode).emit('state_update', { state: updatedState })
+    emitStateToRoom(io, roomCode, updatedState)
 
     const nextPlayer = updatedState.players[nextTurnIndex]
     if (nextPlayer && nextPlayer.id.startsWith('bot-')) {
@@ -211,7 +212,7 @@ function runBotTurnInner(io: Io, db: Db, roomCode: string, _captured: GameState)
 
     updateRoomState(db, roomCode, updatedState)
     logger.info({ roomCode, botId: botPlayer.id, count: action.chips.length }, 'bot.exchanged')
-    io.to(roomCode).emit('state_update', { state: updatedState })
+    emitStateToRoom(io, roomCode, updatedState)
 
     const nextPlayer = updatedState.players[nextTurnIndex]
     if (nextPlayer && nextPlayer.id.startsWith('bot-')) {

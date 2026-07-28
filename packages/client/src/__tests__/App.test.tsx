@@ -10,10 +10,10 @@ describe("App", () => {
     expect(screen.getByRole("heading", { name: "Town 77" })).toBeInTheDocument();
   });
 
-  it("navigates to config when create room is clicked", () => {
+  it("keeps the home screen visible when create room is clicked", () => {
     window.history.pushState({}, "", "/");
     render(<App />);
     fireEvent.click(screen.getByTestId("btn-create"));
-    expect(screen.getByTestId("config-screen")).toBeInTheDocument();
+    expect(screen.getByTestId("home-screen")).toBeInTheDocument();
   });
 });

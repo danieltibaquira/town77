@@ -4,6 +4,7 @@ import { getRoom, updateRoomState } from '../db/rooms'
 import { runBotTurn } from './solo-game'
 import { nextTurnIndex } from './turn-utils'
 import { logger } from '../logger'
+import { emitStateToRoom } from '../state/broadcast'
 import type { Io, Sock, Db } from '../app'
 
 export function discardChipHandler(io: Io, socket: Sock, db: Db) {
@@ -75,7 +76,7 @@ export function discardChipHandler(io: Io, socket: Sock, db: Db) {
         return
       }
 
-      io.to(roomCode).emit('state_update', { state: updatedState })
+      emitStateToRoom(io, roomCode, updatedState)
 
       // Trigger bot turn if next player is a bot
       const nextPlayer = updatedState.players[nextTurnIdx]

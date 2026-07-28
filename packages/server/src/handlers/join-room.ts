@@ -1,12 +1,16 @@
 import type { JoinRoomPayload, GameState } from '@town77/shared-types'
 import { createPlayer, getPlayerByToken } from '../db/players'
 import { getRoom, updateRoomState } from '../db/rooms'
+import { runInTransaction } from '../db/transactions'
 import { generateSessionToken, generatePlayerId } from '../room/session'
 import { validatePlayerName } from '../room/validate'
 import { logger } from '../logger'
+import { emitStateToRoom } from '../state/broadcast'
+import { projectStateForPlayer } from '../state/projection'
+import { PresenceRegistry } from '../socket/presence'
 import type { Io, Sock, Db } from '../app'
 
-export function joinRoomHandler(_io: Io, socket: Sock, db: Db) {
+export function joinRoomHandler(_io: Io, socket: Sock, db: Db, presence = new PresenceRegistry()) {
   return (payload: JoinRoomPayload) => {
     const { code, playerName, sessionToken } = payload
 
@@ -29,6 +33,7 @@ export function joinRoomHandler(_io: Io, socket: Sock, db: Db) {
         updateRoomState(db, code, updatedState)
 
         socket.data = { playerId: playerRow.id, roomCode: code }
+        presence.connect(playerRow.id, socket.id)
         void socket.join(code)
 
         logger.info({ roomCode: code, playerId: playerRow.id }, 'player.reconnected')
@@ -36,9 +41,9 @@ export function joinRoomHandler(_io: Io, socket: Sock, db: Db) {
           code,
           playerId: playerRow.id,
           sessionToken,
-          state: updatedState,
+          state: projectStateForPlayer(updatedState, playerRow.id),
         })
-        socket.to(code).emit('state_update', { state: updatedState })
+        emitStateToRoom(_io, code, updatedState, socket.id)
         return
       }
     }
@@ -72,8 +77,10 @@ export function joinRoomHandler(_io: Io, socket: Sock, db: Db) {
     }
 
     try {
-      updateRoomState(db, code, updatedState)
-      createPlayer(db, { id: playerId, roomCode: code, name, sessionToken: newToken })
+      runInTransaction(db, () => {
+        updateRoomState(db, code, updatedState)
+        createPlayer(db, { id: playerId, roomCode: code, name, sessionToken: newToken })
+      })
     } catch (err) {
       logger.error(
         { roomCode: code, playerId, error: (err as Error).message },
@@ -84,10 +91,16 @@ export function joinRoomHandler(_io: Io, socket: Sock, db: Db) {
     }
 
     socket.data = { playerId, roomCode: code }
+    presence.connect(playerId, socket.id)
     void socket.join(code)
 
     logger.info({ roomCode: code, playerId, playerName }, 'player.joined')
-    socket.emit('room_joined', { code, playerId, sessionToken: newToken, state: updatedState })
-    socket.to(code).emit('state_update', { state: updatedState })
+    socket.emit('room_joined', {
+      code,
+      playerId,
+      sessionToken: newToken,
+      state: projectStateForPlayer(updatedState, playerId),
+    })
+    emitStateToRoom(_io, code, updatedState, socket.id)
   }
 }

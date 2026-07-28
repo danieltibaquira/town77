@@ -40,7 +40,7 @@ export function Cell({
   const cellSize = isCompact ? "calc(var(--layout-cell) * 0.85)" : "var(--layout-cell)";
 
   function handleClick() {
-    if (chip !== null || !onClick) return;
+    if (chip !== null || !isValid || !onClick) return;
     onClick(row, col);
   }
 
@@ -73,7 +73,7 @@ export function Cell({
     <motion.div
       role="button"
       aria-label={ariaLabel}
-      tabIndex={chip === null && onClick ? 0 : -1}
+      tabIndex={chip === null && isValid && onClick ? 0 : -1}
       data-testid={`cell-${row}-${col}`}
       data-valid={isValid}
       data-density={density}

@@ -33,3 +33,20 @@ export function updateRoomState(db: Database.Database, code: string, state: Game
     code,
   )
 }
+
+export function resetConnectedPlayers(db: Database.Database): void {
+  const rooms = db.prepare('SELECT code, state_json FROM rooms').all() as Pick<RoomRow, 'code' | 'state_json'>[]
+  const update = db.prepare('UPDATE rooms SET state_json = ?, updated_at = ? WHERE code = ?')
+
+  db.transaction(() => {
+    for (const room of rooms) {
+      const state = JSON.parse(room.state_json) as GameState
+      if (!state.players.some((player) => player.connected)) continue
+      const resetState: GameState = {
+        ...state,
+        players: state.players.map((player) => ({ ...player, connected: false })),
+      }
+      update.run(JSON.stringify(resetState), Date.now(), room.code)
+    }
+  })()
+}

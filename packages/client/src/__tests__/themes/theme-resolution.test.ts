@@ -22,7 +22,7 @@ describe('getThemeByIdSafe', () => {
     expect(getThemeByIdSafe('playful-pastel').id).toBe('playful-pastel')
   })
 
-  it('falls back to the default (town77) for an unknown id', () => {
-    expect(getThemeByIdSafe('does-not-exist').id).toBe('town77')
+  it('falls back to the default (neobrutalism) for an unknown id', () => {
+    expect(getThemeByIdSafe('does-not-exist').id).toBe('neobrutalism')
   })
 })

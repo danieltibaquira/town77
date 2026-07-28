@@ -53,6 +53,13 @@ describe("Cell", () => {
     expect(onClick).not.toHaveBeenCalled();
   });
 
+  it("does not submit an invalid empty cell", () => {
+    const onClick = vi.fn();
+    renderWithTheme(<Cell row={0} col={1} chip={null} isValid={false} onClick={onClick} />);
+    fireEvent.click(screen.getByTestId("cell-0-1"));
+    expect(onClick).not.toHaveBeenCalled();
+  });
+
   describe("Surface Depth", () => {
     it("applies inner shadow to empty cells", () => {
       renderWithTheme(<Cell row={1} col={1} chip={null} isValid={false} />);

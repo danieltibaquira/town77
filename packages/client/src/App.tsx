@@ -17,7 +17,7 @@ function GameConnectionProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function App() {
-  const [theme, setTheme] = useState(() => getThemeById("town77"));
+  const [theme, setTheme] = useState(() => getThemeById("neobrutalism"));
   const gameState = useGameStore((s) => s.gameState);
 
   useEffect(() => {

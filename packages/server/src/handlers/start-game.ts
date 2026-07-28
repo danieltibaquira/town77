@@ -2,6 +2,7 @@ import type { GameState } from '@town77/shared-types'
 import { dealHands, pickFirstPlayer } from '@town77/game-engine'
 import { getRoom, updateRoomState } from '../db/rooms'
 import { logger } from '../logger'
+import { emitStateToRoom } from '../state/broadcast'
 import type { Io, Sock, Db } from '../app'
 
 export function startGameHandler(io: Io, socket: Sock, db: Db) {
@@ -47,7 +48,7 @@ export function startGameHandler(io: Io, socket: Sock, db: Db) {
 
       updateRoomState(db, roomCode, updatedState)
       logger.info({ roomCode, firstPlayerIndex }, 'game.started')
-      io.to(roomCode).emit('state_update', { state: updatedState })
+      emitStateToRoom(io, roomCode, updatedState)
     } catch (err) {
       logger.error(
         { roomCode, playerId, error: (err as Error).message },

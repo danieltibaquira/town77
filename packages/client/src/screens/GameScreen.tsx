@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ActionBar } from '../components/ActionBar'
 import { Grid } from '../components/Grid'
 import { Hand } from '../components/Hand'
 import { PlayerBadge } from '../components/PlayerBadge'
 import { Toast } from '../components/Toast'
 import { useRequireGame } from '../hooks/useRequireGame'
+import { useRoomRecovery } from '../hooks/useRoomRecovery'
 import { useValidCells } from '../hooks/useValidCells'
 import { bagShakeTransition, exchangeFlashTransition, turnSweepTransition } from '../lib/motion'
 import { useTheme } from '../lib/theme'
@@ -14,7 +15,9 @@ import { useGameStore } from '../store/gameStore'
 import { selectExchangeSet } from '../lib/exchange'
 
 export function GameScreen() {
-  useRequireGame()
+  const { code: routeCode } = useParams<{ code: string }>()
+  const recoveryPending = useRoomRecovery(routeCode)
+  useRequireGame(recoveryPending)
   const { t } = useTranslation('game')
   const navigate = useNavigate()
   const { theme } = useTheme()

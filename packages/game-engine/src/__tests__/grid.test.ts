@@ -14,6 +14,7 @@ const TOWER_RED: Chip = { color: 'color-1', shape: 'tower' }
 const COTTAGE_BLUE: Chip = { color: 'color-2', shape: 'cottage' }
 const TOWER_BLUE: Chip = { color: 'color-2', shape: 'tower' }
 const BARN_GREEN: Chip = { color: 'color-3', shape: 'barn' }
+const TOWER_GREEN: Chip = { color: 'color-3', shape: 'tower' }
 
 describe('createGrid', () => {
   it('creates a grid with correct dimensions', () => {
@@ -61,11 +62,11 @@ describe('isValidPlacement — adjacency', () => {
 
   it('allows placement adjacent to existing chip', () => {
     const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    // TOWER_RED shares color with COTTAGE_RED — a legal same-color line partner
-    expect(isValidPlacement(grid, 3, 4, TOWER_RED, false)).toBe(true)
-    expect(isValidPlacement(grid, 4, 3, TOWER_RED, false)).toBe(true)
-    expect(isValidPlacement(grid, 3, 2, TOWER_RED, false)).toBe(true)
-    expect(isValidPlacement(grid, 2, 3, TOWER_RED, false)).toBe(true)
+    // TOWER_BLUE differs in both color and shape from COTTAGE_RED.
+    expect(isValidPlacement(grid, 3, 4, TOWER_BLUE, false)).toBe(true)
+    expect(isValidPlacement(grid, 4, 3, TOWER_BLUE, false)).toBe(true)
+    expect(isValidPlacement(grid, 3, 2, TOWER_BLUE, false)).toBe(true)
+    expect(isValidPlacement(grid, 2, 3, TOWER_BLUE, false)).toBe(true)
   })
 
   it('rejects diagonal placement', () => {
@@ -79,51 +80,35 @@ describe('isValidPlacement — adjacency', () => {
   })
 })
 
-describe('isValidPlacement — Qwirkle line rule', () => {
-  // A chip is legal in a line only if it shares exactly one attribute with
-  // every line neighbor (same color XOR same shape). Sharing neither (broken
-  // line) or both (exact duplicate) is illegal.
+describe('isValidPlacement — Town 77 line rule', () => {
+  // A chip must differ in both color and shape from every chip in its row and
+  // column, including chips separated by empty cells.
 
-  it('allows chip sharing color in same row (same-color line)', () => {
+  it('allows chip with different color and shape in same row', () => {
     const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    // TOWER_RED: same color, different shape
-    expect(isValidPlacement(grid, 3, 4, TOWER_RED, false)).toBe(true)
+    expect(isValidPlacement(grid, 3, 4, TOWER_BLUE, false)).toBe(true)
   })
 
-  it('allows chip sharing shape in same row (same-shape line)', () => {
+  it('allows chip with different color and shape in same column', () => {
     const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    // COTTAGE_BLUE: same shape, different color
-    expect(isValidPlacement(grid, 3, 4, COTTAGE_BLUE, false)).toBe(true)
+    expect(isValidPlacement(grid, 4, 3, TOWER_BLUE, false)).toBe(true)
   })
 
-  it('allows chip sharing color in same column', () => {
+  it('rejects chip sharing a color with a contiguous row neighbor', () => {
     const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    expect(isValidPlacement(grid, 4, 3, TOWER_RED, false)).toBe(true)
+    expect(isValidPlacement(grid, 3, 4, TOWER_RED, false)).toBe(false)
   })
 
-  it('allows chip sharing shape in same column', () => {
+  it('rejects chip sharing a shape with a contiguous column neighbor', () => {
     const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    expect(isValidPlacement(grid, 4, 3, COTTAGE_BLUE, false)).toBe(true)
+    expect(isValidPlacement(grid, 4, 3, COTTAGE_BLUE, false)).toBe(false)
   })
 
-  it('rejects chip sharing neither color nor shape (broken line)', () => {
-    const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    // TOWER_BLUE: different color and different shape
-    expect(isValidPlacement(grid, 3, 4, TOWER_BLUE, false)).toBe(false)
-  })
-
-  it('rejects exact duplicate chip in same line', () => {
-    const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    // COTTAGE_RED again: shares both color and shape
-    expect(isValidPlacement(grid, 3, 4, COTTAGE_RED, false)).toBe(false)
-  })
-
-  it('rejects chip that breaks an established same-color line', () => {
-    // Row 3 is a red line: COTTAGE_RED, TOWER_RED
+  it('rejects a matching chip beyond a gap in the same row', () => {
     let grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    grid = applyPlacement(grid, 3, 4, TOWER_RED)
-    // COTTAGE_BLUE shares shape with COTTAGE_RED but shares nothing with TOWER_RED
-    expect(isValidPlacement(grid, 3, 5, COTTAGE_BLUE, false)).toBe(false)
+    grid = applyPlacement(grid, 3, 5, TOWER_GREEN)
+    // TOWER_BLUE matches the shape of the separated TOWER_GREEN.
+    expect(isValidPlacement(grid, 3, 2, TOWER_BLUE, false)).toBe(false)
   })
 })
 
@@ -150,12 +135,11 @@ describe('getValidCells', () => {
 
   it('returns only adjacent cells with no conflict for second chip', () => {
     const grid = applyPlacement(createGrid(7, 7), 3, 3, COTTAGE_RED)
-    // TOWER_RED shares color with COTTAGE_RED — a legal line partner
-    const cells = getValidCells(grid, TOWER_RED, false)
+    const cells = getValidCells(grid, TOWER_BLUE, false)
     // Must be adjacent to (3,3) AND form a legal line
     expect(cells.length).toBeGreaterThan(0)
     cells.forEach(([r, c]) => {
-      expect(isValidPlacement(grid, r, c, TOWER_RED, false)).toBe(true)
+      expect(isValidPlacement(grid, r, c, TOWER_BLUE, false)).toBe(true)
     })
   })
 })
@@ -173,7 +157,7 @@ describe('gridIsConsistent', () => {
     expect(gridIsConsistent(grid)).toBe(true)
   })
 
-  it('returns false when row has duplicate color', () => {
+  it('returns false when a contiguous row reuses a color', () => {
     let grid = createGrid(7, 7)
     // Force an invalid state directly (bypassing validation)
     const raw = grid.map(r => [...r]) as Grid
@@ -182,10 +166,17 @@ describe('gridIsConsistent', () => {
     expect(gridIsConsistent(raw)).toBe(false)
   })
 
-  it('returns false when column has duplicate shape', () => {
+  it('returns false when a contiguous column reuses a shape', () => {
     const raw = createGrid(7, 7).map(r => [...r]) as Grid
     raw[3]![3] = COTTAGE_RED
     raw[4]![3] = COTTAGE_BLUE // same shape in same column
+    expect(gridIsConsistent(raw)).toBe(false)
+  })
+
+  it('returns false when a row reuses an attribute across a gap', () => {
+    const raw = createGrid(7, 7).map(r => [...r]) as Grid
+    raw[3]![1] = COTTAGE_RED
+    raw[3]![5] = TOWER_RED
     expect(gridIsConsistent(raw)).toBe(false)
   })
 })

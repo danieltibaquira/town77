@@ -18,10 +18,11 @@ async function startGame(server: TestServer) {
   })
   await new Promise<void>((resolve) => { host.once('state_update', () => resolve()) })
 
-  const started = new Promise<StateUpdatePayload>((resolve) => host.once('state_update', resolve))
+  const hostStarted = new Promise<StateUpdatePayload>((resolve) => host.once('state_update', resolve))
+  const guestStarted = new Promise<StateUpdatePayload>((resolve) => guest.once('state_update', resolve))
   host.emit('start_game')
-  const state = (await started).state
-  return { host, guest, code, state }
+  const [hostState, guestState] = await Promise.all([hostStarted, guestStarted])
+  return { host, guest, code, state: hostState.state, guestState: guestState.state }
 }
 
 describe('exchange_chips', () => {
@@ -52,9 +53,7 @@ describe('exchange_chips', () => {
     s.players[turnIdx]!.hand = forcedHand
     server.db.prepare('UPDATE rooms SET state_json = ? WHERE code = ?').run(JSON.stringify(s), row.code)
 
-    const stateUpdate = new Promise<StateUpdatePayload>((resolve) => {
-      host.once('state_update', resolve)
-    })
+    const stateUpdate = new Promise<StateUpdatePayload>((resolve) => activeClient.once('state_update', resolve))
 
     activeClient.emit('exchange_chips', { chips: forcedHand.slice(0, 3) })
     const updated = await stateUpdate
@@ -98,10 +97,10 @@ describe('discard_chip', () => {
   afterEach(() => server.close())
 
   it('discards chip and advances turn', async () => {
-    const { host, guest, state } = await startGame(server)
+    const { host, guest, state, guestState } = await startGame(server)
     const turnIdx = state.turnIndex
     const activeClient = turnIdx === 0 ? host : guest
-    const chip = state.players[turnIdx]!.hand[0]!
+    const chip = (turnIdx === 0 ? state : guestState).players[turnIdx]!.hand[0]!
 
     const stateUpdate = new Promise<StateUpdatePayload>((resolve) => host.once('state_update', resolve))
     activeClient.emit('discard_chip', { chip })
@@ -114,7 +113,7 @@ describe('discard_chip', () => {
   })
 
   it('emits error if player already discarded this game', async () => {
-    const { host, guest, state } = await startGame(server)
+    const { host, guest, state, guestState } = await startGame(server)
     const turnIdx = state.turnIndex
     const activeClient = turnIdx === 0 ? host : guest
 
@@ -124,7 +123,7 @@ describe('discard_chip', () => {
     s.players[turnIdx]!.hasDiscarded = true
     server.db.prepare('UPDATE rooms SET state_json = ? WHERE code = ?').run(JSON.stringify(s), row.code)
 
-    const chip = state.players[turnIdx]!.hand[0]!
+    const chip = (turnIdx === 0 ? state : guestState).players[turnIdx]!.hand[0]!
     const err = await new Promise<{ code: string }>((resolve) => {
       activeClient.once('error', resolve)
       activeClient.emit('discard_chip', { chip })

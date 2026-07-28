@@ -18,10 +18,11 @@ async function startGame(server: TestServer) {
   })
   await new Promise<void>((resolve) => { host.once('state_update', () => resolve()) })
 
-  const started = new Promise<StateUpdatePayload>((resolve) => host.once('state_update', resolve))
+  const hostStarted = new Promise<StateUpdatePayload>((resolve) => host.once('state_update', resolve))
+  const guestStarted = new Promise<StateUpdatePayload>((resolve) => guest.once('state_update', resolve))
   host.emit('start_game')
-  const state = (await started).state
-  return { host, guest, code, state }
+  const [hostState, guestState] = await Promise.all([hostStarted, guestStarted])
+  return { host, guest, code, state: hostState.state, guestState: guestState.state }
 }
 
 function buildFullGrid(): Chip[][] {
@@ -44,10 +45,10 @@ describe('discard_chip', () => {
   afterEach(() => server.close())
 
   it('emits game_over when discard empties the bag and no valid moves remain', async () => {
-    const { host, guest, state } = await startGame(server)
+    const { host, guest, state, guestState } = await startGame(server)
     const turnIdx = state.turnIndex
     const activeClient = turnIdx === 0 ? host : guest
-    const chip = state.players[turnIdx]!.hand[0]!
+    const chip = (turnIdx === 0 ? state : guestState).players[turnIdx]!.hand[0]!
 
     const row = server.db.prepare('SELECT * FROM rooms').get() as { code: string; state_json: string }
     const s = JSON.parse(row.state_json) as typeof state

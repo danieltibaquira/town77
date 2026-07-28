@@ -15,6 +15,8 @@ import { placeChipHandler } from './handlers/place-chip'
 import { exchangeChipsHandler } from './handlers/exchange-chips'
 import { discardChipHandler } from './handlers/discard-chip'
 import { disconnectHandler } from './handlers/disconnect'
+import { PresenceRegistry } from './socket/presence'
+import { RateLimiter } from './security/rate-limit'
 
 declare module 'socket.io' {
   interface SocketData {
@@ -27,20 +29,43 @@ export type Io = Server<ClientToServerEvents, ServerToClientEvents>
 export type Sock = Socket<ClientToServerEvents, ServerToClientEvents>
 export type Db = Database.Database
 
-export function wireHandlers(io: Io, db: Db): void {
+const ROOM_ATTEMPT_EVENTS = new Set(['create_room', 'create_solo_room', 'join_room'])
+const MUTATION_EVENTS = new Set(['start_game', 'start_solo_game', 'place_chip', 'exchange_chips', 'discard_chip'])
+
+export function wireHandlers(
+  io: Io,
+  db: Db,
+  presence = new PresenceRegistry(),
+  limiter = new RateLimiter(),
+): void {
   io.on('connection', (socket) => {
     logger.debug({ socketId: socket.id }, 'socket.connect')
 
-    socket.on('create_room', createRoomHandler(io, socket, db))
-    socket.on('create_solo_room', createSoloRoomHandler(io, socket, db))
-    socket.on('join_room', joinRoomHandler(io, socket, db))
+    socket.use(([event], next) => {
+      const name = String(event)
+      const key = ROOM_ATTEMPT_EVENTS.has(name)
+        ? `ip:${socket.handshake.address}`
+        : MUTATION_EVENTS.has(name)
+          ? `socket:${socket.id}`
+          : null
+      const allowed = key === null || limiter.consume(key, ROOM_ATTEMPT_EVENTS.has(name) ? 10 : 60, ROOM_ATTEMPT_EVENTS.has(name) ? 60_000 : 10_000)
+      if (!allowed) {
+        socket.emit('error', { code: 'RATE_LIMITED', messageKey: 'errors.rate_limited' })
+        return
+      }
+      next()
+    })
+
+    socket.on('create_room', createRoomHandler(io, socket, db, presence))
+    socket.on('create_solo_room', createSoloRoomHandler(io, socket, db, presence))
+    socket.on('join_room', joinRoomHandler(io, socket, db, presence))
     socket.on('start_game', startGameHandler(io, socket, db))
     socket.on('start_solo_game', startSoloGameHandler(io, socket, db))
     socket.on('place_chip', placeChipHandler(io, socket, db))
     socket.on('exchange_chips', exchangeChipsHandler(io, socket, db))
     socket.on('discard_chip', discardChipHandler(io, socket, db))
 
-    socket.on('disconnect', disconnectHandler(io, socket, db))
+    socket.on('disconnect', disconnectHandler(io, socket, db, presence))
   })
 }
 

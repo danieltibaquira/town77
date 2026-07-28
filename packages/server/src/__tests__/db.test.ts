@@ -4,7 +4,7 @@ import type { GameState } from '@town77/shared-types'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
 import { createGrid } from '@town77/game-engine'
 import { applyMigrations } from '../db/client'
-import { createRoom, getRoom, updateRoomState } from '../db/rooms'
+import { createRoom, getRoom, resetConnectedPlayers, updateRoomState } from '../db/rooms'
 import { createPlayer, getPlayerByToken, getPlayersByRoom } from '../db/players'
 
 function makeState(): GameState {
@@ -69,6 +69,21 @@ describe('rooms', () => {
     const row = getRoom(db, 'ABC123')
     const parsed = JSON.parse(row!.state_json) as GameState
     expect(parsed.phase).toBe('playing')
+  })
+
+  it('resets persisted connection flags at process startup', () => {
+    const state: GameState = {
+      ...makeState(),
+      players: [
+        { id: 'p1', name: 'Alice', hand: [], placed: 0, hasDiscarded: false, connected: true },
+      ],
+    }
+    createRoom(db, { code: 'ABC123', themeId: 'town77', config: DEFAULT_GAME_CONFIG, state, seed: 42 })
+
+    resetConnectedPlayers(db)
+
+    const stored = JSON.parse(getRoom(db, 'ABC123')!.state_json) as GameState
+    expect(stored.players[0]?.connected).toBe(false)
   })
 })
 

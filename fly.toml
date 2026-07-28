@@ -6,6 +6,15 @@ primary_region = "iad"
 [http_service]
   internal_port = 3077
   force_https = true
+  auto_stop_machines = "off"
+  auto_start_machines = false
+
+  [[http_service.checks]]
+    grace_period = "10s"
+    interval = "30s"
+    method = "GET"
+    timeout = "5s"
+    path = "/health"
 
 [[vm]]
   memory = "256mb"

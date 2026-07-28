@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import type { RoomJoinedPayload, StateUpdatePayload } from '@town77/shared-types'
 import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
+import { updateRoomState } from '../db/rooms'
 import { createTestServer, connectClient, type TestServer } from './helpers/test-server'
 
 async function startGame(server: TestServer) {
@@ -20,10 +21,11 @@ async function startGame(server: TestServer) {
     host.once('state_update', () => resolve())
   })
 
-  const started = new Promise<StateUpdatePayload>((resolve) => host.once('state_update', resolve))
+  const hostStarted = new Promise<StateUpdatePayload>((resolve) => host.once('state_update', resolve))
+  const guestStarted = new Promise<StateUpdatePayload>((resolve) => guest.once('state_update', resolve))
   host.emit('start_game')
-  const state = (await started).state
-  return { host, guest, code, state }
+  const [hostState, guestState] = await Promise.all([hostStarted, guestStarted])
+  return { host, guest, code, state: hostState.state, guestState: guestState.state }
 }
 
 describe('place_chip', () => {
@@ -36,11 +38,11 @@ describe('place_chip', () => {
   afterEach(() => server.close())
 
   it('valid first placement updates state for all players', async () => {
-    const { host, guest, state } = await startGame(server)
+    const { host, guest, state, guestState } = await startGame(server)
 
     const turnIdx = state.turnIndex
     const activeClient = turnIdx === 0 ? host : guest
-    const chipToPlace = state.players[turnIdx]!.hand[0]!
+    const chipToPlace = (turnIdx === 0 ? state : guestState).players[turnIdx]!.hand[0]!
 
     const hostUpdate = new Promise<StateUpdatePayload>((resolve) => host.once('state_update', resolve))
     const guestUpdate = new Promise<StateUpdatePayload>((resolve) => guest.once('state_update', resolve))
@@ -56,11 +58,11 @@ describe('place_chip', () => {
   })
 
   it('emits error when it is not the caller\'s turn', async () => {
-    const { host, guest, state } = await startGame(server)
+    const { host, guest, state, guestState } = await startGame(server)
 
     const wrongClient = state.turnIndex === 0 ? guest : host
     const wrongIdx = state.turnIndex === 0 ? 1 : 0
-    const chip = state.players[wrongIdx]!.hand[0]!
+    const chip = (wrongIdx === 0 ? state : guestState).players[wrongIdx]!.hand[0]!
 
     const err = await new Promise<{ code: string }>((resolve) => {
       wrongClient.once('error', resolve)
@@ -82,6 +84,33 @@ describe('place_chip', () => {
       activeClient.once('error', resolve)
       activeClient.emit('place_chip', { chip: fakeChip, row: 3, col: 3 })
     })
+    expect(err.code).toBe('INVALID_PLACEMENT')
+    host.disconnect()
+    guest.disconnect()
+  })
+
+  it('rejects a chip that reuses a shape elsewhere in its row', async () => {
+    const { host, guest, code, state } = await startGame(server)
+    const turnIdx = state.turnIndex
+    const activeClient = turnIdx === 0 ? host : guest
+    const candidate = { color: 'color-2', shape: 'tower' }
+    const forcedGrid = state.grid.map((row) => [...row])
+    forcedGrid[3]![3] = { color: 'color-1', shape: 'cottage' }
+    forcedGrid[3]![5] = { color: 'color-3', shape: 'tower' }
+    const forcedState = {
+      ...state,
+      grid: forcedGrid,
+      players: state.players.map((player, index) =>
+        index === turnIdx ? { ...player, hand: [candidate] } : player,
+      ),
+    }
+    updateRoomState(server.db, code, forcedState)
+
+    const err = await new Promise<{ code: string }>((resolve) => {
+      activeClient.once('error', resolve)
+      activeClient.emit('place_chip', { chip: candidate, row: 3, col: 2 })
+    })
+
     expect(err.code).toBe('INVALID_PLACEMENT')
     host.disconnect()
     guest.disconnect()

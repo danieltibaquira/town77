@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { PlayerBadge } from '../components/PlayerBadge'
 import { useGameStore } from '../store/gameStore'
 import { useTheme } from '../lib/theme'
+import { useRoomRecovery } from '../hooks/useRoomRecovery'
 
 export function LobbyScreen() {
   const { t } = useTranslation('game')
@@ -20,7 +21,7 @@ export function LobbyScreen() {
   const roomCode = useGameStore((s) => s.roomCode) ?? routeCode
   const startGame = useGameStore((s) => s.startGame)
   const startSoloGame = useGameStore((s) => s.startSoloGame)
-  const joinRoom = useGameStore((s) => s.joinRoom)
+  useRoomRecovery(routeCode)
 
   // Navigate to game when phase changes to playing
   useEffect(() => {
@@ -28,16 +29,6 @@ export function LobbyScreen() {
       navigate(`/game/${roomCode}`)
     }
   }, [gameState?.phase, navigate, roomCode])
-
-  useEffect(() => {
-    if (gameState) return
-    const token = localStorage.getItem('sessionToken')
-    const storedPlayerId = localStorage.getItem('playerId')
-    const storedName = localStorage.getItem('playerName')
-    if (token && storedPlayerId && storedName && routeCode) {
-      joinRoom(routeCode, storedName, storedPlayerId, token)
-    }
-  }, [gameState, joinRoom, routeCode])
 
   if (!gameState || !playerId) {
     return (

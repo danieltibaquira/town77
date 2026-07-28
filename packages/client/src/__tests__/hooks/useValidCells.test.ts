@@ -20,10 +20,10 @@ describe('useValidCells', () => {
   it('filters cells after a chip is placed', () => {
     const grid: Grid = Array.from({ length: 7 }, () => Array(7).fill(null))
     grid[3]![3] = { color: 'color-1', shape: 'cottage' }
-    // Shares color with the placed chip — a legal same-color line partner
-    const nextChip: Chip = { color: 'color-1', shape: 'tower' }
+    // Differs in color and shape from the placed chip.
+    const nextChip: Chip = { color: 'color-2', shape: 'tower' }
     const { result } = renderHook(() => useValidCells(grid, nextChip))
-    // Should only include adjacent cells that form a legal Qwirkle line
+    // Should only include adjacent cells that satisfy the Town 77 line rule.
     expect(result.current.length).toBeGreaterThan(0)
     expect(result.current.length).toBeLessThan(49)
     // Each returned cell should be a [row, col] tuple

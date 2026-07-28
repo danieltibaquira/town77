@@ -1,19 +1,52 @@
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { DEFAULT_GAME_CONFIG } from "@town77/shared-types";
+import { generateRandomName } from "../lib/randomName";
 import { useTheme } from "../lib/theme";
+import { useGameStore } from "../store/gameStore";
 import { getThemeByIdSafe } from "../themes";
 
 export function HomeScreen() {
   const { t } = useTranslation("common");
   const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
+  const createRoom = useGameStore((s) => s.createRoom);
+  const joinRoom = useGameStore((s) => s.joinRoom);
+  const gameState = useGameStore((s) => s.gameState);
+  const roomCode = useGameStore((s) => s.roomCode);
+  const [joinCode, setJoinCode] = useState("");
   const isNeo = theme.style === "neobrutalism";
   const neoRadius = theme.styleProps.borderRadius;
+
+  useEffect(() => {
+    if (gameState && roomCode) {
+      navigate(`/room/${roomCode}`);
+    }
+  }, [gameState, navigate, roomCode]);
+
+  function savePlayerName(): string {
+    const playerName = generateRandomName();
+    localStorage.setItem("playerName", playerName);
+    return playerName;
+  }
+
+  function handleCreate() {
+    createRoom(DEFAULT_GAME_CONFIG, "neobrutalism", savePlayerName());
+  }
+
+  function handleJoin() {
+    const roomCode = joinCode.trim().toUpperCase();
+    if (!roomCode) return;
+
+    joinRoom(roomCode, savePlayerName());
+    navigate(`/room/${roomCode}`);
+  }
 
   function cycleTheme() {
     const order = ["town77", "playful-pastel", "neobrutalism"];
     const idx = order.indexOf(theme.id);
-    const next = order[(idx + 1) % order.length] ?? "town77";
+    const next = order[(idx + 1) % order.length] ?? "neobrutalism";
     setTheme(getThemeByIdSafe(next));
   }
 
@@ -64,7 +97,7 @@ export function HomeScreen() {
         <button
           type="button"
           data-testid="btn-create"
-          onClick={() => navigate("/config")}
+          onClick={handleCreate}
           style={{
             background: isNeo ? "#ffe66d" : "linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%)",
             borderRadius: isNeo ? `${neoRadius}px` : "var(--radius-lg)",
@@ -84,10 +117,12 @@ export function HomeScreen() {
         >
           {t("create_room")}
         </button>
-        <button
-          type="button"
-          data-testid="btn-join"
-          onClick={() => navigate("/join")}
+        <input
+          data-testid="input-room-code"
+          placeholder="ABC123"
+          value={joinCode}
+          onChange={(event) => setJoinCode(event.target.value.toUpperCase())}
+          maxLength={6}
           style={{
             background: isNeo ? "#ffffff" : "var(--color-surface-grid)",
             border: isNeo
@@ -96,7 +131,30 @@ export function HomeScreen() {
             borderRadius: isNeo ? `${neoRadius}px` : "var(--radius-lg)",
             boxShadow: isNeo ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : "none",
             color: isNeo ? "#000000" : "var(--color-text-accent)",
-            cursor: "pointer",
+            fontSize: "var(--text-base)",
+            fontWeight: 600,
+            letterSpacing: isNeo ? "0.02em" : "0.05em",
+            minHeight: 48,
+            padding: "var(--space-sm) var(--space-xl)",
+            textAlign: "center",
+            transition: isNeo ? "var(--neo-transition)" : "all 0.15s ease-out",
+            width: "100%",
+          }}
+        />
+        <button
+          type="button"
+          data-testid="btn-join-room"
+          disabled={!joinCode.trim()}
+          onClick={handleJoin}
+          style={{
+            background: isNeo ? "#ffffff" : "var(--color-surface-grid)",
+            border: isNeo
+              ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}`
+              : "2px solid rgba(245, 158, 11, 0.3)",
+            borderRadius: isNeo ? `${neoRadius}px` : "var(--radius-lg)",
+            boxShadow: isNeo ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : "none",
+            color: isNeo ? "#000000" : "var(--color-text-accent)",
+            cursor: joinCode.trim() ? "pointer" : "not-allowed",
             fontSize: "var(--text-base)",
             fontWeight: 600,
             letterSpacing: isNeo ? "0.02em" : "0.05em",
