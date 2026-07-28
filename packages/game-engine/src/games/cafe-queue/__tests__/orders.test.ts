@@ -17,16 +17,24 @@ describe('Cafe Queue placeholder orders', () => {
     expect(DEFAULT_CAFE_QUEUE_CONFIG.rushSupply).toBe(15)
   })
 
-  it('creates an original deterministic order deck with unique exact recipes', () => {
+  it('creates eighty deterministic placeholder cards with unique identities', () => {
     const orders = createPlaceholderOrders()
 
-    expect(orders).toHaveLength(12)
-    expect(new Set(orders.map((order) => order.id)).size).toBe(12)
+    expect(orders).toHaveLength(80)
+    expect(new Set(orders.map((order) => order.id)).size).toBe(80)
     expect(orders).toContainEqual({
       id: 'cafe-queue-01',
       recipe: { beans: 1, water: 1 },
       isSpecialty: false,
     })
-    expect(orders.filter((order) => order.isSpecialty)).toHaveLength(3)
+    expect(orders.filter((order) => order.isSpecialty)).toHaveLength(19)
+  })
+
+  it('clones repeated recipe data instead of sharing mutable recipe objects', () => {
+    const orders = createPlaceholderOrders()
+
+    orders[0]!.recipe.beans = 99
+
+    expect(orders[12]!.recipe.beans).toBe(1)
   })
 })

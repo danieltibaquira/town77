@@ -25,6 +25,12 @@ describe('Cafe Queue setup', () => {
     expect(state.players[2]?.orderTabs.map((tab) => tab.length)).toEqual([1, 1, 0, 0])
   })
 
+  it('leaves seventy-three cards after three-player setup', () => {
+    const state = startCafeQueueGame(createCafeQueueState(DEFAULT_CAFE_QUEUE_CONFIG, PLAYERS, 41))
+
+    expect(state.orderDeck).toHaveLength(73)
+  })
+
   it('gives two-player games two meeples per player and larger games one', () => {
     const twoPlayer = startCafeQueueGame(createCafeQueueState(DEFAULT_CAFE_QUEUE_CONFIG, PLAYERS.slice(0, 2), 8))
     const threePlayer = startCafeQueueGame(createCafeQueueState(DEFAULT_CAFE_QUEUE_CONFIG, PLAYERS, 8))
