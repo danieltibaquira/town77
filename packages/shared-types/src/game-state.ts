@@ -1,5 +1,6 @@
 import type { Chip } from './chip'
 import type { GameConfig } from './game-config'
+import type { CafeQueueState } from './cafe-queue'
 
 export interface PlayerState {
   id: string
@@ -24,6 +25,9 @@ export interface GameState {
   themeId: string
   seed: number
 }
+
+export type TilePlacementGameState = GameState
+export type AnyGameState = TilePlacementGameState | CafeQueueState
 
 export interface Score {
   playerId: string

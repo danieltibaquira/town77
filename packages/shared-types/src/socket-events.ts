@@ -1,6 +1,11 @@
 import type { Chip } from './chip'
 import type { GameConfig } from './game-config'
 import type { GameState, Score } from './game-state'
+import type { CafeQueueAction } from './cafe-queue'
+
+export interface CafeQueueActionPayload {
+  action: CafeQueueAction
+}
 
 export interface CreateRoomPayload {
   config: GameConfig

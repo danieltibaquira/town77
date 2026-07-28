@@ -13,3 +13,4 @@ export { canDiscard, canExchange, doDiscard, doExchange, findExchangeableColorSe
 export { calculateScores, getWinningScores, isGameOver } from './scoring'
 export { findBotAction } from './bot'
 export type { BotAction, BotMove, BotExchange, BotDiscard } from './bot'
+export { createPlaceholderOrders } from './games/cafe-queue/orders'
