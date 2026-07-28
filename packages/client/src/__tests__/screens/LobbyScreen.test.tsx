@@ -3,6 +3,11 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithTheme } from '../helpers'
 import { useGameStore } from '../../store/gameStore'
+import { MemoryRouter } from 'react-router-dom'
+import { I18nextProvider } from 'react-i18next'
+import i18n from '../../lib/i18n'
+import { ThemeContext } from '../../lib/theme'
+import { getThemeById } from '../../themes'
 
 vi.mock('../../store/gameStore')
 vi.mock('../../hooks/useGameConnection', () => ({
@@ -29,12 +34,37 @@ const mockGameState = {
   seed: 42,
 }
 
+const cafeQueueLobbyState = {
+  gameId: 'cafe-queue' as const,
+  phase: 'lobby' as const,
+  config: { minPlayers: 2, maxPlayers: 4 },
+  themeId: 'neobrutalism',
+  seed: 1,
+  players: [{
+    id: 'p1', name: 'Alice', connected: true, meeplePositions: ['r0c0'], cups: [{ ingredients: {} }, { ingredients: {} }, { ingredients: {} }],
+    collectedThisTurn: {}, hasMovedThisTurn: false, orderTabs: [[], [], [], []], completedOrders: [], completedThisTurn: 0, penaltyOrders: [], activeUpgrades: [], rushTokens: 0,
+  }],
+  turnIndex: 0,
+  startingPlayerIndex: 0,
+  closeArmed: false,
+  orderDeck: [],
+  ingredientSupply: {},
+  rushSupply: 15,
+}
+
+let renderedGameState: any = mockGameState
+
+function lobbyUnderTest() {
+  return <MemoryRouter><I18nextProvider i18n={i18n}><ThemeContext.Provider value={{ theme: getThemeById('town77'), setTheme: () => {} }}><LobbyScreen /></ThemeContext.Provider></I18nextProvider></MemoryRouter>
+}
+
 describe('LobbyScreen', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    renderedGameState = mockGameState
     vi.mocked(useGameStore).mockImplementation((selector: any) => {
       const state = {
-        gameState: mockGameState,
+        gameState: renderedGameState,
         playerId: 'p1',
         roomCode: 'ABC123',
         connected: true,
@@ -123,5 +153,14 @@ describe('LobbyScreen', () => {
   it('shows config summary', () => {
     renderWithTheme(<LobbyScreen />)
     expect(screen.getByTestId('lobby-config-summary')).toBeDefined()
+  })
+
+  it('transitions from the initial legacy waiting render to a cafe queue lobby without a hook-order crash', () => {
+    renderedGameState = undefined
+    const { rerender } = renderWithTheme(<LobbyScreen />)
+
+    renderedGameState = cafeQueueLobbyState
+    expect(() => rerender(lobbyUnderTest())).not.toThrow()
+    expect(screen.getByTestId('cafe-queue-lobby')).toBeDefined()
   })
 })

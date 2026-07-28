@@ -24,16 +24,15 @@ export function LobbyScreen() {
   const startSoloGame = useGameStore((s) => s.startSoloGame)
   useRoomRecovery(routeCode)
 
+  useEffect(() => {
+    if (gameState?.phase === 'playing' && !isCafeQueueState(gameState)) {
+      navigate(`/game/${roomCode}`)
+    }
+  }, [gameState, navigate, roomCode])
+
   if (isCafeQueueState(gameState)) {
     return <CafeQueueLobby gameState={gameState} playerId={playerId} roomCode={roomCode} connected={connected} startGame={startGame} />
   }
-
-  // Navigate to game when phase changes to playing
-  useEffect(() => {
-    if (gameState?.phase === 'playing') {
-      navigate(`/game/${roomCode}`)
-    }
-  }, [gameState?.phase, navigate, roomCode])
 
   if (!gameState || !playerId) {
     return (
