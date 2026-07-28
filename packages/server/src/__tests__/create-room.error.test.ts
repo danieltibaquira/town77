@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { DEFAULT_GAME_CONFIG } from '@town77/shared-types'
+import { DEFAULT_CAFE_QUEUE_CONFIG, DEFAULT_GAME_CONFIG } from '@town77/shared-types'
 
 // P0#4: a failing DB write must not crash the handler with an unhandled
 // exception — it must emit a graceful INTERNAL_ERROR to the client.
@@ -49,6 +49,23 @@ describe('create_room — DB failure handling', () => {
     const socket = makeSocket()
     const handler = createRoomHandler({} as never, socket as never, { transaction: (work: () => void) => work } as never)
     handler(payload as never)
+    expect(socket.emit).not.toHaveBeenCalledWith('room_joined', expect.anything())
+  })
+
+  it('rejects malformed cafe configuration without throwing', () => {
+    const socket = makeSocket()
+    const handler = createRoomHandler({} as never, socket as never, { transaction: (work: () => void) => work } as never)
+
+    expect(() => handler({
+      config: { ...DEFAULT_CAFE_QUEUE_CONFIG, rows: undefined },
+      themeId: 'neo',
+      playerName: 'Alice',
+    } as never)).not.toThrow()
+
+    expect(socket.emit).toHaveBeenCalledWith('error', {
+      code: 'VALIDATION_ERROR',
+      messageKey: 'errors.invalid_config',
+    })
     expect(socket.emit).not.toHaveBeenCalledWith('room_joined', expect.anything())
   })
 })
