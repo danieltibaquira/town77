@@ -37,6 +37,12 @@ describe('initBag', () => {
     const bag = initBag(config, new SeededRNG(1))
     expect(bag).toHaveLength(98) // 7 × 7 × 2
   })
+
+  it('can create a finite deck sized to board cells plus the hand size', () => {
+    const total = DEFAULT_GAME_CONFIG.grid.rows * DEFAULT_GAME_CONFIG.grid.cols + DEFAULT_GAME_CONFIG.handSize
+    const bag = initBag(DEFAULT_GAME_CONFIG.chips, new SeededRNG(1), total)
+    expect(bag).toHaveLength(53)
+  })
 })
 
 describe('dealHands', () => {

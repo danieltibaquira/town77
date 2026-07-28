@@ -49,11 +49,11 @@ export function doExchange(
     newHand.splice(idx, 1)
   }
 
-  const newBag = shuffle([...bag, ...chipsToExchange], rng)
-  const drawn = newBag.splice(0, chipsToExchange.length)
+  const remainingBag = [...bag]
+  const drawn = remainingBag.splice(0, chipsToExchange.length)
   newHand.push(...drawn)
 
-  return { newHand, newBag }
+  return { newHand, newBag: shuffle([...remainingBag, ...chipsToExchange], rng) }
 }
 
 /**
@@ -87,14 +87,5 @@ export function doDiscard(
   if (idx === -1) throw new Error(`chip not in hand: ${chipToDiscard.color}/${chipToDiscard.shape}`)
   newHand.splice(idx, 1)
 
-  const newBag = [...bag]
-  let drew = false
-
-  if (newBag.length > 0) {
-    const drawn = newBag.splice(0, 1)[0]!
-    newHand.push(drawn)
-    drew = true
-  }
-
-  return { newHand, newBag, drew }
+  return { newHand, newBag: [...bag], drew: false }
 }

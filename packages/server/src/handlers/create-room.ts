@@ -28,7 +28,7 @@ export function createRoomHandler(_io: Io, socket: Sock, db: Db, presence = new 
     const sessionToken = generateSessionToken()
 
     const rng = new SeededRNG(seed)
-    const bag = initBag(config.chips, rng)
+    const bag = initBag(config.chips, rng, config.grid.rows * config.grid.cols + config.handSize)
 
     const state: GameState = {
       grid: createGrid(config.grid.rows, config.grid.cols),

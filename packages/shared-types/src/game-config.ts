@@ -40,4 +40,5 @@ export const DEFAULT_GAME_CONFIG: GameConfig = {
   handSize: 4,
   scoring: { placedWeight: 1, remainingWeight: 1 },
   exchange: { min: 3, max: 4 },
+  maxPlayers: 5,
 }

@@ -51,7 +51,7 @@ describe('start_game', () => {
     expect(h.state.players[1]!.hand).toEqual([])
     expect(g.state.players[0]!.hand).toEqual([])
     expect(g.state.players[1]!.hand).toHaveLength(4)
-    expect(h.state.bag).toHaveLength(49 - 8)
+    expect(h.state.bag).toHaveLength(53 - 8)
     expect(h.state.grid).toEqual(g.state.grid)
     expect(h.state.phase).toBe(g.state.phase)
     host.disconnect()

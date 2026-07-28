@@ -29,7 +29,7 @@ export function createSoloRoomHandler(_io: Io, socket: Sock, db: Db, presence = 
     const botId = `bot-${code}`
 
     const rng = new SeededRNG(seed)
-    const bag = initBag(config.chips, rng)
+    const bag = initBag(config.chips, rng, config.grid.rows * config.grid.cols + config.handSize)
 
     const state: GameState = {
       grid: createGrid(config.grid.rows, config.grid.cols),

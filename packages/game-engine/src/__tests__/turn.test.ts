@@ -126,9 +126,9 @@ describe('doExchange', () => {
     expect(newHand.length + newBag.length).toBe(total)
   })
 
-  it('does not contain exchanged chips in new hand (statistically — seeded)', () => {
+  it('draws replacements only from the bag before returning exchanged chips', () => {
     const hand = [RED_COTTAGE, RED_TOWER, RED_BARN, BLUE_COTTAGE]
-    const bag = initBag(DEFAULT_GAME_CONFIG.chips, new SeededRNG(1))
+    const bag = [GREEN_COTTAGE, YELLOW_BARN, BLUE_COTTAGE]
     const { newHand, newBag } = doExchange(
       hand,
       bag,
@@ -136,7 +136,9 @@ describe('doExchange', () => {
       new SeededRNG(99),
     )
     expect(newHand).toHaveLength(4)
-    expect(newBag.length + newHand.length).toBe(bag.length + hand.length)
+    expect(newHand).toEqual([BLUE_COTTAGE, GREEN_COTTAGE, YELLOW_BARN, BLUE_COTTAGE])
+    expect(newBag).toHaveLength(3)
+    expect(newBag).toEqual(expect.arrayContaining([RED_COTTAGE, RED_TOWER, RED_BARN]))
   })
 
   it('does not mutate input hand or bag', () => {
@@ -168,12 +170,13 @@ describe('doDiscard', () => {
     expect(newHand).not.toContainEqual(RED_COTTAGE)
   })
 
-  it('draws from bag when bag is not empty', () => {
+  it('never draws a replacement chip', () => {
     const hand = [RED_COTTAGE, RED_TOWER, BLUE_COTTAGE, YELLOW_BARN]
     const bag = [GREEN_COTTAGE]
     const { newHand, drew } = doDiscard(hand, bag, RED_COTTAGE)
-    expect(drew).toBe(true)
-    expect(newHand).toHaveLength(4) // removed 1, drew 1
+    expect(drew).toBe(false)
+    expect(newHand).toHaveLength(3)
+    expect(newHand).not.toContainEqual(GREEN_COTTAGE)
   })
 
   it('does not draw when bag is empty', () => {

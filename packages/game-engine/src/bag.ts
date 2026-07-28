@@ -1,7 +1,7 @@
 import type { Chip, ChipSetConfig } from '@town77/shared-types'
 import type { RNG } from './rng'
 
-export function initBag(config: ChipSetConfig, rng: RNG): Chip[] {
+export function initBag(config: ChipSetConfig, rng: RNG, targetSize?: number): Chip[] {
   const chips: Chip[] = []
   for (const color of config.colors) {
     for (const shape of config.shapes) {
@@ -9,6 +9,9 @@ export function initBag(config: ChipSetConfig, rng: RNG): Chip[] {
         chips.push({ color, shape })
       }
     }
+  }
+  while (targetSize !== undefined && chips.length < targetSize) {
+    chips.push({ ...chips[Math.floor(rng.nextFloat() * chips.length)]! })
   }
   return shuffle(chips, rng)
 }

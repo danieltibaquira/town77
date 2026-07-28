@@ -60,7 +60,6 @@ describe('create_room', () => {
         playerName: 'Alice',
       })
     })
-    // Default config: 7 colors × 7 shapes × 1 copy = 49 chips
-    expect(payload.state.bag).toHaveLength(49)
+    expect(payload.state.bag).toHaveLength(53)
   })
 })
