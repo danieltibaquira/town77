@@ -175,4 +175,15 @@ describe('GameScreen — Rules of Hooks (P0#2)', () => {
     expect(screen.getByTestId('grid')).toBeDefined()
     expect(collectHookWarnings(errorSpy)).toEqual([])
   })
+
+  it('renders a cafe queue game without reading legacy bag state', () => {
+    const cafeState = {
+      gameId: 'cafe-queue', phase: 'playing', config: { rows: 4, cols: 4, board: { r0c0: 'beans' } }, themeId: 'neo', seed: 1,
+      players: [{ id: 'p1', name: 'Alice', connected: true, meeplePositions: ['r0c0'], cups: [{ ingredients: {} }], collectedThisTurn: {}, hasMovedThisTurn: false, orderTabs: [[], [], [], []], completedOrders: [], completedThisTurn: 0, penaltyOrders: [], activeUpgrades: [], rushTokens: 0 }],
+      turnIndex: 0, startingPlayerIndex: 0, closeArmed: false, orderDeck: [], ingredientSupply: {}, rushSupply: 0,
+    }
+    vi.mocked(useGameStore).mockImplementation((selector: any) => selector({ ...makeStoreState(null, 'p1'), gameState: cafeState } as any))
+    render(<MemoryRouter><I18nextProvider i18n={i18n}><ThemeContext.Provider value={{ theme: getThemeById('town77'), setTheme: () => {} }}><GameScreen /></ThemeContext.Provider></I18nextProvider></MemoryRouter>)
+    expect(screen.getByTestId('cafe-queue-game')).toBeDefined()
+  })
 })

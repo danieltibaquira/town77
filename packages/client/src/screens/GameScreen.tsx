@@ -26,7 +26,7 @@ export function GameScreen() {
   const isNeo = theme.style === "neobrutalism";
 
   const rawGameState = useGameStore((s) => s.gameState)
-  const gameState = rawGameState as GameState | null
+  const gameState = !isCafeQueueState(rawGameState) ? rawGameState as GameState | null : null
   const playerId = useGameStore((s) => s.playerId)
   const roomCode = useGameStore((s) => s.roomCode)
   const selectedChip = useGameStore((s) => s.selectedChip)
@@ -65,7 +65,7 @@ export function GameScreen() {
   // gameState?.grid is safe.
   const validCells = useValidCells(gameState?.grid, selectedChip)
 
-  if (!gameState || !playerId) {
+  if (!rawGameState || !playerId) {
     return (
       <main data-testid="game-screen" style={{ background: 'var(--color-surface-bg)', color: 'var(--color-text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
         {t('waiting')}
@@ -76,6 +76,8 @@ export function GameScreen() {
   if (isCafeQueueState(rawGameState)) {
     return <CafeQueueGameScreen state={rawGameState} playerId={playerId} roomCode={roomCode} />
   }
+
+  if (!gameState) return null
 
   const myPlayer = gameState.players.find((p) => p.id === playerId)
   const isMyTurn = gameState.players[gameState.turnIndex]?.id === playerId
