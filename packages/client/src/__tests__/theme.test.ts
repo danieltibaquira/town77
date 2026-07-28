@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { injectTokens } from "../lib/theme";
+import { meetsWcagAA } from "../lib/contrast";
+import { neobrutalismTheme } from "../themes/neobrutalism";
 import { town77Theme } from "../themes/town77";
 
 describe("injectTokens", () => {
@@ -28,5 +30,14 @@ describe("injectTokens", () => {
     expect(document.documentElement.style.getPropertyValue("--font-display")).toBe(
       "'Bebas Neue', sans-serif",
     );
+  });
+
+  it("provides WCAG AA text for Neo dark surfaces", () => {
+    injectTokens(neobrutalismTheme);
+
+    const textOnDark = document.documentElement.style.getPropertyValue("--color-text-on-dark");
+    expect(textOnDark).not.toBe("");
+    expect(meetsWcagAA(textOnDark, neobrutalismTheme.surfaces.cell)).toBe(true);
+    expect(meetsWcagAA(textOnDark, neobrutalismTheme.surfaces.cellHover)).toBe(true);
   });
 });

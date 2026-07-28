@@ -109,7 +109,7 @@ export function ResultsScreen() {
           background: 'var(--color-surface-cell)',
           border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : 'none',
           borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-lg)',
-          color: isNeo ? '#000000' : 'var(--color-text-primary)',
+          color: 'var(--color-text-on-dark)',
           cursor: 'pointer',
           fontSize: 'var(--text-base)',
           padding: 'var(--space-md) var(--space-xl)',

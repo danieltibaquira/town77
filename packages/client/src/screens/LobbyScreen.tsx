@@ -56,7 +56,7 @@ export function LobbyScreen() {
           background: 'var(--color-surface-cell)',
           border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : 'none',
           borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-sm)',
-          color: isNeo ? '#000000' : 'var(--color-text-secondary)',
+          color: 'var(--color-text-on-dark)',
           cursor: 'pointer',
           fontSize: 'var(--text-sm)',
           padding: 'var(--space-xs) var(--space-sm)',
@@ -98,7 +98,7 @@ export function LobbyScreen() {
             ? isNeo
               ? '#000000'
               : 'var(--color-surface-bg)'
-            : 'var(--color-text-secondary)',
+            : 'var(--color-text-on-dark)',
           cursor: canStart ? 'pointer' : 'not-allowed',
           fontSize: 'var(--text-lg)',
           fontWeight: 700,

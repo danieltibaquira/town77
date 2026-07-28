@@ -17,7 +17,7 @@ export function Stepper({ label, value, min, max, onChange }: StepperProps) {
     background: 'var(--color-surface-cell)',
     border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : 'none',
     borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-sm)',
-    color: 'var(--color-text-primary)',
+    color: 'var(--color-text-on-dark)',
     cursor: 'pointer',
     fontSize: 'var(--text-lg)',
     fontWeight: 700,

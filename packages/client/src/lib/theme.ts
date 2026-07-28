@@ -57,6 +57,7 @@ export function injectTokens(theme: Theme): void {
   style.setProperty("--color-text-primary", text.primary);
   style.setProperty("--color-text-secondary", text.secondary);
   style.setProperty("--color-text-accent", text.accent);
+  style.setProperty("--color-text-on-dark", isNeo ? "#ffffff" : text.primary);
 
   const sp = theme.styleProps;
   style.setProperty("--neo-border-width", `${sp.borderWidth}px`);

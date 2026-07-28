@@ -30,7 +30,7 @@ export function JoinScreen() {
     background: 'var(--color-surface-cell)',
     border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : '1px solid var(--color-surface-cell-hover)',
     borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-md)',
-    color: isNeo ? '#000000' : 'var(--color-text-primary)',
+    color: 'var(--color-text-on-dark)',
     fontSize: 'var(--text-base)',
     padding: 'var(--space-sm) var(--space-md)',
     width: '100%',
@@ -70,7 +70,7 @@ export function JoinScreen() {
           ? isNeo
             ? '#000000'
             : 'var(--color-surface-bg)'
-          : 'var(--color-text-secondary)',
+          : 'var(--color-text-on-dark)',
         cursor: canJoin ? 'pointer' : 'not-allowed',
         fontSize: 'var(--text-lg)',
         fontWeight: 700,

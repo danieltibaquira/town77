@@ -57,7 +57,7 @@ export function PlayerBadge({
           ? isNeo
             ? "#000000"
             : "var(--color-surface-bg)"
-          : "var(--color-text-primary)",
+          : "var(--color-text-on-dark)",
         display: "flex",
         fontSize: size === "sm" ? "var(--text-sm)" : "var(--text-base)",
         fontWeight: isMyPlayer ? 700 : 500,

@@ -144,7 +144,7 @@ export function ConfigScreen() {
           background: canCreate ? (isNeo ? '#ffe66d' : 'linear-gradient(180deg, #d4b76a 0%, #c4a35a 100%)') : 'var(--color-surface-cell)',
           border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : 'none',
           borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-lg)',
-          color: canCreate ? (isNeo ? '#000000' : 'var(--color-surface-bg)') : 'var(--color-text-secondary)',
+          color: canCreate ? (isNeo ? '#000000' : 'var(--color-surface-bg)') : 'var(--color-text-on-dark)',
           cursor: canCreate ? 'pointer' : 'not-allowed', fontSize: 'var(--text-lg)', fontWeight: 700,
           padding: 'var(--space-md) var(--space-xl)', letterSpacing: '0.05em',
           boxShadow: canCreate && isNeo ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : (canCreate ? 'var(--shadow-md), 0 0 12px rgba(196, 163, 90, 0.2)' : 'none')
@@ -157,7 +157,7 @@ export function ConfigScreen() {
           background: canCreate ? (isNeo ? '#4ecdc4' : 'linear-gradient(135deg, rgba(196, 163, 90, 0.15) 0%, rgba(196, 163, 90, 0.05) 100%)') : 'var(--color-surface-cell)',
           border: isNeo ? `${theme.styleProps.borderWidth}px solid ${theme.styleProps.borderColor}` : '2px solid var(--color-text-accent)',
           borderRadius: isNeo ? `${neoRadius}px` : 'var(--radius-lg)',
-          color: canCreate ? (isNeo ? '#000000' : 'var(--color-text-accent)') : 'var(--color-text-secondary)',
+          color: canCreate ? (isNeo ? '#000000' : 'var(--color-text-accent)') : 'var(--color-text-on-dark)',
           cursor: canCreate ? 'pointer' : 'not-allowed', fontSize: 'var(--text-lg)', fontWeight: 700,
           padding: 'var(--space-md) var(--space-xl)', letterSpacing: '0.05em',
           boxShadow: canCreate && isNeo ? `${theme.styleProps.shadowOffset}px ${theme.styleProps.shadowOffset}px 0px ${theme.styleProps.shadowColor}` : (canCreate ? '0 0 16px rgba(196, 163, 90, 0.15)' : 'none')

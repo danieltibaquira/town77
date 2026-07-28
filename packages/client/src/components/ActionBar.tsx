@@ -54,7 +54,7 @@ export function ActionBar({
       ? isNeo
         ? "#000000"
         : "var(--color-surface-bg)"
-      : "var(--color-text-secondary)",
+      : "var(--color-text-on-dark)",
     cursor: canExchange ? "pointer" : "not-allowed",
     boxShadow: canExchange
       ? isNeo
@@ -76,7 +76,7 @@ export function ActionBar({
       ? isNeo
         ? "#000000"
         : "var(--color-text-primary)"
-      : "var(--color-text-secondary)",
+      : "var(--color-text-on-dark)",
     cursor: canDiscard ? "pointer" : "not-allowed",
   };
 
