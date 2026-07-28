@@ -25,6 +25,16 @@ function sameRecipe(left: CafeQueueRecipe, right: CafeQueueRecipe): boolean {
   return CAFE_QUEUE_INGREDIENTS.every((ingredient) => count(left, ingredient) === count(right, ingredient))
 }
 
+function returnToSupply(
+  supply: CafeQueueState['ingredientSupply'],
+  ingredients: CafeQueueRecipe,
+): CafeQueueState['ingredientSupply'] {
+  return CAFE_QUEUE_INGREDIENTS.reduce(
+    (next, ingredient) => ({ ...next, [ingredient]: next[ingredient] + count(ingredients, ingredient) }),
+    supply,
+  )
+}
+
 export function pourIngredients(
   state: CafeQueueState,
   playerId: string,
@@ -76,10 +86,7 @@ export function completeOrders(
     if (!cup || !tab || !order) throw new CafeQueueRuleError('ORDER_NOT_AVAILABLE')
     if (!sameRecipe(cup.ingredients, order.recipe)) throw new CafeQueueRuleError('RECIPE_MISMATCH')
 
-    supply = CAFE_QUEUE_INGREDIENTS.reduce(
-      (next, ingredient) => ({ ...next, [ingredient]: next[ingredient] + count(cup.ingredients, ingredient) }),
-      supply,
-    )
+    supply = returnToSupply(supply, cup.ingredients)
     cups[completion.cupIndex] = { ingredients: {} }
     tabs[completion.tabIndex] = tab.filter((candidate) => candidate.id !== completion.orderId)
     completedOrders = [...completedOrders, order]
@@ -94,7 +101,22 @@ export function completeOrders(
     ingredientSupply: supply,
     rushSupply,
     players: state.players.map((candidate, index) => index === playerIndex
-      ? { ...candidate, cups, orderTabs: tabs, completedOrders, rushTokens }
+      ? { ...candidate, cups, orderTabs: tabs, completedOrders, completedThisTurn: candidate.completedThisTurn + completions.length, rushTokens }
       : candidate),
+  }
+}
+
+export function emptyCup(state: CafeQueueState, playerId: string, cupIndex: number): CafeQueueState {
+  const playerIndex = state.players.findIndex((player) => player.id === playerId)
+  if (playerIndex !== state.turnIndex) throw new CafeQueueRuleError('NOT_YOUR_TURN')
+  const player = state.players[playerIndex]
+  const cup = player?.cups[cupIndex]
+  if (!player || !cup) throw new CafeQueueRuleError('INVALID_CUP')
+  const cups = [...player.cups]
+  cups[cupIndex] = { ingredients: {} }
+  return {
+    ...state,
+    ingredientSupply: returnToSupply(state.ingredientSupply, cup.ingredients),
+    players: state.players.map((candidate, index) => index === playerIndex ? { ...candidate, cups } : candidate),
   }
 }

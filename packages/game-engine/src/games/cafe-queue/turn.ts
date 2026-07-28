@@ -66,13 +66,14 @@ export function endCafeQueueTurn(
   if (!Number.isInteger(completedThisTurn) || completedThisTurn < 0) throw new CafeQueueRuleError('INVALID_COMPLETION_COUNT')
   const playerIndex = state.players.findIndex((player) => player.id === playerId)
   if (playerIndex !== state.turnIndex) throw new CafeQueueRuleError('NOT_YOUR_TURN')
+  if (completedThisTurn !== state.players[playerIndex]?.completedThisTurn) throw new CafeQueueRuleError('INVALID_COMPLETION_COUNT')
 
   const wasCloseArmed = state.closeArmed
   const overloaded = addOverloadOrders(state, completedThisTurn)
   const endedPlayer = overloaded.players[playerIndex]!
   const ingredientSupply = returnIngredients(state.ingredientSupply, endedPlayer.collectedThisTurn)
   const withReturnedCollection = overloaded.players.map((player, index) => index === playerIndex
-    ? { ...player, collectedThisTurn: {} }
+    ? { ...player, collectedThisTurn: {}, completedThisTurn: 0 }
     : player)
   const aged = ageOrders(withReturnedCollection, state.rushSupply)
   const closeArmed = wasCloseArmed

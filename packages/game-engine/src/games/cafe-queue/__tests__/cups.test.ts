@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { DEFAULT_CAFE_QUEUE_CONFIG } from '@town77/shared-types'
 import { createPlaceholderOrders } from '../orders'
-import { completeOrders, pourIngredients } from '../cups'
+import { completeOrders, emptyCup, pourIngredients } from '../cups'
 import { activateUpgrade } from '../upgrades'
 import { applyMove, createCafeQueueState, startCafeQueueGame } from '../setup'
 
@@ -23,6 +23,7 @@ describe('Cafe Queue cups and orders', () => {
     expect(completed.players[0]?.orderTabs[0].map((order) => order.id)).not.toContain('cafe-queue-01')
     expect(completed.ingredientSupply.beans).toBe(18)
     expect(completed.ingredientSupply.water).toBe(12)
+    expect(completed.players[0]?.completedThisTurn).toBe(1)
   })
 
   it('rejects an order when the cup has extra ingredients', () => {
@@ -34,6 +35,22 @@ describe('Cafe Queue cups and orders', () => {
       : player) }
 
     expect(() => completeOrders(withExtra, 'p1', [{ cupIndex: 0, tabIndex: 0, orderId: 'cafe-queue-01' }])).toThrow('RECIPE_MISMATCH')
+  })
+
+  it('empties one cup back into the finite supply without transferring to another cup', () => {
+    const started = startCafeQueueGame(createCafeQueueState(DEFAULT_CAFE_QUEUE_CONFIG, PLAYERS, 1))
+    const state = {
+      ...started,
+      ingredientSupply: { ...started.ingredientSupply, beans: started.ingredientSupply.beans - 2 },
+      players: started.players.map((player) => player.id === 'p1'
+        ? { ...player, cups: [{ ingredients: { beans: 2 } }, ...player.cups.slice(1)] }
+        : player),
+    }
+
+    const emptied = emptyCup(state, 'p1', 0)
+
+    expect(emptied.players[0]?.cups[0]?.ingredients).toEqual({})
+    expect(emptied.ingredientSupply.beans).toBe(17)
   })
 })
 

@@ -25,7 +25,8 @@ describe('Cafe Queue turn end', () => {
 
   it('adds completed-order overload to the two players on the left in order', () => {
     const started = startCafeQueueGame(createCafeQueueState(DEFAULT_CAFE_QUEUE_CONFIG, PLAYERS, 1))
-    const ended = endCafeQueueTurn(started, 'p1', 1)
+    const state = { ...started, players: started.players.map((player, index) => index === 0 ? { ...player, completedThisTurn: 1 } : player) }
+    const ended = endCafeQueueTurn(state, 'p1', 1)
 
     expect(ended.players[1]?.orderTabs.map((tab) => tab.length)).toEqual([0, 2, 1, 0])
     expect(ended.players[2]?.orderTabs.map((tab) => tab.length)).toEqual([0, 2, 1, 0])
@@ -33,18 +34,25 @@ describe('Cafe Queue turn end', () => {
 
   it('gives the other player two overload orders in a two-player game', () => {
     const started = startCafeQueueGame(createCafeQueueState(DEFAULT_CAFE_QUEUE_CONFIG, PLAYERS.slice(0, 2), 1))
-    const ended = endCafeQueueTurn(started, 'p1', 1)
+    const state = { ...started, players: started.players.map((player, index) => index === 0 ? { ...player, completedThisTurn: 1 } : player) }
+    const ended = endCafeQueueTurn(state, 'p1', 1)
 
     expect(ended.players[1]?.orderTabs.map((tab) => tab.length)).toEqual([0, 3, 1, 0])
   })
 
   it('arms closing when a partial overload exhausts the deck', () => {
     const started = startCafeQueueGame(createCafeQueueState(DEFAULT_CAFE_QUEUE_CONFIG, PLAYERS, 1))
-    const state = { ...started, orderDeck: [createPlaceholderOrders()[0]!] }
+    const state = { ...started, orderDeck: [createPlaceholderOrders()[0]!], players: started.players.map((player, index) => index === 0 ? { ...player, completedThisTurn: 1 } : player) }
     const ended = endCafeQueueTurn(state, 'p1', 1)
 
     expect(ended.orderDeck).toEqual([])
     expect(ended.closeArmed).toBe(true)
+  })
+
+  it('rejects a completion count that does not match the authoritative turn state', () => {
+    const started = startCafeQueueGame(createCafeQueueState(DEFAULT_CAFE_QUEUE_CONFIG, PLAYERS, 1))
+
+    expect(() => endCafeQueueTurn(started, 'p1', 1)).toThrow('INVALID_COMPLETION_COUNT')
   })
 
   it('arms after a fifth penalty and finishes only at the starting-player boundary', () => {

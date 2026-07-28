@@ -77,6 +77,7 @@ function startingPlayer(
       collectedThisTurn: emptyRecipe(),
       orderTabs: [[], [], [], []],
       completedOrders: [],
+      completedThisTurn: 0,
       penaltyOrders: [],
       activeUpgrades: [],
       rushTokens: 0,

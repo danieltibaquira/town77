@@ -38,6 +38,7 @@ export interface CafeQueuePlayer {
   collectedThisTurn: CafeQueueRecipe
   orderTabs: [CafeQueueOrder[], CafeQueueOrder[], CafeQueueOrder[], CafeQueueOrder[]]
   completedOrders: CafeQueueOrder[]
+  completedThisTurn: number
   penaltyOrders: CafeQueueOrder[]
   activeUpgrades: CafeQueueUpgrade[]
   rushTokens: number
